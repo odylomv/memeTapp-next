@@ -40,16 +40,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?    @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     // memeTapp
-    Meme          Meme[]
-    Comment       Comment[]
+    memes         Meme[]
+    likes         MemeLike[]
+    comments      Comment[]
 }
 
 model VerificationToken {
@@ -61,13 +62,13 @@ model VerificationToken {
 }
 
 // memeTapp
-
 model Meme {
-    id        Int       @id @default(autoincrement())
-    createdAt DateTime  @default(now())
+    id        Int        @id @default(autoincrement())
+    createdAt DateTime   @default(now())
     imageURL  String
     authorId  String
-    author    User      @relation(fields: [authorId], references: [id])
+    author    User       @relation(fields: [authorId], references: [id])
+    likes     MemeLike[]
     comments  Comment[]
 }
 
@@ -78,4 +79,13 @@ model Comment {
     author    User     @relation(fields: [authorId], references: [id])
     memeId    Int
     meme      Meme     @relation(fields: [memeId], references: [id])
+}
+
+model MemeLike {
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+    memeId Int
+    meme   Meme   @relation(fields: [memeId], references: [id])
+
+    @@id([userId, memeId])
 }
