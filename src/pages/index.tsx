@@ -1,12 +1,13 @@
-import type { NextPage } from 'next';
+import { createProxySSGHelpers } from '@trpc/react/ssg';
+import type { InferGetStaticPropsType, NextPage } from 'next';
+import Image from 'next/future/image';
 import Head from 'next/head';
-import AuthShowcase from '../components/AuthShowcase';
+import superjson from 'superjson';
 import { Navbar } from '../components/Navbar';
-import { trpc } from '../utils/trpc';
+import { createContextInner } from '../server/trpc/context';
+import { appRouter } from '../server/trpc/router';
 
-const Home: NextPage = () => {
-  const memes = trpc.meme.getAll.useQuery();
-
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ memes }) => {
   return (
     <>
       <Head>
@@ -18,14 +19,36 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col bg-neutral-900 text-gray-100">
         <Navbar />
 
-        <div className="flex flex-col items-center justify-center pt-6 text-xl text-blue-500  break-all">
-          {memes.data ? <p className="text-2xl">{memes.data.map(meme => meme.imageURL)}</p> : <p>Loading..</p>}
+        <div className="flex w-full flex-col items-center p-4">
+          {memes ? (
+            memes.map(meme => (
+              <div key={meme.id} className="flex justify-center pb-4">
+                <Image priority src={meme.imageURL} alt="meme" width={450} height={450} className="h-auto w-[400px]" />
+              </div>
+            ))
+          ) : (
+            <p>Loading..</p>
+          )}
         </div>
-
-        <AuthShowcase />
       </main>
     </>
   );
 };
+
+export async function getStaticProps() {
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContextInner(),
+    transformer: superjson,
+  });
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      memes: await ssg.meme.getAll.fetch(),
+    },
+    revalidate: 1,
+  };
+}
 
 export default Home;

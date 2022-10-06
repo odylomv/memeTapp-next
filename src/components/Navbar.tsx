@@ -8,24 +8,22 @@ import ProfileButton from './ProfileButton';
 const navigation = [
   { name: 'Browse', href: '#', current: true },
   { name: 'Competitions', href: '#', current: false },
-  //   { name: 'Profile', href: '#', current: false },
   { name: 'Search', href: '#', current: false },
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export const Navbar = () => {
   return (
-    <Disclosure as="nav" className="bg-neutral-800">
+    <Disclosure as="nav" className="sticky top-0 w-full bg-neutral-800">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-neutral-400 hover:bg-neutral-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <Disclosure.Button
+                  className="inline-flex items-center justify-center rounded-md p-2 text-neutral-400
+                  hover:bg-neutral-700 hover:text-white focus:outline-none
+                    focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -39,9 +37,8 @@ export const Navbar = () => {
                   <Image
                     className="block h-8 w-auto"
                     src={banner}
-                    alt="Your Company"
-                    sizes="(max-width: 768px) 20vw, 10vw"
-                    priority
+                    alt="memeTapp"
+                    sizes="(max-width: 768px) 40vw, 10vw"
                   />
                 </div>
 
@@ -51,12 +48,12 @@ export const Navbar = () => {
                       <a
                         key={item.name}
                         href={item.href}
-                        className={classNames(
-                          item.current
+                        className={
+                          'rounded-md px-3 py-2 text-sm font-medium ' +
+                          (item.current
                             ? 'bg-neutral-900 text-white'
-                            : 'text-neutral-300 hover:bg-neutral-700 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium'
-                        )}
+                            : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                        }
                         aria-current={item.current ? 'page' : undefined}>
                         {item.name}
                       </a>
@@ -65,7 +62,9 @@ export const Navbar = () => {
                 </div>
               </div>
 
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div
+                className="absolute inset-y-0 right-0 flex items-center pr-2 
+                  sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <ProfileButton />
               </div>
             </div>
@@ -78,12 +77,12 @@ export const Navbar = () => {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  className={classNames(
-                    item.current
+                  className={
+                    'block rounded-md px-3 py-2 text-base font-medium ' +
+                    (item.current
                       ? 'bg-neutral-900 text-white'
-                      : 'text-neutral-300 hover:bg-neutral-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
-                  )}
+                      : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                  }
                   aria-current={item.current ? 'page' : undefined}>
                   {item.name}
                 </Disclosure.Button>
