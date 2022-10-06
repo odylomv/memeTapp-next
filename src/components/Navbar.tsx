@@ -49,7 +49,8 @@ export const Navbar = () => {
                         key={item.name}
                         href={item.href}
                         className={
-                          'rounded-md px-3 py-2 text-sm font-medium ' +
+                          'rounded-md px-3 py-2 text-sm font-medium' +
+                          ' ' +
                           (item.current
                             ? 'bg-neutral-900 text-white'
                             : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
@@ -78,10 +79,9 @@ export const Navbar = () => {
                   as="a"
                   href={item.href}
                   className={
-                    'block rounded-md px-3 py-2 text-base font-medium ' +
-                    (item.current
-                      ? 'bg-neutral-900 text-white'
-                      : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                    'block rounded-md px-3 py-2 text-base font-medium' +
+                    ' ' +
+                    (item.current ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
                   }
                   aria-current={item.current ? 'page' : undefined}>
                   {item.name}
