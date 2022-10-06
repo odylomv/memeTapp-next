@@ -1,11 +1,34 @@
 version: '3.9'
 services:
-  app:
-    platform: 'linux/amd64'
-    build:
-      context: .
-      dockerfile: Dockerfile
-    working_dir: /app
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
     ports:
-      - '3000:3000'
-    image: memetapp
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  minio:
+    image: quay.io/minio/minio
+    volumes:
+      - minio_storage:/data
+    ports:
+      - 9000:9000
+      - 9090:9090
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+    command: server --console-address ":9090" /data
+
+volumes:
+  postgres: {}
+  minio_storage: {}
