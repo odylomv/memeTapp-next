@@ -1,13 +1,16 @@
 import { createProxySSGHelpers } from '@trpc/react/ssg';
-import type { InferGetStaticPropsType, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Image from 'next/future/image';
 import Head from 'next/head';
 import superjson from 'superjson';
 import { Navbar } from '../components/Navbar';
 import { createContextInner } from '../server/trpc/context';
 import { appRouter } from '../server/trpc/router';
+import { trpc } from '../utils/trpc';
 
-const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ memes }) => {
+const Home: NextPage = () => {
+  const memes = trpc.meme.getAll.useQuery();
+
   return (
     <>
       <Head>
@@ -20,8 +23,8 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ memes 
         <Navbar />
 
         <div className="flex w-full flex-col items-center p-4">
-          {memes ? (
-            memes.map(meme => (
+          {memes.data ? (
+            memes.data.map(meme => (
               <div key={meme.id} className="flex justify-center pb-4">
                 <Image priority src={meme.imageURL} alt="meme" width={450} height={450} className="h-auto w-[400px]" />
               </div>
@@ -42,12 +45,13 @@ export async function getStaticProps() {
     transformer: superjson,
   });
 
+  await ssg.meme.getAll.prefetch();
+
   return {
     props: {
       trpcState: ssg.dehydrate(),
-      memes: await ssg.meme.getAll.fetch(),
     },
-    revalidate: 1,
+    revalidate: 10,
   };
 }
 
