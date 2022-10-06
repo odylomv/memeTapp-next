@@ -67,13 +67,11 @@ const ProfileButton: React.FC = () => {
             bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             {popupOptions.map(options => (
               <Menu.Item key={options.name}>
-                {({ active }) => (
-                  <button
-                    className={(active ? 'bg-neutral-100 ' : '') + 'block w-full px-4 py-2 text-sm text-neutral-700'}
-                    onClick={options.click}>
-                    {options.name}
-                  </button>
-                )}
+                <button
+                  className={'block w-full px-4 py-2 text-sm text-neutral-700 ui-active:bg-neutral-100'}
+                  onClick={options.click}>
+                  {options.name}
+                </button>
               </Menu.Item>
             ))}
           </Menu.Items>
