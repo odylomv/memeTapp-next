@@ -9,7 +9,11 @@ import { appRouter } from '../server/trpc/router';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
-  const memes = trpc.meme.getAll.useQuery();
+  // const memes = trpc.meme.getAll.useQuery();
+  const memes = trpc.meme.getPaginated.useInfiniteQuery(
+    { limit: 5 },
+    { getNextPageParam: lastPage => lastPage.nextCursor }
+  );
 
   return (
     <>
@@ -24,11 +28,20 @@ const Home: NextPage = () => {
 
         <div className="flex w-full flex-col items-center p-4">
           {memes.data ? (
-            memes.data.map(meme => (
-              <div key={meme.id} className="flex justify-center pb-4">
-                <Image priority src={meme.imageURL} alt="meme" width={450} height={450} className="h-auto w-[400px]" />
-              </div>
-            ))
+            memes.data.pages.map(page => {
+              return page.memes.map(meme => (
+                <div key={meme.id} className="flex justify-center pb-4">
+                  <Image
+                    priority
+                    src={meme.imageURL}
+                    alt="meme"
+                    width={450}
+                    height={450}
+                    className="h-auto w-[400px]"
+                  />
+                </div>
+              ));
+            })
           ) : (
             <p>Loading..</p>
           )}
