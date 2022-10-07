@@ -23,6 +23,15 @@ export const memeRouter = t.router({
         orderBy: {
           id: 'desc',
         },
+        include: {
+          author: true,
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
+        },
       });
 
       let nextCursor: typeof input.cursor | undefined = undefined;
