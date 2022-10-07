@@ -13,7 +13,9 @@ const popupOptions = [
 const ProfileButton: React.FC = () => {
   const { status, data: sessionData } = useSession();
 
-  if (status === 'unauthenticated') {
+  if (status === 'loading') return <></>;
+
+  if (!sessionData) {
     return (
       <button
         className="rounded-md px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-700 hover:text-white"
@@ -40,17 +42,13 @@ const ProfileButton: React.FC = () => {
             className="flex rounded-full bg-neutral-800 text-sm focus:outline-none 
               focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-800">
             <span className="sr-only">Open user menu</span>
-            {sessionData ? (
-              <Image
-                src={sessionData.user?.image ?? ''}
-                alt="avatar"
-                width={100}
-                height={100}
-                className="block h-8 w-8 rounded-full"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-neutral-700"></div>
-            )}
+            <Image
+              src={sessionData.user?.image ?? ''}
+              alt="avatar"
+              width={100}
+              height={100}
+              className="block h-8 w-8 rounded-full"
+            />
           </Menu.Button>
         </div>
 
