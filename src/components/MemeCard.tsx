@@ -12,8 +12,8 @@ const MemeCard: React.FC<{ meme: ArrayElement<inferProcedureOutput<AppRouter['me
   return (
     <div className="flex flex-col rounded-lg bg-neutral-800">
       {/* Card Header */}
-      <div className="group flex justify-between p-2">
-        <button className="flex items-center">
+      <div className="flex justify-between p-2">
+        <button className="group flex items-center">
           {meme.author.image ? (
             <Image src={meme.author.image} alt="meme author" width={50} height={50} className="h-6 w-6 rounded-full" />
           ) : (
