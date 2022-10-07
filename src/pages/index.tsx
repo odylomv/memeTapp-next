@@ -1,8 +1,8 @@
 import { createProxySSGHelpers } from '@trpc/react/ssg';
 import type { NextPage } from 'next';
-import Image from 'next/future/image';
 import Head from 'next/head';
 import superjson from 'superjson';
+import MemeCard from '../components/MemeCard';
 import { Navbar } from '../components/Navbar';
 import { createContextInner } from '../server/trpc/context';
 import { appRouter } from '../server/trpc/router';
@@ -23,24 +23,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main className="flex min-h-screen flex-col bg-neutral-900 text-gray-100">
+      <main className="flex min-h-screen flex-col items-center bg-neutral-900 text-gray-100">
         <Navbar />
 
-        <div className="flex w-full flex-col items-center p-4">
+        <div className="flex max-w-7xl columns-2 flex-row flex-wrap items-start justify-center gap-4 p-4">
           {memes.data ? (
             memes.data.pages.map(page => {
-              return page.memes.map(meme => (
-                <div key={meme.id} className="flex justify-center pb-4">
-                  <Image
-                    priority
-                    src={meme.imageURL}
-                    alt="meme"
-                    width={450}
-                    height={450}
-                    className="h-auto w-[400px]"
-                  />
-                </div>
-              ));
+              return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} />);
             })
           ) : (
             <p>Loading..</p>
@@ -58,7 +47,7 @@ export async function getStaticProps() {
     transformer: superjson,
   });
 
-  await ssg.meme.getAll.prefetch();
+  await ssg.meme.getPaginated.prefetchInfinite({ limit: 5 });
 
   return {
     props: {
