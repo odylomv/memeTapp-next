@@ -1,4 +1,5 @@
 // @ts-check
+import { env } from './src/env/server.mjs';
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -21,7 +22,7 @@ export default defineNextConfig({
     defaultLocale: 'en',
   },
   images: {
-    domains: ['cdn.discordapp.com', 'localhost'],
+    domains: ['cdn.discordapp.com', env.MINIO_ENDPOINT],
   },
   experimental: {
     swcPlugins: [
