@@ -7,7 +7,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "dbpush:prod": "dotenv -e .env.production.local prisma db push",
+    "dbpush:dev": "dotenv -e .env.development.local prisma db push"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",
