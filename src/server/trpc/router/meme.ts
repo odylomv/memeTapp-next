@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { env } from '../../../env/server.mjs';
 import { t } from '../trpc';
 
-const getMemeURL = async (meme: { id: number; authorId: string }, minio: MinioClient) => {
-  const url = await minio.presignedGetObject(env.MINIO_BUCKET, `${meme.authorId}-${meme.id}`, 600);
-  return url;
+// Get authorized URL to view image from Minio
+const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
+  return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 600);
 };
 
 export const memeRouter = t.router({
@@ -29,9 +29,10 @@ export const memeRouter = t.router({
     if (!meme) return null;
 
     return {
-      meme: { ...meme, imageURL: await getMemeURL(meme, ctx.minio) },
+      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio) },
     };
   }),
+
   uploadMeme: t.procedure.mutation(async ({ ctx }) => {
     if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
@@ -43,14 +44,30 @@ export const memeRouter = t.router({
 
     return {
       meme,
-      uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `${ctx.session.user.id}-${meme.id}`, 600),
+      uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `memes/${ctx.session.user.id}-${meme.id}`, 600),
     };
   }),
+
+  likeMeme: t.procedure
+    .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
+    .mutation(async ({ input, ctx }) => {
+      if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+      if (input.action === 'like')
+        await ctx.prisma.memeLike.create({ data: { memeId: input.memeId, userId: ctx.session.user.id } });
+      else if (input.action === 'unlike')
+        await ctx.prisma.memeLike.delete({
+          where: { userId_memeId: { memeId: input.memeId, userId: ctx.session.user.id } },
+        });
+
+      return { newCount: await ctx.prisma.memeLike.count({ where: { memeId: input.memeId } }) };
+    }),
+
   getPaginated: t.procedure
     .input(z.object({ limit: z.number().min(1), cursor: z.number().min(1).nullish() }))
     .query(async ({ input, ctx }) => {
       const memes = await ctx.prisma.meme.findMany({
-        take: input.limit + 1,
+        take: input.limit + 1, // Take an extra meme to use as the next cursor
         cursor: input.cursor ? { id: input.cursor } : undefined,
         orderBy: { id: 'desc' },
         include: {
@@ -64,17 +81,32 @@ export const memeRouter = t.router({
         },
       });
 
+      // Calculate the next cursor
       let nextCursor: typeof input.cursor | undefined = undefined;
       if (memes.length > input.limit) {
         const nextItem = memes.pop();
         nextCursor = nextItem?.id;
       }
 
-      const promises = memes.map(async meme => ({ ...meme, imageURL: await getMemeURL(meme, ctx.minio) }));
-      const memesWithImages = await Promise.all(promises);
+      // Asynchronously get the image URLs and like status for every meme
+      const promises = memes.map(async meme => {
+        let like = null;
+        if (ctx.session && ctx.session.user)
+          like = await ctx.prisma.memeLike.findUnique({
+            where: { userId_memeId: { memeId: meme.id, userId: ctx.session.user.id } },
+          });
+
+        return {
+          ...meme,
+          imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio),
+          isLiked: !!like,
+        };
+      });
+
+      const fullMemes = await Promise.all(promises);
 
       return {
-        memes: memesWithImages,
+        memes: fullMemes,
         nextCursor,
       };
     }),

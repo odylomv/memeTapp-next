@@ -1,8 +1,9 @@
-import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import { EllipsisVerticalIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@heroicons/react/20/solid';
+import { EllipsisVerticalIcon, HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
 import { inferProcedureOutput } from '@trpc/server';
 import Image from 'next/future/image';
 import { AppRouter } from '../server/trpc/router';
+import { trpc } from '../utils/trpc';
 
 type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
@@ -12,6 +13,8 @@ const MemeCard: React.FC<{
   meme: Partial<MemeCardModel>;
   mock?: boolean;
 }> = ({ meme, mock = false }) => {
+  const mutateLikes = trpc.meme.likeMeme.useMutation();
+
   const onProfile = () => {
     if (mock) return;
 
@@ -26,11 +29,20 @@ const MemeCard: React.FC<{
     return;
   };
 
-  const onLike = () => {
+  const onLike = async () => {
     if (mock) return;
 
     console.log('clicked');
-    return;
+    if (meme.id && meme._count) {
+      meme._count.likes += meme.isLiked ? -1 : 1;
+      meme.isLiked = !meme.isLiked;
+      // meme.isLiked is already inversed
+      const { newCount } = await mutateLikes.mutateAsync({
+        memeId: meme.id,
+        action: meme.isLiked ? 'like' : 'unlike',
+      });
+      meme._count.likes = newCount;
+    }
   };
 
   const onComments = () => {
@@ -93,7 +105,12 @@ const MemeCard: React.FC<{
       <div className="flex justify-between p-2">
         <div className="flex items-center">
           <button className="group flex" aria-label="like meme" onClick={onLike}>
-            <HeartIcon className="h-5 w-5 text-neutral-500 group-hover:text-neutral-400" />
+            {meme.isLiked ? (
+              <HeartIcon className="h-5 w-5 text-red-500 group-hover:text-red-400" />
+            ) : (
+              <HeartOutlineIcon className="h-5 w-5 text-neutral-500 group-hover:text-neutral-400" />
+            )}
+
             <span className="px-2 text-sm text-neutral-300">{meme._count ? meme._count.likes : 0}</span>
           </button>
           <button className="group flex" aria-label="meme comments" onClick={onComments}>
