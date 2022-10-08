@@ -9,7 +9,6 @@ import { appRouter } from '../server/trpc/router';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
-  // const memes = trpc.meme.getAll.useQuery();
   const memes = trpc.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
@@ -20,13 +19,13 @@ const Home: NextPage = () => {
       <Head>
         <title>memeTapp</title>
         <meta name="description" content="memeTapp is a Meme social media platform" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="favicon.ico" />
       </Head>
 
       <main className="flex min-h-screen flex-col items-center bg-neutral-900 text-gray-100">
-        <Navbar />
+        <Navbar page="Browse" />
 
-        <div className="flex max-w-7xl columns-2 flex-row flex-wrap items-start justify-center gap-4 p-4">
+        <div className="flex max-w-7xl flex-col items-start justify-center gap-4 p-4">
           {memes.data ? (
             memes.data.pages.map(page => {
               return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} />);

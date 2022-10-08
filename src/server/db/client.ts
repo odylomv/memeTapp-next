@@ -1,5 +1,6 @@
 // src/server/db/client.ts
 import { PrismaClient } from '@prisma/client';
+import { Client as MinioClient } from 'minio';
 import { env } from '../../env/server.mjs';
 
 declare global {
@@ -16,3 +17,11 @@ export const prisma =
 if (env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
+
+export const minio = new MinioClient({
+  endPoint: env.MINIO_ENDPOINT,
+  port: Number.parseInt(env.MINIO_PORT),
+  accessKey: env.MINIO_ACCESS_KEY,
+  secretKey: env.MINIO_SECRET_KEY,
+  useSSL: false,
+});

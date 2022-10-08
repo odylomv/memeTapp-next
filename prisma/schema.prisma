@@ -65,7 +65,6 @@ model VerificationToken {
 model Meme {
     id        Int        @id @default(autoincrement())
     createdAt DateTime   @default(now())
-    imageURL  String
     authorId  String
     author    User       @relation(fields: [authorId], references: [id])
     likes     MemeLike[]

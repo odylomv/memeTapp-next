@@ -1,17 +1,17 @@
-/* eslint-disable @next/next/no-img-element */
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/future/image';
+import Link from 'next/link';
 import banner from '../../public/memeTapp_banner.png';
-import ProfileButton from './ProfileButton';
+import NavbarAvatar from './NavbarAvatar';
 
 const navigation = [
-  { name: 'Browse', href: '#', current: true },
-  { name: 'Competitions', href: '#', current: false },
-  { name: 'Search', href: '#', current: false },
+  { name: 'Browse', href: '/' },
+  { name: 'Upload', href: '/upload' },
+  { name: 'Search', href: '#' },
 ];
 
-export const Navbar = () => {
+export const Navbar: React.FC<{ page: string }> = ({ page }) => {
   return (
     <Disclosure as="nav" className="sticky top-0 w-full bg-neutral-800">
       {({ open }) => (
@@ -45,19 +45,19 @@ export const Navbar = () => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={
-                          'rounded-md px-3 py-2 text-sm font-medium' +
-                          ' ' +
-                          (item.current
-                            ? 'bg-neutral-900 text-white'
-                            : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
-                        }
-                        aria-current={item.current ? 'page' : undefined}>
-                        {item.name}
-                      </a>
+                      <Link key={item.name} href={item.href}>
+                        <a
+                          className={
+                            'rounded-md px-3 py-2 text-sm font-medium' +
+                            ' ' +
+                            (item.name === page
+                              ? 'bg-neutral-900 text-white'
+                              : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                          }
+                          aria-current={item.name === page ? 'page' : undefined}>
+                          {item.name}
+                        </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -66,7 +66,7 @@ export const Navbar = () => {
               <div
                 className="absolute inset-y-0 right-0 flex items-center pr-2 
                   sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <ProfileButton />
+                <NavbarAvatar />
               </div>
             </div>
           </div>
@@ -74,18 +74,18 @@ export const Navbar = () => {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map(item => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={
-                    'block rounded-md px-3 py-2 text-base font-medium' +
-                    ' ' +
-                    (item.current ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
-                  }
-                  aria-current={item.current ? 'page' : undefined}>
-                  {item.name}
-                </Disclosure.Button>
+                <Link key={item.name} href={item.href}>
+                  <Disclosure.Button
+                    as="a"
+                    className={
+                      'block rounded-md px-3 py-2 text-base font-medium' +
+                      ' ' +
+                      (item.name === page ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                    }
+                    aria-current={item.name === page ? 'page' : undefined}>
+                    {item.name}
+                  </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Disclosure.Panel>

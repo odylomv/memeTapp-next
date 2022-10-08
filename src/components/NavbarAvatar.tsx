@@ -10,7 +10,7 @@ const popupOptions = [
   { name: 'Sign Out', click: () => signOut() },
 ];
 
-const ProfileButton: React.FC = () => {
+const NavbarAvatar: React.FC = () => {
   const { status, data: sessionData } = useSession();
 
   if (status === 'loading') return <></>;
@@ -47,7 +47,7 @@ const ProfileButton: React.FC = () => {
               alt="avatar"
               width={100}
               height={100}
-              className="block h-8 w-8 rounded-full"
+              className="block h-8 w-8 rounded-full hover:opacity-90"
             />
           </Menu.Button>
         </div>
@@ -79,4 +79,4 @@ const ProfileButton: React.FC = () => {
   );
 };
 
-export default ProfileButton;
+export default NavbarAvatar;

@@ -7,9 +7,9 @@ export const userRouter = t.router({
       greeting: `Hello ${input?.text ?? 'world'}`,
     };
   }),
-  getUser: t.procedure.input(z.object({ id: z.string() })).query(({ input, ctx }) => {
+  getUser: t.procedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
     return {
-      user: ctx.prisma.user.findUnique({
+      user: await ctx.prisma.user.findUnique({
         where: {
           id: input.id,
         },
