@@ -16,6 +16,7 @@ export const serverSchema = z.object({
   MINIO_PORT: z.string(),
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
+  MINIO_BUCKET: z.string(),
 });
 
 /**

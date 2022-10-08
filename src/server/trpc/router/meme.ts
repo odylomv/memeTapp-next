@@ -1,10 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { Client as MinioClient } from 'minio';
 import { z } from 'zod';
+import { env } from '../../../env/server.mjs';
 import { t } from '../trpc';
 
 const getMemeURL = async (meme: { id: number; authorId: string }, minio: MinioClient) => {
-  const url = await minio.presignedGetObject('memetapp', `${meme.authorId}-${meme.id}`);
+  const url = await minio.presignedGetObject(env.MINIO_BUCKET, `${meme.authorId}-${meme.id}`, 600);
   return url;
 };
 
@@ -42,7 +43,7 @@ export const memeRouter = t.router({
 
     return {
       meme,
-      uploadURL: await ctx.minio.presignedPutObject('memetapp', `${ctx.session.user.id}-${meme.id}`, 600),
+      uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `${ctx.session.user.id}-${meme.id}`, 600),
     };
   }),
   getPaginated: t.procedure
@@ -68,8 +69,6 @@ export const memeRouter = t.router({
         const nextItem = memes.pop();
         nextCursor = nextItem?.id;
       }
-
-      console.log(nextCursor);
 
       const promises = memes.map(async meme => ({ ...meme, imageURL: await getMemeURL(meme, ctx.minio) }));
       const memesWithImages = await Promise.all(promises);
