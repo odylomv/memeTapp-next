@@ -2,7 +2,7 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/future/image';
 import Link from 'next/link';
-import banner from '../../public/memeTapp_banner.png';
+import banner from '../../../public/memeTapp_banner.png';
 import NavbarAvatar from './NavbarAvatar';
 
 const navigation = [
