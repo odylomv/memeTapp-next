@@ -1,13 +1,13 @@
 version: '3.9'
 services:
-  app:
+  web:
     platform: 'linux/amd64'
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
     ports:
-      - '3000:3000'
+      - '3001:3000'
     image: memetapp
   db:
     image: postgres
@@ -27,6 +27,7 @@ services:
 
   minio:
     image: quay.io/minio/minio
+    restart: always
     volumes:
       - minio_storage:/data
     ports:
