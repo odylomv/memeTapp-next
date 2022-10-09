@@ -26,7 +26,9 @@ const UploadMeme = () => {
 
         <Dropzone
           multiple={false}
-          accept={{ 'image/jpeg': ['.jpeg'], 'image/png': ['.png'] }}
+          accept={{
+            'image/*': ['.jpeg', '.png'],
+          }}
           onDrop={acceptedFiles => setFile(acceptedFiles[0])}>
           {({ getRootProps, getInputProps, isDragAccept, isDragReject, isDragActive }) => (
             <div
