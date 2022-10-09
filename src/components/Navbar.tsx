@@ -40,6 +40,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                     alt="memeTapp"
                     sizes="(max-width: 768px) 40vw, 10vw"
                   />
+                  {process.env.NODE_ENV === 'development' && <span className="font-bold">DEV</span>}
                 </div>
 
                 <div className="hidden sm:ml-6 sm:block">
