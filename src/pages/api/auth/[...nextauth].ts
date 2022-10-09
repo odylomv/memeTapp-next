@@ -25,6 +25,11 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  theme: {
+    colorScheme: 'dark',
+    brandColor: '#df160d',
+    logo: '../../../memeTapp_banner.png',
+  },
 };
 
 export default NextAuth(authOptions);
