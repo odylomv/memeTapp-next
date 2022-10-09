@@ -48,6 +48,26 @@ export const memeRouter = t.router({
     };
   }),
 
+  deleteMeme: t.procedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
+    if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+    const meme = await ctx.prisma.meme.findUnique({
+      where: {
+        id: input.id,
+      },
+    });
+
+    if (!meme) throw new TRPCError({ code: 'NOT_FOUND' });
+
+    await ctx.prisma.meme.delete({
+      where: {
+        id: input.id,
+      },
+    });
+
+    return { success: true };
+  }),
+
   likeMeme: t.procedure
     .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
     .mutation(async ({ input, ctx }) => {
