@@ -22,17 +22,19 @@ const Home: NextPage = () => {
         <link rel="icon" href="favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center bg-neutral-900 text-gray-100">
+      <main className="flex h-screen flex-col items-center bg-neutral-900 text-gray-100">
         <Navbar page="Browse" />
 
-        <div className="flex max-w-7xl flex-col items-start justify-center gap-4 p-4">
-          {memes.data ? (
-            memes.data.pages.map(page => {
-              return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} />);
-            })
-          ) : (
-            <p>Loading..</p>
-          )}
+        <div className="flex w-full justify-center overflow-y-scroll p-4">
+          <div className="flex max-w-7xl flex-col gap-4">
+            {memes.data ? (
+              memes.data.pages.map(page => {
+                return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} />);
+              })
+            ) : (
+              <p>Loading..</p>
+            )}
+          </div>
         </div>
       </main>
     </>
