@@ -20,8 +20,6 @@ if (env.NODE_ENV !== 'production') {
 
 export const minio = new MinioClient({
   endPoint: env.MINIO_ENDPOINT,
-  port: Number.parseInt(env.MINIO_PORT),
   accessKey: env.MINIO_ACCESS_KEY,
   secretKey: env.MINIO_SECRET_KEY,
-  useSSL: false,
 });
