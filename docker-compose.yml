@@ -3,12 +3,14 @@ services:
   web:
     platform: 'linux/amd64'
     image: memetapp
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
     ports:
       - '3001:3000'
+
   db:
     image: postgres
     restart: always
@@ -19,6 +21,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
   adminer:
     image: adminer
     restart: always
@@ -42,3 +45,8 @@ services:
 volumes:
   postgres: {}
   minio_storage: {}
+
+networks:
+  default:
+    name: memetapp
+    external: true
