@@ -5,7 +5,7 @@ import { Fragment, useRef, useState } from 'react';
 import { trpc } from '../../utils/trpc';
 import { MemeCardModel } from './MemeCard';
 
-const OptionsPopup: React.FC<{ mock: boolean; meme: Partial<MemeCardModel> }> = ({ mock, meme }) => {
+const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
   const { data } = useSession();
 
   const trpcContext = trpc.useContext();
@@ -23,8 +23,6 @@ const OptionsPopup: React.FC<{ mock: boolean; meme: Partial<MemeCardModel> }> = 
     },
     { name: 'Report meme', show: true, click: undefined },
   ];
-
-  if (mock) return <EllipsisVerticalIcon className="h-6 w-6 text-neutral-500" />;
 
   return (
     <>
@@ -116,11 +114,10 @@ const OptionsPopup: React.FC<{ mock: boolean; meme: Partial<MemeCardModel> }> = 
                       px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none 
                       focus:ring-2 focus:ring-red-800 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={() => {
-                        if (meme.id)
-                          memeDelete.mutate(
-                            { id: meme.id },
-                            { onSuccess: () => trpcContext.meme.getPaginated.invalidate() }
-                          );
+                        memeDelete.mutate(
+                          { id: meme.id },
+                          { onSuccess: () => trpcContext.meme.getPaginated.invalidate() }
+                        );
 
                         setModalOpen(false);
                       }}>

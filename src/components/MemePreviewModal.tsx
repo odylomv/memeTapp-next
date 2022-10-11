@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useRef } from 'react';
-import MemeCard from './MemeCard/MemeCard';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import MockMemeCard from './MemeCard/MockMemeCard';
 
 const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; onUpload: () => void }> = ({
   file,
@@ -8,6 +8,11 @@ const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; o
   onUpload,
 }) => {
   const cancelButtonRef = useRef(null);
+  const [imageURL, setImageURL] = useState(file ? URL.createObjectURL(file) : '');
+
+  useEffect(() => {
+    if (file) setImageURL(URL.createObjectURL(file));
+  }, [file]);
 
   return (
     <Transition.Root appear={true} show={!!file} as={Fragment}>
@@ -41,12 +46,7 @@ const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; o
                         Meme Preview
                       </Dialog.Title>
                       <div className="mt-2 ">
-                        <MemeCard
-                          meme={{
-                            imageURL: file ? URL.createObjectURL(file) : undefined,
-                          }}
-                          mock={true}
-                        />
+                        <MockMemeCard imageURL={imageURL} />
                       </div>
                     </div>
                   </div>

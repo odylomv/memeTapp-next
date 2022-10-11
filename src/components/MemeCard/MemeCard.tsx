@@ -10,57 +10,37 @@ type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] 
 
 export type MemeCardModel = ArrayElement<inferProcedureOutput<AppRouter['meme']['getPaginated']>['memes']>;
 
-const MemeCard: React.FC<{
-  meme: Partial<MemeCardModel>;
-  mock?: boolean;
-}> = ({ meme, mock = false }) => {
+const MemeCard: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
   const mutateLikes = trpc.meme.likeMeme.useMutation();
 
   const onProfile = () => {
-    if (mock) return;
-
     console.log('clicked');
     return;
   };
 
-  // const onOptions = () => {
-  //   if (mock) return;
-
-  //   console.log('clicked');
-  //   return;
-  // };
-
-  const onLike = async () => {
-    if (mock) return;
-
+  const onLike = () => {
     console.log('clicked');
-    if (meme.id && meme._count) {
-      meme._count.likes += meme.isLiked ? -1 : 1;
-      meme.isLiked = !meme.isLiked;
-      try {
-        // meme.isLiked is already inversed
-        const { newCount } = await mutateLikes.mutateAsync({
-          memeId: meme.id,
-          action: meme.isLiked ? 'like' : 'unlike',
-        });
-        meme._count.likes = newCount;
-      } catch (error) {
-        meme._count.likes += meme.isLiked ? -1 : 1;
-        meme.isLiked = !meme.isLiked;
+
+    mutateLikes.mutate(
+      {
+        memeId: meme.id,
+        action: meme.isLiked ? 'unlike' : 'like',
+      },
+      {
+        onSuccess: () => {
+          meme._count.likes += meme.isLiked ? -1 : 1;
+          meme.isLiked = !meme.isLiked;
+        },
       }
-    }
+    );
   };
 
   const onComments = () => {
-    if (mock) return;
-
     console.log('clicked');
     return;
   };
 
   const onBookmark = () => {
-    if (mock) return;
-
     console.log('clicked');
     return;
   };
@@ -69,33 +49,21 @@ const MemeCard: React.FC<{
     <div className="flex flex-col rounded-lg bg-neutral-800 text-white">
       {/* Card Header */}
       <div className="flex justify-between p-2">
-        {meme.author ? (
-          <button className="group flex items-center" onClick={onProfile}>
-            {meme.author.image ? (
-              <Image
-                src={meme.author.image}
-                alt="meme author"
-                width={50}
-                height={50}
-                className="h-6 w-6 rounded-full"
-              />
-            ) : (
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-900">
-                {meme.author.name?.charAt(0).toUpperCase()}
-              </div>
-            )}
-            <span className="px-2 text-sm">{meme.author.name}</span>
-            <ChevronRightIcon className="hidden h-4 w-4 group-hover:block" />
-          </button>
-        ) : (
-          <button className="flex items-center" onClick={onProfile}>
-            <div className="h-6 w-6 rounded-full bg-neutral-600" />
-            <span className="px-2 text-sm">You</span>
-          </button>
-        )}
+        <button className="group flex items-center" onClick={onProfile}>
+          {meme.author.image ? (
+            <Image src={meme.author.image} alt="meme author" width={50} height={50} className="h-6 w-6 rounded-full" />
+          ) : (
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-900">
+              {meme.author.name?.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <span className="px-2 text-sm">{meme.author.name}</span>
+          <ChevronRightIcon className="hidden h-4 w-4 group-hover:block" />
+        </button>
 
-        <OptionsPopup mock={mock} meme={meme} />
+        <OptionsPopup meme={meme} />
       </div>
+
       {/* Card Image */}
       <div className="flex justify-center">
         {meme.imageURL ? (
@@ -104,6 +72,7 @@ const MemeCard: React.FC<{
           <div className="h-[400px] w-[400px] bg-neutral-600"></div>
         )}
       </div>
+
       {/* Card Footer */}
       <div className="flex justify-between p-2">
         <div className="flex items-center">
@@ -114,11 +83,11 @@ const MemeCard: React.FC<{
               <HeartOutlineIcon className="h-5 w-5 text-neutral-500 group-hover:text-neutral-400" />
             )}
 
-            <span className="px-2 text-sm text-neutral-300">{meme._count ? meme._count.likes : 0}</span>
+            <span className="px-2 text-sm text-neutral-300">{meme._count.likes}</span>
           </button>
           <button className="group flex" aria-label="meme comments" onClick={onComments}>
             <ChatBubbleLeftIcon className="ml-2 h-5 w-5 text-neutral-600 group-hover:text-neutral-400" />
-            <span className="px-2 text-sm text-neutral-300">{meme._count ? meme._count.comments : 0}</span>
+            <span className="px-2 text-sm text-neutral-300">{meme._count.comments}</span>
           </button>
         </div>
         <button aria-label="bookmark meme" onClick={onBookmark}>
