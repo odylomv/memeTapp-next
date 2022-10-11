@@ -44,7 +44,7 @@ const Home: NextPage = () => {
 export async function getStaticProps() {
   const ssg = createProxySSGHelpers({
     router: appRouter,
-    ctx: await createContextInner(),
+    ctx: await createContextInner({ session: null }),
     transformer: superjson,
   });
 
