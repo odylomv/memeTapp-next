@@ -1,8 +1,8 @@
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
-import { MemeCardModel } from '.';
 import { trpc } from '../../utils/trpc';
+import { MemeCardModel } from './MemeCard';
 
 const OptionsPopup: React.FC<{ mock: boolean; meme: Partial<MemeCardModel> }> = ({ mock, meme }) => {
   const memeDelete = trpc.meme.deleteMeme.useMutation();

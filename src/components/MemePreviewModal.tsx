@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef } from 'react';
-import MemeCard from './MemeCard';
+import MemeCard from './MemeCard/MemeCard';
 
 const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; onUpload: () => void }> = ({
   file,
