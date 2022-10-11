@@ -1,9 +1,10 @@
 import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@heroicons/react/20/solid';
-import { EllipsisVerticalIcon, HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
 import { inferProcedureOutput } from '@trpc/server';
 import Image from 'next/future/image';
-import { AppRouter } from '../server/trpc/router';
-import { trpc } from '../utils/trpc';
+import { AppRouter } from '../../server/trpc/router';
+import { trpc } from '../../utils/trpc';
+import OptionsPopup from './OptionsPopup';
 
 type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
@@ -22,12 +23,12 @@ const MemeCard: React.FC<{
     return;
   };
 
-  const onOptions = () => {
-    if (mock) return;
+  // const onOptions = () => {
+  //   if (mock) return;
 
-    console.log('clicked');
-    return;
-  };
+  //   console.log('clicked');
+  //   return;
+  // };
 
   const onLike = async () => {
     if (mock) return;
@@ -36,12 +37,17 @@ const MemeCard: React.FC<{
     if (meme.id && meme._count) {
       meme._count.likes += meme.isLiked ? -1 : 1;
       meme.isLiked = !meme.isLiked;
-      // meme.isLiked is already inversed
-      const { newCount } = await mutateLikes.mutateAsync({
-        memeId: meme.id,
-        action: meme.isLiked ? 'like' : 'unlike',
-      });
-      meme._count.likes = newCount;
+      try {
+        // meme.isLiked is already inversed
+        const { newCount } = await mutateLikes.mutateAsync({
+          memeId: meme.id,
+          action: meme.isLiked ? 'like' : 'unlike',
+        });
+        meme._count.likes = newCount;
+      } catch (error) {
+        meme._count.likes += meme.isLiked ? -1 : 1;
+        meme.isLiked = !meme.isLiked;
+      }
     }
   };
 
@@ -82,16 +88,13 @@ const MemeCard: React.FC<{
             <ChevronRightIcon className="hidden h-4 w-4 group-hover:block" />
           </button>
         ) : (
-          <button className="group flex items-center" onClick={onProfile}>
+          <button className="flex items-center" onClick={onProfile}>
             <div className="h-6 w-6 rounded-full bg-neutral-600" />
             <span className="px-2 text-sm">You</span>
-            <ChevronRightIcon className="hidden h-4 w-4 group-hover:block" />
           </button>
         )}
 
-        <button className="rounded-full hover:bg-neutral-700" aria-label="meme options" onClick={onOptions}>
-          <EllipsisVerticalIcon className="h-6 w-6 text-neutral-500" />
-        </button>
+        <OptionsPopup mock={mock} meme={meme} />
       </div>
       {/* Card Image */}
       <div className="flex justify-center">

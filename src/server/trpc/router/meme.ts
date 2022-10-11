@@ -6,7 +6,12 @@ import { t } from '../trpc';
 
 // Get authorized URL to view image from Minio
 const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
-  return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 600);
+  try {
+    return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 600);
+  } catch (error) {
+    console.log(error);
+    return '';
+  }
 };
 
 export const memeRouter = t.router({
@@ -64,6 +69,7 @@ export const memeRouter = t.router({
         id: input.id,
       },
     });
+    await ctx.minio.removeObject(env.MINIO_BUCKET, `memes/${ctx.session.user.id}-${input.id}`);
 
     return { success: true };
   }),
@@ -72,6 +78,8 @@ export const memeRouter = t.router({
     .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
     .mutation(async ({ input, ctx }) => {
       if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+      await ctx.prisma.meme.findUniqueOrThrow({ where: { id: input.memeId } });
 
       if (input.action === 'like')
         await ctx.prisma.memeLike.create({ data: { memeId: input.memeId, userId: ctx.session.user.id } });
@@ -119,6 +127,7 @@ export const memeRouter = t.router({
         return {
           ...meme,
           imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio),
+          // imageURL: '',
           isLiked: !!like,
         };
       });

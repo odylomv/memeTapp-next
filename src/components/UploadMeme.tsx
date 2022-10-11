@@ -8,14 +8,16 @@ const UploadMeme = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
   const cancelModal = () => setFile(undefined);
 
-  const mutation = trpc.meme.uploadMeme.useMutation();
+  const memeUploader = trpc.meme.uploadMeme.useMutation();
 
   const onUpload = async () => {
     if (!file) return;
 
-    const { uploadURL: url } = await mutation.mutateAsync();
-    await fetch(url, { method: 'PUT', body: file });
     setFile(undefined);
+    const { uploadURL: url } = await memeUploader.mutateAsync();
+    const resp = await fetch(url, { method: 'PUT', body: file });
+
+    if (!resp.ok) console.log(resp);
   };
 
   return (
