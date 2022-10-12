@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { Client as MinioClient } from 'minio';
 import { z } from 'zod';
 import { env } from '../../../env/server.mjs';
-import { t } from '../trpc';
+import { authedProcedure, publicProcedure, router } from '../trpc';
 
 // Get authorized URL to view image from Minio
 const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
@@ -14,8 +14,8 @@ const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioCli
   }
 };
 
-export const memeRouter = t.router({
-  getMeme: t.procedure.input(z.object({ id: z.number().min(1) })).query(async ({ input, ctx }) => {
+export const memeRouter = router({
+  getMeme: publicProcedure.input(z.object({ id: z.number().min(1) })).query(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findUnique({
       where: {
         id: input.id,
@@ -38,9 +38,7 @@ export const memeRouter = t.router({
     };
   }),
 
-  uploadMeme: t.procedure.mutation(async ({ ctx }) => {
-    if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
-
+  uploadMeme: authedProcedure.mutation(async ({ ctx }) => {
     const meme = await ctx.prisma.meme.create({
       data: {
         authorId: ctx.session.user.id,
@@ -53,9 +51,7 @@ export const memeRouter = t.router({
     };
   }),
 
-  deleteMeme: t.procedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
-    if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
-
+  deleteMeme: authedProcedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findUnique({
       where: {
         id: input.id,
@@ -74,11 +70,9 @@ export const memeRouter = t.router({
     return { success: true };
   }),
 
-  likeMeme: t.procedure
+  likeMeme: authedProcedure
     .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.session || !ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
-
       await ctx.prisma.meme.findUniqueOrThrow({ where: { id: input.memeId } });
 
       if (input.action === 'like')
@@ -91,7 +85,7 @@ export const memeRouter = t.router({
       return { newCount: await ctx.prisma.memeLike.count({ where: { memeId: input.memeId } }) };
     }),
 
-  getPaginated: t.procedure
+  getPaginated: publicProcedure
     .input(z.object({ limit: z.number().min(1), cursor: z.number().min(1).nullish() }))
     .query(async ({ input, ctx }) => {
       const memes = await ctx.prisma.meme.findMany({
