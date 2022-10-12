@@ -9,7 +9,8 @@
     "lint": "next lint",
     "start": "next start",
     "dbpush:prod": "prisma db push",
-    "dbpush:dev": "dotenv -e .env.development.local prisma db push"
+    "dbpush:dev": "dotenv -e .env.development.local prisma db push",
+    "docker": "docker compose down && docker compose build && docker compose up -d"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",
