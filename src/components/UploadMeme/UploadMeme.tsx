@@ -2,22 +2,31 @@ import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { trpc } from '../../utils/trpc';
+import { useServerError } from '../ServerErrorContext';
 import MemePreviewModal from './MemePreviewModal';
 
 const UploadMeme = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const { onServerError } = useServerError();
   const cancelModal = () => setFile(undefined);
 
   const memeUploader = trpc.meme.uploadMeme.useMutation();
+  const memeEnabler = trpc.meme.enableMeme.useMutation();
 
   const onUpload = async () => {
     if (!file) return;
 
     setFile(undefined);
-    const { uploadURL: url } = await memeUploader.mutateAsync();
-    const resp = await fetch(url, { method: 'PUT', body: file });
+    memeUploader.mutate(undefined, {
+      onSuccess: async ({ memeId, uploadURL }) => {
+        const resp = await fetch(uploadURL, { method: 'PUT', body: file });
 
-    if (!resp.ok) console.log(resp);
+        if (!resp.ok) return console.log(resp);
+
+        memeEnabler.mutate({ memeId }, { onError: error => onServerError(error) });
+      },
+      onError: error => onServerError(error),
+    });
   };
 
   return (

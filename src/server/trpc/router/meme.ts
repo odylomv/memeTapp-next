@@ -16,9 +16,10 @@ const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioCli
 
 export const memeRouter = router({
   getMeme: publicProcedure.input(z.object({ id: z.number().min(1) })).query(async ({ input, ctx }) => {
-    const meme = await ctx.prisma.meme.findUnique({
+    const meme = await ctx.prisma.meme.findFirst({
       where: {
         id: input.id,
+        hidden: false,
       },
       include: {
         author: true,
@@ -42,12 +43,28 @@ export const memeRouter = router({
     const meme = await ctx.prisma.meme.create({
       data: {
         authorId: ctx.session.user.id,
+        hidden: true,
       },
     });
 
     return {
-      meme,
+      memeId: meme.id,
       uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `memes/${ctx.session.user.id}-${meme.id}`, 600),
+    };
+  }),
+
+  enableMeme: protectedProcedure.input(z.object({ memeId: z.number().min(1) })).mutation(async ({ input, ctx }) => {
+    const meme = await ctx.prisma.meme.update({
+      where: {
+        id: input.memeId,
+      },
+      data: {
+        hidden: false,
+      },
+    });
+
+    return {
+      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio) },
     };
   }),
 
@@ -91,6 +108,7 @@ export const memeRouter = router({
       const memes = await ctx.prisma.meme.findMany({
         take: input.limit + 1, // Take an extra meme to use as the next cursor
         cursor: input.cursor ? { id: input.cursor } : undefined,
+        where: { hidden: false },
         orderBy: { id: 'desc' },
         include: {
           author: true,
