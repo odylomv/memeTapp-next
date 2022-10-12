@@ -1,5 +1,11 @@
 // @ts-check
+import bundleAnalyzer from '@next/bundle-analyzer';
 import { env } from './src/env/server.mjs';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -9,7 +15,7 @@ import { env } from './src/env/server.mjs';
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-  return config;
+  return withBundleAnalyzer(config);
 }
 
 export default defineNextConfig({
