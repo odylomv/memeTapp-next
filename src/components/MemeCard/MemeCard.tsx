@@ -11,7 +11,7 @@ type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] 
 
 export type MemeCardModel = ArrayElement<inferProcedureOutput<AppRouter['meme']['getPaginated']>['memes']>;
 
-const MemeCard: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
+const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, priority }) => {
   const mutateLikes = trpc.meme.likeMeme.useMutation();
   const { onServerError } = useServerError();
 
@@ -70,7 +70,15 @@ const MemeCard: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
       {/* Card Image */}
       <div className="flex justify-center">
         {meme.imageURL ? (
-          <Image priority src={meme.imageURL} alt="meme" width={450} height={450} className="h-auto w-[400px]" />
+          <Image
+            priority={priority}
+            src={meme.imageURL}
+            sizes="(max-width: 768px) 100vw, 500px"
+            alt="meme"
+            width={450}
+            height={450}
+            className="h-auto w-[400px]"
+          />
         ) : (
           <div className="h-[400px] w-[400px] bg-neutral-600"></div>
         )}

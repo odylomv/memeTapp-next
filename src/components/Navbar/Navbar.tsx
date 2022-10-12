@@ -34,12 +34,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex items-center">
-                  <Image
-                    className="block h-8 w-auto"
-                    src={banner}
-                    alt="memeTapp"
-                    sizes="(max-width: 768px) 40vw, 10vw"
-                  />
+                  <Image className="block h-8 w-auto" src={banner} alt="memeTapp" sizes="150px" />
                   {process.env.NODE_ENV === 'development' && <span className="font-bold">DEV</span>}
                 </div>
 

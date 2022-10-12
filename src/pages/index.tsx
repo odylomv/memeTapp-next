@@ -28,8 +28,8 @@ const Home: NextPage = () => {
         <div className="flex w-full justify-center overflow-y-scroll p-4">
           <div className="flex max-w-7xl flex-col gap-4">
             {memes.data ? (
-              memes.data.pages.map(page => {
-                return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} />);
+              memes.data.pages.map((page, index) => {
+                return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} priority={index < 2} />);
               })
             ) : (
               <p>Loading..</p>
