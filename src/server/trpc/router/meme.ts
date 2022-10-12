@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { Client as MinioClient } from 'minio';
 import { z } from 'zod';
 import { env } from '../../../env/server.mjs';
-import { authedProcedure, publicProcedure, router } from '../trpc';
+import { protectedProcedure, publicProcedure, router } from '../trpc';
 
 // Get authorized URL to view image from Minio
 const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
@@ -38,7 +38,7 @@ export const memeRouter = router({
     };
   }),
 
-  uploadMeme: authedProcedure.mutation(async ({ ctx }) => {
+  uploadMeme: protectedProcedure.mutation(async ({ ctx }) => {
     const meme = await ctx.prisma.meme.create({
       data: {
         authorId: ctx.session.user.id,
@@ -51,7 +51,7 @@ export const memeRouter = router({
     };
   }),
 
-  deleteMeme: authedProcedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
+  deleteMeme: protectedProcedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findUnique({
       where: {
         id: input.id,
@@ -70,7 +70,7 @@ export const memeRouter = router({
     return { success: true };
   }),
 
-  likeMeme: authedProcedure
+  likeMeme: protectedProcedure
     .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.meme.findUniqueOrThrow({ where: { id: input.memeId } });
