@@ -1,7 +1,7 @@
 import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
-import { trpc } from '../utils/trpc';
+import { trpc } from '../../utils/trpc';
 import MemePreviewModal from './MemePreviewModal';
 
 const UploadMeme = () => {

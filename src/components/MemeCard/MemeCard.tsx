@@ -4,6 +4,7 @@ import { inferProcedureOutput } from '@trpc/server';
 import Image from 'next/future/image';
 import { AppRouter } from '../../server/trpc/router';
 import { trpc } from '../../utils/trpc';
+import { useServerError } from '../ServerErrorContext';
 import OptionsPopup from './OptionsPopup';
 
 type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -12,6 +13,7 @@ export type MemeCardModel = ArrayElement<inferProcedureOutput<AppRouter['meme'][
 
 const MemeCard: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
   const mutateLikes = trpc.meme.likeMeme.useMutation();
+  const { onServerError } = useServerError();
 
   const onProfile = () => {
     console.log('clicked');
@@ -31,6 +33,7 @@ const MemeCard: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
           meme._count.likes += meme.isLiked ? -1 : 1;
           meme.isLiked = !meme.isLiked;
         },
+        onError: error => onServerError(error),
       }
     );
   };
