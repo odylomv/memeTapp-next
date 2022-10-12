@@ -29,8 +29,9 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
       <Menu as="div" className="ml-3">
         <div>
           <Menu.Button
-            className="flex rounded-full bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 
-          focus:outline-none">
+            className="flex rounded-full bg-neutral-800 hover:bg-neutral-700
+           focus:bg-neutral-700 focus:outline-none"
+          >
             <span className="sr-only">Open meme options</span>
 
             <EllipsisVerticalIcon className="h-6 w-6 text-neutral-500" />
@@ -44,17 +45,20 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
           enterTo="transform opacity-100 scale-100"
           leave="transition ease-in duration-75"
           leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95">
+          leaveTo="transform opacity-0 scale-95"
+        >
           <Menu.Items
             className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md 
-          bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+           bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          >
             {popupOptions.map(
               options =>
                 options.show && (
                   <Menu.Item key={options.name}>
                     <button
                       className={'block w-full px-4 py-2 text-sm text-neutral-700 ui-active:bg-neutral-100'}
-                      onClick={options.click}>
+                      onClick={options.click}
+                    >
                       {options.name}
                     </button>
                   </Menu.Item>
@@ -74,7 +78,8 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-90 transition-opacity" />
           </Transition.Child>
 
@@ -87,7 +92,8 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                 enterTo="opacity-100 translate-y-0 sm:scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-xl shadow-2xl transition-all sm:w-full sm:max-w-lg">
                   <div className="bg-neutral-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
@@ -120,7 +126,8 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                         );
 
                         setModalOpen(false);
-                      }}>
+                      }}
+                    >
                       Delete
                     </button>
                     <button
@@ -130,7 +137,8 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                       focus:outline-none focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 sm:mt-0 sm:ml-3
                       sm:w-auto sm:text-sm"
                       ref={cancelButtonRef}
-                      onClick={() => setModalOpen(false)}>
+                      onClick={() => setModalOpen(false)}
+                    >
                       Cancel
                     </button>
                   </div>

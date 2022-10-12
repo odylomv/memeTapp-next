@@ -40,13 +40,15 @@ const UploadMeme = () => {
           accept={{
             'image/*': ['.jpeg', '.png'],
           }}
-          onDrop={acceptedFiles => setFile(acceptedFiles[0])}>
+          onDrop={acceptedFiles => setFile(acceptedFiles[0])}
+        >
           {({ getRootProps, getInputProps, isDragAccept, isDragReject, isDragActive }) => (
             <div
               {...getRootProps()}
               className="group flex h-64 w-full cursor-pointer flex-col items-center justify-center
                 rounded-lg border-2 border-solid border-neutral-600 bg-neutral-700 
-              hover:border-neutral-500  hover:bg-neutral-600">
+              hover:border-neutral-500  hover:bg-neutral-600"
+            >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <ArrowUpTrayIcon className="h-8 w-8 text-neutral-400 group-hover:scale-110" />
                 {isDragAccept && <p className="text-sm text-neutral-400">Drop your meme here</p>}

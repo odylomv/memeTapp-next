@@ -17,7 +17,8 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0">
+          leaveTo="opacity-0"
+        >
           <div className="fixed inset-0 bg-neutral-800 bg-opacity-90 transition-opacity" />
         </Transition.Child>
 
@@ -30,7 +31,8 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
               <Dialog.Panel className="relative transform overflow-hidden rounded-xl shadow-2xl transition-all sm:w-full sm:max-w-lg">
                 <div className="bg-neutral-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
@@ -56,9 +58,8 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-700
                       px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none 
                       focus:ring-2 focus:ring-red-800 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => {
-                      signIn();
-                    }}>
+                    onClick={() => signIn()}
+                  >
                     Sign Up
                   </button>
                   <button
@@ -68,7 +69,8 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
                       focus:outline-none focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 sm:mt-0 sm:ml-3
                       sm:w-auto sm:text-sm"
                     ref={cancelButtonRef}
-                    onClick={() => onClose()}>
+                    onClick={() => onClose()}
+                  >
                     Not Now
                   </button>
                 </div>

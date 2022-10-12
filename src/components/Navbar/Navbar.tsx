@@ -23,7 +23,8 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                 <Disclosure.Button
                   className="inline-flex items-center justify-center rounded-md p-2 text-neutral-400
                   hover:bg-neutral-700 hover:text-white focus:outline-none
-                    focus:ring-2 focus:ring-inset focus:ring-white">
+                    focus:ring-2 focus:ring-inset focus:ring-white"
+                >
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -50,7 +51,8 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                               ? 'bg-neutral-900 text-white'
                               : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
                           }
-                          aria-current={item.name === page ? 'page' : undefined}>
+                          aria-current={item.name === page ? 'page' : undefined}
+                        >
                           {item.name}
                         </a>
                       </Link>
@@ -61,7 +63,8 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
 
               <div
                 className="absolute inset-y-0 right-0 flex items-center pr-2 
-                  sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+              >
                 <NavbarAvatar />
               </div>
             </div>
@@ -78,7 +81,8 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                       ' ' +
                       (item.name === page ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
                     }
-                    aria-current={item.name === page ? 'page' : undefined}>
+                    aria-current={item.name === page ? 'page' : undefined}
+                  >
                     {item.name}
                   </Disclosure.Button>
                 </Link>
