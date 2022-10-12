@@ -26,7 +26,7 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
 
   return (
     <>
-      <Menu as="div" className="relative ml-3">
+      <Menu as="div" className="ml-3">
         <div>
           <Menu.Button
             className="flex rounded-full bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 
