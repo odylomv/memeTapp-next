@@ -49,7 +49,7 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
   };
 
   return (
-    <div className="flex flex-col rounded-lg bg-neutral-800 text-white">
+    <div className="flex flex-col rounded-lg bg-neutral-800 text-neutral-300">
       {/* Card Header */}
       <div className="flex justify-between p-2">
         <button className="group flex items-center" onClick={onProfile}>
@@ -69,19 +69,15 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
 
       {/* Card Image */}
       <div className="flex justify-center">
-        {meme.imageURL ? (
-          <Image
-            priority={priority}
-            src={meme.imageURL}
-            sizes="(max-width: 768px) 100vw, 500px"
-            alt="meme"
-            width={450}
-            height={450}
-            className="h-auto w-[400px]"
-          />
-        ) : (
-          <div className="h-[400px] w-[400px] bg-neutral-600"></div>
-        )}
+        <Image
+          priority={priority}
+          src={meme.imageURL}
+          sizes="(max-width: 768px) 100vw, 500px"
+          alt="meme"
+          width={450}
+          height={450}
+          className="h-auto w-[400px]"
+        />
       </div>
 
       {/* Card Footer */}
@@ -94,15 +90,15 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
               <HeartOutlineIcon className="h-5 w-5 text-neutral-500 group-hover:text-neutral-400" />
             )}
 
-            <span className="px-2 text-sm text-neutral-300">{meme._count.likes}</span>
+            <span className="px-2 text-sm">{meme._count.likes}</span>
           </button>
           <button className="group flex" aria-label="meme comments" onClick={onComments}>
             <ChatBubbleLeftIcon className="ml-2 h-5 w-5 text-neutral-600 group-hover:text-neutral-400" />
-            <span className="px-2 text-sm text-neutral-300">{meme._count.comments}</span>
+            <span className="px-2 text-sm">{meme._count.comments}</span>
           </button>
         </div>
         <button aria-label="bookmark meme" onClick={onBookmark}>
-          <BookmarkIcon className="h-5 w-5 text-neutral-600 hover:text-amber-500" />
+          <BookmarkIcon className="h-5 w-5 text-neutral-600 hover:text-neutral-400" />
         </button>
       </div>
     </div>

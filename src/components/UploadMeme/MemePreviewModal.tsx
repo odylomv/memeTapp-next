@@ -16,7 +16,7 @@ const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; o
 
   return (
     <Transition.Root appear={true} show={!!file} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={cancel}>
+      <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={cancel}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

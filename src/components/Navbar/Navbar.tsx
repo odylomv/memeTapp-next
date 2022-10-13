@@ -13,7 +13,7 @@ const navigation = [
 
 export const Navbar: React.FC<{ page: string }> = ({ page }) => {
   return (
-    <Disclosure as="nav" className="sticky top-0 w-full bg-neutral-800">
+    <Disclosure as="nav" className="sticky top-0 z-20 w-full bg-neutral-800">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

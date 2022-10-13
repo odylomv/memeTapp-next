@@ -26,15 +26,12 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
 
   return (
     <>
-      <Menu as="div" className="ml-3">
+      <Menu as="div" className="relative ml-3">
         <div>
-          <Menu.Button
-            className="flex rounded-full bg-neutral-800 hover:bg-neutral-700
-           focus:bg-neutral-700 focus:outline-none"
-          >
+          <Menu.Button className="flex text-neutral-600 hover:text-neutral-400">
             <span className="sr-only">Open meme options</span>
 
-            <EllipsisVerticalIcon className="h-6 w-6 text-neutral-500" />
+            <EllipsisVerticalIcon className="h-6 w-6" />
           </Menu.Button>
         </div>
 
@@ -70,7 +67,7 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
 
       {/* Delete meme modal */}
       <Transition.Root show={modalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setModalOpen}>
+        <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setModalOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
