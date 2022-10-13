@@ -76,7 +76,7 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
           alt="meme"
           width={450}
           height={450}
-          className="h-auto w-[400px]"
+          className="h-auto max-h-[500px] w-[400px] object-cover"
         />
       </div>
 
