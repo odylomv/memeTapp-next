@@ -17,7 +17,6 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
 
   const onProfile = () => {
     console.log('clicked');
-    return;
   };
 
   const onLike = () => {
@@ -40,12 +39,10 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
 
   const onComments = () => {
     console.log('clicked');
-    return;
   };
 
   const onBookmark = () => {
     console.log('clicked');
-    return;
   };
 
   return (
@@ -74,9 +71,9 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
           src={meme.imageURL}
           sizes="(max-width: 768px) 100vw, 500px"
           alt="meme"
-          width={450}
-          height={450}
-          className="h-auto max-h-[500px] w-[400px] object-cover"
+          width={400}
+          height={600}
+          className="max-h-[600px] object-cover"
         />
       </div>
 
