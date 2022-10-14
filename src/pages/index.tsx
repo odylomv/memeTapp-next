@@ -1,6 +1,7 @@
 import { createProxySSGHelpers } from '@trpc/react/ssg';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { InView } from 'react-intersection-observer';
 import superjson from 'superjson';
 import MemeCard from '../components/MemeCard/MemeCard';
 import { Navbar } from '../components/Navbar/Navbar';
@@ -9,7 +10,7 @@ import { appRouter } from '../server/trpc/router';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
-  const memes = trpc.meme.getPaginated.useInfiniteQuery(
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = trpc.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
   );
@@ -27,13 +28,29 @@ const Home: NextPage = () => {
 
         <div className="flex w-full justify-center overflow-y-scroll p-4">
           <div className="flex max-w-7xl flex-col gap-4">
-            {memes.data ? (
-              memes.data.pages.map((page, index) => {
+            {data ? (
+              data.pages.map((page, index) => {
                 return page.memes.map(meme => <MemeCard key={meme.id} meme={meme} priority={index < 2} />);
               })
             ) : (
               <p>Loading..</p>
             )}
+
+            {/* Intersection Observer for Infinite Scroll */}
+            <InView
+              as="div"
+              className="flex justify-center pb-4"
+              onChange={inView => {
+                if (inView) {
+                  console.log('more memes');
+                  fetchNextPage();
+                }
+              }}
+            >
+              <span>
+                {isFetchingNextPage ? 'Loading more memes...' : hasNextPage ? 'Older memes' : 'Nothing more to load'}
+              </span>
+            </InView>
           </div>
         </div>
       </main>
