@@ -2,16 +2,16 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef } from 'react';
 import MockMemeCard from '../MemeCard/MockMemeCard';
 
-const MemePreviewModal: React.FC<{ file: File | undefined; cancel: () => void; onUpload: () => void }> = ({
-  file,
-  cancel,
-  onUpload,
-}) => {
+const MemePreviewModal: React.FC<{
+  open: boolean;
+  imageURL: string;
+  cancel: () => void;
+  onUpload: () => void;
+}> = ({ open, imageURL, cancel, onUpload }) => {
   const cancelButtonRef = useRef(null);
-  const imageURL = file ? URL.createObjectURL(file) : '';
 
   return (
-    <Transition.Root appear={true} show={!!file} as={Fragment}>
+    <Transition.Root appear={false} show={open} as={Fragment}>
       <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={cancel}>
         <Transition.Child
           as={Fragment}

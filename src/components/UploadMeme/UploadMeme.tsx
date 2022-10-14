@@ -7,11 +7,14 @@ import MemePreviewModal from './MemePreviewModal';
 
 const UploadMeme = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(false);
   const { onServerError } = useServerError();
-  const cancelModal = () => setFile(undefined);
 
   const memeUploader = trpc.meme.uploadMeme.useMutation();
   const memeEnabler = trpc.meme.enableMeme.useMutation();
+
+  const imageURL = file ? URL.createObjectURL(file) : '';
+  const cancelModal = () => setOpen(false);
 
   const onUpload = async () => {
     if (!file) return;
@@ -40,7 +43,10 @@ const UploadMeme = () => {
           accept={{
             'image/*': ['.jpeg', '.png'],
           }}
-          onDrop={acceptedFiles => setFile(acceptedFiles[0])}
+          onDrop={acceptedFiles => {
+            setFile(acceptedFiles[0]);
+            setOpen(true);
+          }}
         >
           {({ getRootProps, getInputProps, isDragAccept, isDragReject, isDragActive }) => (
             <div
@@ -68,7 +74,7 @@ const UploadMeme = () => {
         </Dropzone>
       </div>
 
-      <MemePreviewModal file={file} cancel={cancelModal} onUpload={onUpload} />
+      <MemePreviewModal open={open} imageURL={imageURL} cancel={cancelModal} onUpload={onUpload} />
     </>
   );
 };
