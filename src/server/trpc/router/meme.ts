@@ -7,7 +7,7 @@ import { protectedProcedure, publicProcedure, router } from '../trpc';
 // Get authorized URL to view image from Minio
 const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
   try {
-    return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 600);
+    return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 60 * 60 * 24);
   } catch (error) {
     console.log(error);
     return '';
