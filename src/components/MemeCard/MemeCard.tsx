@@ -69,11 +69,11 @@ const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, 
         <Image
           priority={priority}
           src={meme.imageURL}
-          sizes="(max-width: 768px) 100vw, 500px"
+          sizes="(max-width: 768px) 100vw, 400px"
           alt="meme"
-          width={400}
-          height={600}
-          className="max-h-[600px] object-cover"
+          width={0}
+          height={0}
+          className="max-h-[600px] w-[400px] object-cover"
         />
       </div>
 

@@ -41,7 +41,7 @@ const MockMemeCard: React.FC<{ imageURL: string }> = ({ imageURL }) => {
 
       {/* Card Image */}
       <div className="flex justify-center">
-        <Image src={imageURL} alt="meme" width={400} height={600} className="max-h-[600px] object-cover" />
+        <Image src={imageURL} alt="meme" width={0} height={0} className="max-h-[600px] w-[400px] object-cover" />
       </div>
 
       {/* Card Footer */}
