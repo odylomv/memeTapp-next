@@ -6,7 +6,7 @@ import superjson from 'superjson';
 import MemeCard from '../components/MemeCard/MemeCard';
 import { Navbar } from '../components/Navbar/Navbar';
 import { createContextInner } from '../server/trpc/context';
-import { appRouter } from '../server/trpc/router';
+import { appRouter } from '../server/trpc/router/_app';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
