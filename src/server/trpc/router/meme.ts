@@ -1,17 +1,11 @@
 import { TRPCError } from '@trpc/server';
-import { Client as MinioClient } from 'minio';
 import { z } from 'zod';
 import { env } from '../../../env/server.mjs';
 import { protectedProcedure, publicProcedure, router } from '../trpc';
 
 // Get authorized URL to view image from Minio
-const getMemeImageURL = async (memeId: number, authorId: string, minio: MinioClient) => {
-  try {
-    return await minio.presignedGetObject(env.MINIO_BUCKET, `memes/${authorId}-${memeId}`, 86400); // 1 Day
-  } catch (error) {
-    console.log(error);
-    return '';
-  }
+const getMemeImageURL = async (memeId: number, authorId: string) => {
+  return `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/memes/${authorId}-${memeId}`;
 };
 
 export const memeRouter = router({
@@ -35,7 +29,7 @@ export const memeRouter = router({
     if (!meme) return null;
 
     return {
-      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio) },
+      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId) },
     };
   }),
 
@@ -64,7 +58,7 @@ export const memeRouter = router({
     });
 
     return {
-      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio) },
+      meme: { ...meme, imageURL: await getMemeImageURL(meme.id, meme.authorId) },
     };
   }),
 
@@ -138,7 +132,7 @@ export const memeRouter = router({
 
         return {
           ...meme,
-          imageURL: await getMemeImageURL(meme.id, meme.authorId, ctx.minio),
+          imageURL: await getMemeImageURL(meme.id, meme.authorId),
           // imageURL: '',
           isLiked: !!like,
         };
