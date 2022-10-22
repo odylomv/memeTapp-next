@@ -3,7 +3,7 @@ services:
   web:
     platform: 'linux/amd64'
     image: memetapp
-    restart: always
+    restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
 
   db:
     image: postgres
-    restart: always
+    restart: unless-stopped
     volumes:
       - db:/var/lib/postgresql/data
     ports:
@@ -24,13 +24,13 @@ services:
 
   adminer:
     image: adminer
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:8080
 
   minio:
     image: quay.io/minio/minio
-    restart: always
+    restart: unless-stopped
     volumes:
       - minio_storage:/data
     ports:
@@ -49,4 +49,4 @@ volumes:
 networks:
   default:
     name: memetapp
-    external: true
+    external: false
