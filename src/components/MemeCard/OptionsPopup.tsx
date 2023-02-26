@@ -1,8 +1,8 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import { api } from '@mtp/utils/api';
 import { useSession } from 'next-auth/react';
 import { Fragment, useRef, useState } from 'react';
-import { api } from '../../utils/api';
 import { type MemeCardModel } from './MemeCard';
 
 const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
@@ -119,7 +119,9 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                       onClick={() => {
                         memeDelete.mutate(
                           { id: meme.id },
-                          { onSuccess: () => trpcContext.meme.getPaginated.invalidate() }
+                          {
+                            onSuccess: () => void trpcContext.meme.getPaginated.invalidate(),
+                          }
                         );
 
                         setModalOpen(false);

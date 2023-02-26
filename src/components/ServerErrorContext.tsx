@@ -1,6 +1,6 @@
+import { type AppRouter } from '@mtp/server/trpc/root';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import React, { createContext, useContext, useState } from 'react';
-import { type AppRouter } from '../server/trpc/root';
 import LoginModal from './LoginModal';
 
 const ServerErrorContext = createContext<

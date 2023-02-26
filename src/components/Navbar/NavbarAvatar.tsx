@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import Image from "next/image";
+import Image from 'next/image';
 import { Fragment } from 'react';
 
 const popupOptions = [
@@ -19,7 +19,7 @@ const NavbarAvatar: React.FC = () => {
     return (
       <button
         className="rounded-md px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-700 hover:text-white"
-        onClick={() => signIn()}
+        onClick={() => void signIn()}
       >
         Login
       </button>

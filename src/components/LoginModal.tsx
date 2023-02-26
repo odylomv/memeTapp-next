@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { signIn } from 'next-auth/react';
-import Image from "next/image";
+import Image from 'next/image';
 import { Fragment, useRef } from 'react';
 import logo from '../../public/logo.png';
 
@@ -58,7 +58,7 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-700
                       px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none 
                       focus:ring-2 focus:ring-red-800 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => signIn()}
+                    onClick={() => void signIn()}
                   >
                     Sign Up
                   </button>

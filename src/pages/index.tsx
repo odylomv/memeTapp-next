@@ -1,13 +1,13 @@
+import MemeCard from '@mtp/components/MemeCard/MemeCard';
+import { Navbar } from '@mtp/components/Navbar/Navbar';
+import { appRouter } from '@mtp/server/trpc/root';
+import { createInnerTRPCContext } from '@mtp/server/trpc/trpc';
+import { api } from '@mtp/utils/api';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
 import superjson from 'superjson';
-import MemeCard from '../components/MemeCard/MemeCard';
-import { Navbar } from '../components/Navbar/Navbar';
-import { appRouter } from '../server/trpc/root';
-import { createInnerTRPCContext } from '../server/trpc/trpc';
-import { api } from '../utils/api';
 
 const Home: NextPage = () => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
               onChange={inView => {
                 if (inView) {
                   console.log('more memes');
-                  fetchNextPage();
+                  void fetchNextPage();
                 }
               }}
             >

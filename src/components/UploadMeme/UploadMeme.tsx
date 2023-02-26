@@ -1,7 +1,7 @@
 import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
+import { api } from '@mtp/utils/api';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
-import { api } from '../../utils/api';
 import { useServerError } from '../ServerErrorContext';
 import MemePreviewModal from './MemePreviewModal';
 
@@ -16,18 +16,20 @@ const UploadMeme = () => {
   const imageURL = file ? URL.createObjectURL(file) : '';
   const cancelModal = () => setModalOpen(false);
 
-  const onUpload = async () => {
+  const onUpload = () => {
     if (!file) return;
 
     setFile(undefined);
     setModalOpen(false);
     memeUploader.mutate(undefined, {
-      onSuccess: async ({ memeId, uploadURL }) => {
-        const resp = await fetch(uploadURL, { method: 'PUT', body: file });
+      onSuccess: ({ memeId, uploadURL }) => {
+        fetch(uploadURL, { method: 'PUT', body: file })
+          .then(resp => {
+            if (!resp.ok) return console.log(resp);
 
-        if (!resp.ok) return console.log(resp);
-
-        memeEnabler.mutate({ memeId }, { onError: error => onServerError(error) });
+            memeEnabler.mutate({ memeId }, { onError: error => onServerError(error) });
+          })
+          .catch(err => console.log(err));
       },
       onError: error => onServerError(error),
     });

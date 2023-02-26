@@ -1,4 +1,3 @@
-// src/pages/api/trpc/[trpc].ts
 import { env } from '@mtp/env.mjs';
 import { appRouter } from '@mtp/server/trpc/root';
 import { createTRPCContext } from '@mtp/server/trpc/trpc';
@@ -11,7 +10,7 @@ export default createNextApiHandler({
   onError:
     env.NODE_ENV === 'development'
       ? ({ path, error }) => {
-          console.error(`❌ tRPC failed on ${path}: ${error}`);
+          console.error(`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`);
         }
       : undefined,
 });
