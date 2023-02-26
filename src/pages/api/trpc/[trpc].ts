@@ -1,6 +1,6 @@
 import { env } from '@mtp/env.mjs';
-import { appRouter } from '@mtp/server/trpc/root';
-import { createTRPCContext } from '@mtp/server/trpc/trpc';
+import { appRouter } from '@mtp/server/api/root';
+import { createTRPCContext } from '@mtp/server/api/trpc';
 import { createNextApiHandler } from '@trpc/server/adapters/next';
 
 // export API handler

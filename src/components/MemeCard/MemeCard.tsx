@@ -1,6 +1,6 @@
 import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
-import { type AppRouter } from '@mtp/server/trpc/root';
+import { type AppRouter } from '@mtp/server/api/root';
 import { api } from '@mtp/utils/api';
 import { type inferProcedureOutput } from '@trpc/server';
 import Image from 'next/image';

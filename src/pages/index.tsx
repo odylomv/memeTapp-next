@@ -1,7 +1,7 @@
 import MemeCard from '@mtp/components/MemeCard/MemeCard';
 import { Navbar } from '@mtp/components/Navbar/Navbar';
-import { appRouter } from '@mtp/server/trpc/root';
-import { createInnerTRPCContext } from '@mtp/server/trpc/trpc';
+import { appRouter } from '@mtp/server/api/root';
+import { createInnerTRPCContext } from '@mtp/server/api/trpc';
 import { api } from '@mtp/utils/api';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import type { NextPage } from 'next';

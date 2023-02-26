@@ -1,4 +1,4 @@
-import { type AppRouter } from '@mtp/server/trpc/root';
+import { type AppRouter } from '@mtp/server/api/root';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import React, { createContext, useContext, useState } from 'react';
 import LoginModal from './LoginModal';
