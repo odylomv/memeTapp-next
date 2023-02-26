@@ -2,14 +2,14 @@ import { Dialog, Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { useSession } from 'next-auth/react';
 import { Fragment, useRef, useState } from 'react';
-import { trpc } from '../../utils/trpc';
-import { MemeCardModel } from './MemeCard';
+import { api } from '../../utils/api';
+import { type MemeCardModel } from './MemeCard';
 
 const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
   const { data } = useSession();
 
-  const trpcContext = trpc.useContext();
-  const memeDelete = trpc.meme.deleteMeme.useMutation();
+  const trpcContext = api.useContext();
+  const memeDelete = api.meme.deleteMeme.useMutation();
 
   const [modalOpen, setModalOpen] = useState(false);
   const cancelButtonRef = useRef(null);

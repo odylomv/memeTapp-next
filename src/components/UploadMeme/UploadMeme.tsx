@@ -1,7 +1,7 @@
 import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
-import { trpc } from '../../utils/trpc';
+import { api } from '../../utils/api';
 import { useServerError } from '../ServerErrorContext';
 import MemePreviewModal from './MemePreviewModal';
 
@@ -10,8 +10,8 @@ const UploadMeme = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { onServerError } = useServerError();
 
-  const memeUploader = trpc.meme.uploadMeme.useMutation();
-  const memeEnabler = trpc.meme.enableMeme.useMutation();
+  const memeUploader = api.meme.uploadMeme.useMutation();
+  const memeEnabler = api.meme.enableMeme.useMutation();
 
   const imageURL = file ? URL.createObjectURL(file) : '';
   const cancelModal = () => setModalOpen(false);

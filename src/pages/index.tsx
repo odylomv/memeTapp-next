@@ -1,4 +1,4 @@
-import { createProxySSGHelpers } from '@trpc/react/ssg';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
@@ -7,10 +7,10 @@ import MemeCard from '../components/MemeCard/MemeCard';
 import { Navbar } from '../components/Navbar/Navbar';
 import { createContextInner } from '../server/trpc/context';
 import { appRouter } from '../server/trpc/router/_app';
-import { trpc } from '../utils/trpc';
+import { api } from '../utils/api';
 
 const Home: NextPage = () => {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = trpc.meme.getPaginated.useInfiniteQuery(
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
   );

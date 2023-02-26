@@ -3,7 +3,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppType } from 'next/app';
 import ServerErrorProvider from '../components/ServerErrorContext';
 import '../styles/globals.css';
-import { trpc } from '../utils/trpc';
+import { api } from '../utils/api';
 
 const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
@@ -15,4 +15,4 @@ const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { s
   );
 };
 
-export default trpc.withTRPC(MyApp);
+export default api.withTRPC(MyApp);

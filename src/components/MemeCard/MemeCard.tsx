@@ -1,9 +1,9 @@
 import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
-import { inferProcedureOutput } from '@trpc/server';
-import Image from "next/image";
-import { AppRouter } from '../../server/trpc/router/_app';
-import { trpc } from '../../utils/trpc';
+import { type inferProcedureOutput } from '@trpc/server';
+import Image from 'next/image';
+import { type AppRouter } from '../../server/trpc/router/_app';
+import { api } from '../../utils/api';
 import { useServerError } from '../ServerErrorContext';
 import OptionsPopup from './OptionsPopup';
 
@@ -12,7 +12,7 @@ type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] 
 export type MemeCardModel = ArrayElement<inferProcedureOutput<AppRouter['meme']['getPaginated']>['memes']>;
 
 const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, priority }) => {
-  const mutateLikes = trpc.meme.likeMeme.useMutation();
+  const mutateLikes = api.meme.likeMeme.useMutation();
   const { onServerError } = useServerError();
 
   const onProfile = () => {
