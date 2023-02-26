@@ -2,7 +2,7 @@ import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
 import { type inferProcedureOutput } from '@trpc/server';
 import Image from 'next/image';
-import { type AppRouter } from '../../server/trpc/router/_app';
+import { type AppRouter } from '../../server/trpc/root';
 import { api } from '../../utils/api';
 import { useServerError } from '../ServerErrorContext';
 import OptionsPopup from './OptionsPopup';

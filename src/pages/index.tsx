@@ -5,8 +5,8 @@ import { InView } from 'react-intersection-observer';
 import superjson from 'superjson';
 import MemeCard from '../components/MemeCard/MemeCard';
 import { Navbar } from '../components/Navbar/Navbar';
-import { createContextInner } from '../server/trpc/context';
-import { appRouter } from '../server/trpc/router/_app';
+import { appRouter } from '../server/trpc/root';
+import { createInnerTRPCContext } from '../server/trpc/trpc';
 import { api } from '../utils/api';
 
 const Home: NextPage = () => {
@@ -61,7 +61,7 @@ const Home: NextPage = () => {
 export async function getStaticProps() {
   const ssg = createProxySSGHelpers({
     router: appRouter,
-    ctx: await createContextInner({ session: null }),
+    ctx: createInnerTRPCContext({ session: null }),
     transformer: superjson,
   });
 

@@ -1,21 +1,18 @@
 // src/server/db/client.ts
+import { env } from '@mtp/env.mjs';
 import { PrismaClient } from '@prisma/client';
 import { Client as MinioClient } from 'minio';
-import { env } from '../../env/server.mjs';
 
-declare global {
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 export const prisma =
-  global.prisma ||
+  globalForPrisma.prisma ||
   new PrismaClient({
     log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
 if (env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  globalForPrisma.prisma = prisma;
 }
 
 export const minio = new MinioClient({

@@ -1,13 +1,13 @@
 // src/pages/api/trpc/[trpc].ts
+import { env } from '@mtp/env.mjs';
+import { appRouter } from '@mtp/server/trpc/root';
+import { createTRPCContext } from '@mtp/server/trpc/trpc';
 import { createNextApiHandler } from '@trpc/server/adapters/next';
-import { env } from '../../../env/server.mjs';
-import { createContext } from '../../../server/trpc/context';
-import { appRouter } from '../../../server/trpc/router/_app';
 
 // export API handler
 export default createNextApiHandler({
   router: appRouter,
-  createContext,
+  createContext: createTRPCContext,
   onError:
     env.NODE_ENV === 'development'
       ? ({ path, error }) => {

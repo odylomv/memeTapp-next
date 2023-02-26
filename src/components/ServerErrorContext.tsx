@@ -1,6 +1,6 @@
-import { TRPCClientErrorLike } from '@trpc/client';
+import { type TRPCClientErrorLike } from '@trpc/client';
 import React, { createContext, useContext, useState } from 'react';
-import { AppRouter } from '../server/trpc/router/_app';
+import { type AppRouter } from '../server/trpc/root';
 import LoginModal from './LoginModal';
 
 const ServerErrorContext = createContext<

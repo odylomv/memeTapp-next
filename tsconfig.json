@@ -18,7 +18,7 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "mtp/*": ["./src/*"]
+      "@mtp/*": ["./src/*"]
     }
   },
   "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
