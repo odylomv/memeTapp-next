@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import Image from 'next/future/image';
+import Image from "next/image";
 import { Fragment } from 'react';
 
 const popupOptions = [

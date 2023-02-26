@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { signIn } from 'next-auth/react';
-import Image from 'next/future/image';
+import Image from "next/image";
 import { Fragment, useRef } from 'react';
 import logo from '../../public/logo.png';
 

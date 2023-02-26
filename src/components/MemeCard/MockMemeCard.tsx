@@ -6,7 +6,7 @@ import {
   HeartIcon,
 } from '@heroicons/react/20/solid';
 import { useSession } from 'next-auth/react';
-import Image from 'next/future/image';
+import Image from "next/image";
 
 const MockMemeCard: React.FC<{ imageURL: string }> = ({ imageURL }) => {
   const session = useSession();
