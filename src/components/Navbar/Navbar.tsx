@@ -42,20 +42,21 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map(item => (
-                      <Link key={item.name} href={item.href}>
-                        <a
-                          className={
-                            'rounded-md px-3 py-2 text-sm font-medium' +
-                            ' ' +
-                            (item.name === page
-                              ? 'bg-neutral-900 text-white'
-                              : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
-                          }
-                          aria-current={item.name === page ? 'page' : undefined}
-                        >
-                          {item.name}
-                        </a>
-                      </Link>
+                      (<Link
+                        key={item.name}
+                        href={item.href}
+                        className={
+                          'rounded-md px-3 py-2 text-sm font-medium' +
+                          ' ' +
+                          (item.name === page
+                            ? 'bg-neutral-900 text-white'
+                            : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                        }
+                        aria-current={item.name === page ? 'page' : undefined}>
+
+                        {item.name}
+
+                      </Link>)
                     ))}
                   </div>
                 </div>
@@ -73,7 +74,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map(item => (
-                <Link key={item.name} href={item.href}>
+                <Link key={item.name} href={item.href} legacyBehavior>
                   <Disclosure.Button
                     as="a"
                     className={
