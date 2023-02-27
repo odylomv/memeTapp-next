@@ -1,8 +1,8 @@
+import banner from '@assets/memeTapp_banner.png';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import banner from '../../../public/memeTapp_banner.png';
 import NavbarAvatar from './NavbarAvatar';
 
 const navigation = [

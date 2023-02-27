@@ -1,8 +1,8 @@
+import logo from '@assets/logo.png';
 import { Dialog, Transition } from '@headlessui/react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { Fragment, useRef } from 'react';
-import logo from '../../public/logo.png';
 
 const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
   const cancelButtonRef = useRef(null);
