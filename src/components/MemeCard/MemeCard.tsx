@@ -1,15 +1,14 @@
 import { BookmarkIcon, ChatBubbleLeftIcon, ChevronRightIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
-import { type AppRouter } from '@mtp/server/api/root';
-import { api } from '@mtp/utils/api';
-import { type inferProcedureOutput } from '@trpc/server';
+import { api, type RouterOutputs } from '@mtp/utils/api';
 import Image from 'next/image';
 import { useServerError } from '../ServerErrorContext';
 import OptionsPopup from './OptionsPopup';
 
+// Get type from type[]
 type ArrayElement<ArrayType> = ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
-export type MemeCardModel = ArrayElement<inferProcedureOutput<AppRouter['meme']['getPaginated']>['memes']>;
+export type MemeCardModel = ArrayElement<RouterOutputs['meme']['getPaginated']['memes']>;
 
 const MemeCard: React.FC<{ meme: MemeCardModel; priority: boolean }> = ({ meme, priority }) => {
   const mutateLikes = api.meme.likeMeme.useMutation();
