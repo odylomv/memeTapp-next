@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
 import banner from '../../../public/memeTapp_banner.png';
 import NavbarAvatar from './NavbarAvatar';
@@ -42,7 +42,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map(item => (
-                      (<Link
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={
@@ -52,11 +52,10 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                             ? 'bg-neutral-900 text-white'
                             : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
                         }
-                        aria-current={item.name === page ? 'page' : undefined}>
-
+                        aria-current={item.name === page ? 'page' : undefined}
+                      >
                         {item.name}
-
-                      </Link>)
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -71,24 +70,21 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map(item => (
-                <Link key={item.name} href={item.href} legacyBehavior>
-                  <Disclosure.Button
-                    as="a"
-                    className={
-                      'block rounded-md px-3 py-2 text-base font-medium' +
-                      ' ' +
-                      (item.name === page ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
-                    }
-                    aria-current={item.name === page ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                </Link>
-              ))}
-            </div>
+          <Disclosure.Panel className="space-y-1 px-2 pt-2 pb-3 sm:hidden">
+            {navigation.map(item => (
+              <Link key={item.name} href={item.href}>
+                <Disclosure.Button
+                  className={
+                    'block rounded-md px-3 py-2 text-base font-medium' +
+                    ' ' +
+                    (item.name === page ? 'bg-neutral-900' : 'text-neutral-300 hover:bg-neutral-700 hover:text-white')
+                  }
+                  aria-current={item.name === page ? 'page' : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              </Link>
+            ))}
           </Disclosure.Panel>
         </>
       )}
