@@ -14,6 +14,8 @@
     "docker": "docker compose down && docker compose build && docker compose up -d"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.11.2",
+    "@clerk/themes": "^1.4.2",
     "@headlessui/react": "^1.7.3",
     "@headlessui/tailwindcss": "^0.1.1",
     "@heroicons/react": "^2.0.11",
@@ -24,6 +26,7 @@
     "@trpc/next": "^10.12.0",
     "@trpc/react-query": "^10.12.0",
     "@trpc/server": "^10.12.0",
+    "micro": "^10.0.1",
     "minio": "^7.0.32",
     "next": "^13.2.1",
     "next-auth": "^4.12.3",
@@ -34,6 +37,7 @@
     "react-intersection-observer": "^9.4.0",
     "sharp": "^0.31.1",
     "superjson": "^1.12.2",
+    "svix": "^0.81.0",
     "zod": "^3.20.6"
   },
   "devDependencies": {
@@ -47,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "autoprefixer": "^10.4.7",
-    "dotenv": "^16.0.3",
+    "dotenv-cli": "^7.0.0",
     "eslint": "^8.30.0",
     "eslint-config-next": "^13.2.1",
     "postcss": "^8.4.14",

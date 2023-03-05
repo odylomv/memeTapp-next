@@ -1,12 +1,13 @@
+import { useAuth } from '@clerk/nextjs';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { api } from '@mtp/utils/api';
-import { useSession } from 'next-auth/react';
 import { Fragment, useRef, useState } from 'react';
 import { type MemeCardModel } from './MemeCard';
 
 const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
-  const { data } = useSession();
+  // const { data } = useSession();
+  const { userId } = useAuth();
 
   const trpcContext = api.useContext();
   const memeDelete = api.meme.deleteMeme.useMutation();
@@ -18,7 +19,7 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
     { name: 'Log Debug Info', show: true, click: undefined },
     {
       name: 'Delete meme',
-      show: !!data?.user && meme.authorId === data.user.id,
+      show: !!userId && meme.authorId === userId,
       click: () => setModalOpen(true),
     },
     { name: 'Report meme', show: true, click: undefined },

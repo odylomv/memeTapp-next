@@ -3,7 +3,7 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import NavbarAvatar from './NavbarAvatar';
+import NavbarAuth from './NavbarAuth';
 
 const navigation = [
   { name: 'Browse', href: '/' },
@@ -35,7 +35,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex items-center">
-                  <Image className="block h-8 w-auto" src={banner} alt="memeTapp" sizes="150px" />
+                  <Image className="block h-8 w-auto" src={banner} alt="memeTapp" sizes="150px" priority />
                   {process.env.NODE_ENV === 'development' && <span className="font-bold">DEV</span>}
                 </div>
 
@@ -65,7 +65,7 @@ export const Navbar: React.FC<{ page: string }> = ({ page }) => {
                 className="absolute inset-y-0 right-0 flex items-center pr-2 
                   sm:static sm:inset-auto sm:ml-6 sm:pr-0"
               >
-                <NavbarAvatar />
+                <NavbarAuth />
               </div>
             </div>
           </div>

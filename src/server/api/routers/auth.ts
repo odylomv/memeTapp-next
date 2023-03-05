@@ -1,10 +1,10 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const authRouter = createTRPCRouter({
-  getSession: publicProcedure.query(({ ctx }) => {
-    return ctx.session;
+  getAuth: publicProcedure.query(({ ctx }) => {
+    return ctx.auth;
   }),
-  getSecretMessage: protectedProcedure.query(() => {
-    return 'You are logged in and can see this secret message!';
+  getAuthedUser: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.user.findUnique({ where: { id: ctx.auth.userId } });
   }),
 });

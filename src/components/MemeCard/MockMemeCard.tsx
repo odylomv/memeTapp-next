@@ -1,3 +1,4 @@
+import { useAuth } from '@clerk/nextjs';
 import {
   BookmarkIcon,
   ChatBubbleLeftIcon,
@@ -5,19 +6,19 @@ import {
   EllipsisVerticalIcon,
   HeartIcon,
 } from '@heroicons/react/20/solid';
-import { useSession } from 'next-auth/react';
-import Image from "next/image";
+import Image from 'next/image';
 
 const MockMemeCard: React.FC<{ imageURL: string }> = ({ imageURL }) => {
-  const session = useSession();
+  // const session = useSession();
+  const { userId } = useAuth();
 
   return (
     <div className="flex flex-col rounded-lg bg-neutral-800 text-neutral-300">
       {/* Card Header */}
       <div className="flex justify-between p-2">
-        {session.data?.user ? (
+        {userId ? (
           <button className="group flex items-center">
-            {session.data.user.image && (
+            {/* {session.data.user.image && (
               <Image
                 src={session.data.user.image}
                 alt="meme author"
@@ -25,8 +26,8 @@ const MockMemeCard: React.FC<{ imageURL: string }> = ({ imageURL }) => {
                 height={50}
                 className="h-6 w-6 rounded-full"
               />
-            )}
-            <span className="px-2 text-sm">{session.data.user.name}</span>
+            )} */}
+            <span className="px-2 text-sm">{userId}</span>
             <ChevronRightIcon className="hidden h-4 w-4 group-hover:block" />
           </button>
         ) : (

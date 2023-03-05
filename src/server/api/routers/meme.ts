@@ -36,14 +36,14 @@ export const memeRouter = createTRPCRouter({
   uploadMeme: protectedProcedure.mutation(async ({ ctx }) => {
     const meme = await ctx.prisma.meme.create({
       data: {
-        authorId: ctx.session.user.id,
+        authorId: ctx.auth.userId,
         hidden: true,
       },
     });
 
     return {
       memeId: meme.id,
-      uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `memes/${ctx.session.user.id}-${meme.id}`, 600), // 10 Minutes
+      uploadURL: await ctx.minio.presignedPutObject(env.MINIO_BUCKET, `memes/${ctx.auth.userId}-${meme.id}`, 600), // 10 Minutes
     };
   }),
 
@@ -76,7 +76,7 @@ export const memeRouter = createTRPCRouter({
         id: input.id,
       },
     });
-    await ctx.minio.removeObject(env.MINIO_BUCKET, `memes/${ctx.session.user.id}-${input.id}`);
+    await ctx.minio.removeObject(env.MINIO_BUCKET, `memes/${ctx.auth.userId}-${input.id}`);
 
     return { success: true };
   }),
@@ -87,10 +87,10 @@ export const memeRouter = createTRPCRouter({
       await ctx.prisma.meme.findUniqueOrThrow({ where: { id: input.memeId } });
 
       if (input.action === 'like')
-        await ctx.prisma.memeLike.create({ data: { memeId: input.memeId, userId: ctx.session.user.id } });
+        await ctx.prisma.memeLike.create({ data: { memeId: input.memeId, userId: ctx.auth.userId } });
       else if (input.action === 'unlike')
         await ctx.prisma.memeLike.delete({
-          where: { userId_memeId: { memeId: input.memeId, userId: ctx.session.user.id } },
+          where: { userId_memeId: { memeId: input.memeId, userId: ctx.auth.userId } },
         });
 
       return { newCount: await ctx.prisma.memeLike.count({ where: { memeId: input.memeId } }) };
@@ -125,9 +125,9 @@ export const memeRouter = createTRPCRouter({
       // Asynchronously get the image URLs and like status for every meme
       const promises = memes.map(async meme => {
         let like = null;
-        if (ctx.session && ctx.session.user)
+        if (ctx.auth && ctx.auth.userId)
           like = await ctx.prisma.memeLike.findUnique({
-            where: { userId_memeId: { memeId: meme.id, userId: ctx.session.user.id } },
+            where: { userId_memeId: { memeId: meme.id, userId: ctx.auth.userId } },
           });
 
         return {
