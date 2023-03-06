@@ -91,10 +91,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
-  if (ctx.auth.user?.publicMetadata['new_user']) {
-    throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'User has not completed sign up' });
-  }
-
   return next({
     ctx: {
       auth: ctx.auth,

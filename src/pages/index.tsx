@@ -7,14 +7,10 @@ import { api } from '@mtp/utils/api';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { InView } from 'react-intersection-observer';
 import superjson from 'superjson';
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const { welcome } = router.query;
-
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
@@ -32,7 +28,6 @@ const Home: NextPage = () => {
         <Navbar page="Browse" />
 
         <div className="flex w-full justify-center overflow-y-scroll p-4">
-          <span>{welcome}</span>
           <div className="flex max-w-7xl flex-col gap-4">
             {data ? (
               data.pages.map((page, index) => {
@@ -64,23 +59,6 @@ const Home: NextPage = () => {
   );
 };
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const ssg = createProxySSGHelpers({
-//     router: appRouter,
-//     ctx: createInnerTRPCContext({ auth: null }),
-//     transformer: superjson,
-//   });
-
-//   await ssg.meme.getPaginated.prefetchInfinite({ limit: 5 });
-
-//   return {
-//     props: {
-//       trpcState: ssg.dehydrate(),
-//     },
-//     revalidate: 10,
-//   };
-// };
-
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const auth = getAuth(req);
 
@@ -97,7 +75,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       trpcState: ssg.dehydrate(),
       ...buildClerkProps(req),
     },
-    // revalidate: 10,
   };
 };
 
