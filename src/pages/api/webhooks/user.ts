@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequestWithSvixRequiredHeaders
   const eventType: EventType = evt.type;
 
   if (eventType === 'user.created' || eventType === 'user.updated') {
-    const { id, profile_image_url, email_addresses } = evt.data as UserUpsertEventData;
+    const { id, username, profile_image_url, email_addresses } = evt.data as UserUpsertEventData;
     const email = email_addresses[0]?.email_address;
     const emailVerified = email_addresses[0]?.verification.status === 'verified';
 
@@ -38,12 +38,15 @@ export default async function handler(req: NextApiRequestWithSvixRequiredHeaders
       create: {
         id: id,
         email,
+        name: username,
         emailVerified,
         image: profile_image_url,
       },
       update: {
         email,
+        name: username,
         emailVerified,
+        image: profile_image_url,
       },
     });
   }
@@ -70,6 +73,7 @@ type Event = {
 type UserUpsertEventData = {
   id: string;
   profile_image_url: string;
+  username: string;
   email_addresses: {
     email_address: string;
     verification: {
