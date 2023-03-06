@@ -40,6 +40,7 @@ model Comment {
     author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
     memeId    Int
     meme      Meme     @relation(fields: [memeId], references: [id], onDelete: Cascade)
+    text      String
 }
 
 model MemeLike {
