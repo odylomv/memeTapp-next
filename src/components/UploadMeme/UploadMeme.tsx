@@ -27,11 +27,11 @@ const UploadMeme = () => {
           .then(resp => {
             if (!resp.ok) return console.log(resp);
 
-            memeEnabler.mutate({ memeId }, { onError: error => onServerError(error) });
+            memeEnabler.mutate({ memeId }, { onError: onServerError });
           })
           .catch(err => console.log(err));
       },
-      onError: error => onServerError(error),
+      onError: onServerError,
     });
   };
 
