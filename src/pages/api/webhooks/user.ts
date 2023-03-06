@@ -30,13 +30,16 @@ export default async function handler(req: NextApiRequestWithSvixRequiredHeaders
 
   if (eventType === 'user.created' || eventType === 'user.updated') {
     const { id, username, profile_image_url, email_addresses } = evt.data as UserUpsertEventData;
-    const email = email_addresses[0]?.email_address;
-    const emailVerified = email_addresses[0]?.verification.status === 'verified';
+
+    if (!email_addresses[0]) return res.status(400).json({});
+
+    const email = email_addresses[0].email_address;
+    const emailVerified = email_addresses[0].verification.status === 'verified';
 
     await prisma.user.upsert({
-      where: { id: id },
+      where: { id },
       create: {
-        id: id,
+        id,
         email,
         name: username,
         emailVerified,
