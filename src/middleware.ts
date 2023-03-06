@@ -16,6 +16,7 @@ export default withClerkMiddleware(() => {
 //      * - static (static files)
 //      * - favicon.ico (favicon file)
 //      */
-//     '/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)',
+//     // '/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)',
+//     '/(.*?trpc.*?|(?!_next/image|_next/static|favicon.ico).*)',
 //   ],
 // };
