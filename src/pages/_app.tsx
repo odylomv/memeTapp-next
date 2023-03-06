@@ -11,7 +11,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       {...pageProps}
       appearance={{
         baseTheme: dark,
-        layout: { socialButtonsPlacement: 'bottom' },
+        layout: { socialButtonsPlacement: 'bottom', socialButtonsVariant: 'iconButton' },
+        elements: {
+          formButtonPrimary: 'bg-red-700 hover:bg-red-600',
+          logoBox: 'h-12 justify-center',
+          modalBackdrop: 'flex justify-center pt-12 h-screen',
+          card: 'bg-neutral-900',
+          formFieldLabel: 'pb-2',
+        },
       }}
     >
       <ServerErrorProvider>
