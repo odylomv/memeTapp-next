@@ -28,7 +28,13 @@ export default defineNextConfig({
     defaultLocale: 'en',
   },
   images: {
-    domains: ['cdn.discordapp.com', 'lh3.googleusercontent.com', env.MINIO_ENDPOINT],
+    domains: [
+      'cdn.discordapp.com',
+      'lh3.googleusercontent.com',
+      'images.clerk.dev',
+      'www.gravatar.com',
+      env.MINIO_ENDPOINT,
+    ],
   },
   experimental: {
     swcPlugins: [
