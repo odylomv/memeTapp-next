@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef } from 'react';
-import MockMemeCard from '../MemeCard/MockMemeCard';
+import MemeCard from '../MemeCard/MemeCard';
+import { MockMemeCard } from '../MemeCard/MockMemeCard';
 
 const MemePreviewModal: React.FC<{
   open: boolean;
@@ -44,7 +45,16 @@ const MemePreviewModal: React.FC<{
                         Meme Preview
                       </Dialog.Title>
                       <div className="mt-2 ">
-                        <MockMemeCard imageURL={imageURL} />
+                        <MockMemeCard
+                          meme={{ imageURL, _count: { likes: 1, comments: 0 } }}
+                          content={
+                            <>
+                              <MemeCard.Header disabled></MemeCard.Header>
+                              <MemeCard.Image disabled></MemeCard.Image>
+                              <MemeCard.Footer disabled></MemeCard.Footer>
+                            </>
+                          }
+                        />
                       </div>
                     </div>
                   </div>

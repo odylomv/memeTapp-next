@@ -3,10 +3,9 @@ import { Dialog, Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { api } from '@mtp/utils/api';
 import { Fragment, useRef, useState } from 'react';
-import { type MemeCardModel } from './MemeCard';
+import { type MemeCardModel } from '../../MemeCard/MemeCard';
 
 const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
-  // const { data } = useSession();
   const { userId } = useAuth();
 
   const trpcContext = api.useContext();

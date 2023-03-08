@@ -105,7 +105,7 @@ export const memeRouter = createTRPCRouter({
         where: { hidden: false },
         orderBy: { createdAt: 'desc' },
         include: {
-          author: true,
+          author: { select: { id: true, image: true, name: true } },
           _count: {
             select: {
               likes: true,
