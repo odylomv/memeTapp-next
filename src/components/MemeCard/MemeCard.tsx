@@ -16,7 +16,7 @@ function MemeCard({ meme, before, content, after }: MemeCardProps) {
     <MemeCardContext.Provider value={{ meme }}>
       <>
         {before}
-        <div className="flex flex-col overflow-hidden rounded-lg bg-neutral-800 text-neutral-300">{content}</div>
+        <div className="flex flex-col rounded-lg bg-neutral-800 text-neutral-300">{content}</div>
         {after}
       </>
     </MemeCardContext.Provider>
