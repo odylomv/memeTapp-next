@@ -36,14 +36,4 @@ export default defineNextConfig({
       env.MINIO_ENDPOINT,
     ],
   },
-  experimental: {
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
-    ],
-  },
 });

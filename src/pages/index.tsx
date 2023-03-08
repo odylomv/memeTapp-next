@@ -8,7 +8,7 @@ import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
-import superjson from 'superjson';
+import SuperJSON from 'superjson';
 
 const Home: NextPage = () => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
@@ -77,7 +77,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const ssg = createProxySSGHelpers({
     router: appRouter,
     ctx: createInnerTRPCContext({ auth }),
-    transformer: superjson,
+    transformer: SuperJSON,
   });
 
   await ssg.meme.getPaginated.prefetchInfinite({ limit: 5 });
