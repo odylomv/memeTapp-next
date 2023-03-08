@@ -24,7 +24,7 @@ model User {
 
 // memeTapp
 model Meme {
-    id        Int        @id @default(autoincrement())
+    id        String     @id @default(cuid())
     createdAt DateTime   @default(now())
     hidden    Boolean    @default(false)
     authorId  String
@@ -38,7 +38,7 @@ model Comment {
     createdAt DateTime @default(now())
     authorId  String
     author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-    memeId    Int
+    memeId    String
     meme      Meme     @relation(fields: [memeId], references: [id], onDelete: Cascade)
     text      String
 }
@@ -47,7 +47,7 @@ model MemeLike {
     createdAt DateTime @default(now())
     userId    String
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    memeId    Int
+    memeId    String
     meme      Meme     @relation(fields: [memeId], references: [id], onDelete: Cascade)
 
     @@id([userId, memeId])

@@ -4,12 +4,12 @@ import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 // Get authorized URL to view image from Minio
-const getMemeImageURL = (memeId: number, authorId: string) => {
+const getMemeImageURL = (memeId: string, authorId: string) => {
   return `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/memes/${authorId}-${memeId}`;
 };
 
 export const memeRouter = createTRPCRouter({
-  getMeme: publicProcedure.input(z.object({ id: z.number().min(1) })).query(async ({ input, ctx }) => {
+  getMeme: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findFirst({
       where: {
         id: input.id,
@@ -47,7 +47,7 @@ export const memeRouter = createTRPCRouter({
     };
   }),
 
-  enableMeme: protectedProcedure.input(z.object({ memeId: z.number().min(1) })).mutation(async ({ input, ctx }) => {
+  enableMeme: protectedProcedure.input(z.object({ memeId: z.string() })).mutation(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.update({
       where: {
         id: input.memeId,
@@ -62,7 +62,7 @@ export const memeRouter = createTRPCRouter({
     };
   }),
 
-  deleteMeme: protectedProcedure.input(z.object({ id: z.number().min(1) })).mutation(async ({ input, ctx }) => {
+  deleteMeme: protectedProcedure.input(z.object({ id: z.string() })).mutation(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findUnique({
       where: {
         id: input.id,
@@ -82,7 +82,7 @@ export const memeRouter = createTRPCRouter({
   }),
 
   likeMeme: protectedProcedure
-    .input(z.object({ memeId: z.number().min(1), action: z.union([z.literal('like'), z.literal('unlike')]) }))
+    .input(z.object({ memeId: z.string(), action: z.union([z.literal('like'), z.literal('unlike')]) }))
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.meme.findUniqueOrThrow({ where: { id: input.memeId } });
 
@@ -97,13 +97,13 @@ export const memeRouter = createTRPCRouter({
     }),
 
   getPaginated: publicProcedure
-    .input(z.object({ limit: z.number().min(1), cursor: z.number().min(1).nullish() }))
+    .input(z.object({ limit: z.number().min(1), cursor: z.string().nullish() }))
     .query(async ({ input, ctx }) => {
       const memes = await ctx.prisma.meme.findMany({
         take: input.limit + 1, // Take an extra meme to use as the next cursor
         cursor: input.cursor ? { id: input.cursor } : undefined,
         where: { hidden: false },
-        orderBy: { id: 'desc' },
+        orderBy: { createdAt: 'desc' },
         include: {
           author: true,
           _count: {
