@@ -1,4 +1,3 @@
-// @ts-check
 import bundleAnalyzer from '@next/bundle-analyzer';
 import { env } from './src/env.mjs';
 
