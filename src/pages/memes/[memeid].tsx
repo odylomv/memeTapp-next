@@ -14,8 +14,8 @@ const MemePage = () => {
         <link rel="icon" href="favicon.ico" />
       </Head>
 
-      <main className="flex h-screen flex-col items-center bg-neutral-900 text-gray-100">
-        <Navbar page=""></Navbar>
+      <main className="absolute inset-0 flex flex-col items-center bg-neutral-900 text-gray-100">
+        <Navbar />
         <div className="flex w-full justify-center overflow-y-scroll p-4">
           <p>Meme: {memeid}</p>
         </div>

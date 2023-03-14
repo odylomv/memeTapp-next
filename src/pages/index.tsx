@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="favicon.ico" />
       </Head>
 
-      <main className="flex h-screen flex-col items-center bg-neutral-900 text-gray-100">
+      <main className="absolute inset-0 flex flex-col items-center bg-neutral-900 text-gray-100">
         <Navbar page="Browse" />
 
         <div className="flex w-full justify-center overflow-y-scroll p-4">

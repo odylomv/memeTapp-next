@@ -11,7 +11,7 @@ const navigation = [
   { name: 'Search', href: '#' },
 ];
 
-export const Navbar: React.FC<{ page: string }> = ({ page }) => {
+export const Navbar: React.FC<{ page?: string }> = ({ page = '' }) => {
   return (
     <Disclosure as="nav" className="sticky top-0 z-20 w-full bg-neutral-800">
       {({ open }) => (

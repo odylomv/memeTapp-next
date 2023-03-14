@@ -12,7 +12,7 @@ const Upload: NextPage = () => {
         <link rel="icon" href="favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center bg-neutral-900 text-gray-100">
+      <main className="absolute inset-0 flex flex-col items-center bg-neutral-900 text-gray-100">
         <Navbar page="Upload" />
 
         <div className="flex w-full max-w-7xl flex-1 flex-col items-center justify-center p-4">
