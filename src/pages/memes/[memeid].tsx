@@ -13,7 +13,7 @@ import SuperJSON from 'superjson';
 const MemePage = () => {
   const router = useRouter();
   const { memeid } = router.query;
-  const { data } = api.meme.getMeme.useQuery({ id: memeid });
+  const { data } = api.meme.getMeme.useQuery({ id: memeid as string });
 
   return (
     <>
