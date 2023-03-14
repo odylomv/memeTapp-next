@@ -16,7 +16,7 @@ export const memeRouter = createTRPCRouter({
         hidden: false,
       },
       include: {
-        author: true,
+        author: { select: { id: true, image: true, name: true } },
         _count: {
           select: {
             likes: true,
@@ -28,8 +28,16 @@ export const memeRouter = createTRPCRouter({
 
     if (!meme) return null;
 
+    let like = null;
+    if (ctx.auth && ctx.auth.userId)
+      like = await ctx.prisma.memeLike.findUnique({
+        where: { userId_memeId: { memeId: meme.id, userId: ctx.auth.userId } },
+      });
+
     return {
-      meme: { ...meme, imageURL: getMemeImageURL(meme.id, meme.authorId) },
+      ...meme,
+      imageURL: getMemeImageURL(meme.id, meme.authorId),
+      isLiked: !!like,
     };
   }),
 
