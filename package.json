@@ -11,7 +11,8 @@
     "analyze": "dotenv -v ANALYZE=true next build",
     "migrate": "dotenv -e .env.development.local prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
-    "docker": "docker compose down && docker compose build && docker compose up -d"
+    "docker": "docker compose down && docker compose build && docker compose up -d",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.11.5",
