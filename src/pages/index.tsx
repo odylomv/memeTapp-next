@@ -4,7 +4,7 @@ import { Navbar } from '@mtp/components/Navbar/Navbar';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';
 import { api } from '@mtp/utils/api';
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const auth = getAuth(req);
 
-  const ssg = createProxySSGHelpers({
+  const ssg = createServerSideHelpers({
     router: appRouter,
     ctx: createInnerTRPCContext({ auth }),
     transformer: SuperJSON,
