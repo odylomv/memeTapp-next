@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import { api } from '@mtp/utils/api';
+import { api } from '@mtp/lib/api';
 import { Fragment, useRef, useState } from 'react';
 import { type MemeCardModel } from '../MemeCardContext';
 
@@ -92,12 +92,12 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-xl shadow-2xl transition-all sm:w-full sm:max-w-lg">
-                  <div className="bg-neutral-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="bg-neutral-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-700 sm:mx-0 sm:h-10 sm:w-10">
                         <ExclamationTriangleIcon className="h-6 w-6 text-amber-500" aria-hidden="true" />
                       </div>
-                      <div className="mt-3 text-center sm:mt-0  sm:ml-4 sm:text-left">
+                      <div className="mt-3 text-center sm:ml-4  sm:mt-0 sm:text-left">
                         <Dialog.Title as="h3" className="text-lg font-medium leading-6  text-neutral-200">
                           Delete meme
                         </Dialog.Title>
@@ -133,7 +133,7 @@ const OptionsPopup: React.FC<{ meme: MemeCardModel }> = ({ meme }) => {
                       type="button"
                       className="mt-3 inline-flex w-full justify-center rounded-md border border-transparent
                     bg-neutral-700 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-neutral-900
-                      focus:outline-none focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 sm:mt-0 sm:ml-3
+                      focus:outline-none focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 sm:ml-3 sm:mt-0
                       sm:w-auto sm:text-sm"
                       ref={cancelButtonRef}
                       onClick={() => setModalOpen(false)}

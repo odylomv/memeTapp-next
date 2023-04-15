@@ -1,6 +1,6 @@
 import { BookmarkIcon, ChatBubbleLeftIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
-import { api } from '@mtp/utils/api';
+import { api } from '@mtp/lib/api';
 import { useServerError } from '../../ServerErrorContext';
 import { useMemeCardContext } from '../MemeCardContext';
 

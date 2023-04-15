@@ -1,5 +1,5 @@
 import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
-import { api } from '@mtp/utils/api';
+import { api } from '@mtp/lib/api';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useServerError } from '../ServerErrorContext';
@@ -58,7 +58,7 @@ const UploadMeme = () => {
                 rounded-lg border-2 border-solid border-neutral-600 bg-neutral-700 
               hover:border-neutral-500  hover:bg-neutral-600"
             >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <div className="flex flex-col items-center justify-center pb-6 pt-5">
                 <ArrowUpTrayIcon className="h-8 w-8 text-neutral-400 group-hover:scale-110" />
                 {isDragAccept && <p className="text-sm text-neutral-400">Drop your meme here</p>}
                 {isDragReject && <p className="text-xl text-red-400">Invalid file type</p>}

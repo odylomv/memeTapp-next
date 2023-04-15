@@ -1,4 +1,4 @@
-import { type RouterOutputs } from '@mtp/utils/api';
+import { type RouterOutputs } from '@mtp/lib/api';
 import { createContext, useContext } from 'react';
 
 // Get type from type[]

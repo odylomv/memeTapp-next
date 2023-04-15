@@ -1,30 +1,35 @@
-import { ClerkProvider } from '@clerk/nextjs';
-import { dark } from '@clerk/themes';
+import RootLayout from '@mtp/components/RootLayout';
 import ServerErrorProvider from '@mtp/components/ServerErrorContext';
+import ThemedClerkProvider from '@mtp/components/ThemedClerkProvider';
+import { api } from '@mtp/lib/api';
 import '@mtp/styles/globals.css';
-import { api } from '@mtp/utils/api';
+import { ThemeProvider } from 'next-themes';
 import { type AppType } from 'next/app';
+import { Commissioner } from 'next/font/google';
+import NextNProgress from 'nextjs-progressbar';
+
+const font = Commissioner({ subsets: ['latin'] });
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <ClerkProvider
-      {...pageProps}
-      appearance={{
-        baseTheme: dark,
-        layout: { socialButtonsPlacement: 'bottom', socialButtonsVariant: 'iconButton' },
-        elements: {
-          formButtonPrimary: 'bg-red-700 hover:bg-red-600',
-          logoBox: 'h-12 justify-center',
-          modalBackdrop: 'flex justify-center pt-12 h-screen',
-          card: 'bg-neutral-900',
-          formFieldLabel: 'pb-2',
-        },
-      }}
-    >
-      <ServerErrorProvider>
-        <Component {...pageProps} />
-      </ServerErrorProvider>
-    </ClerkProvider>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${font.style.fontFamily};
+        }
+      `}</style>
+
+      <ThemeProvider attribute="class">
+        <ThemedClerkProvider pageProps={pageProps}>
+          <ServerErrorProvider>
+            <RootLayout>
+              <NextNProgress height={2} color="red" startPosition={0.5} stopDelayMs={100} />
+              <Component {...pageProps} />
+            </RootLayout>
+          </ServerErrorProvider>
+        </ThemedClerkProvider>
+      </ThemeProvider>
+    </>
   );
 };
 

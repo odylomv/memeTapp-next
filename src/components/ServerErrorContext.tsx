@@ -1,19 +1,19 @@
 import { type AppRouter } from '@mtp/server/api/root';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import React, { createContext, useContext, useState } from 'react';
-import LoginModal from './LoginModal';
+import LoginDialog from './NewLoginModal';
 
 const ServerErrorContext = createContext<
   { onServerError: (error: TRPCClientErrorLike<AppRouter>) => void } | undefined
 >(undefined);
 
 const ServerErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
   const onServerError = (error: TRPCClientErrorLike<AppRouter>) => {
     switch (error.data?.code) {
       case 'UNAUTHORIZED':
-        setOpenLoginModal(true);
+        setOpenLoginDialog(true);
         break;
       default:
         console.log(error.data?.code);
@@ -23,7 +23,13 @@ const ServerErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <ServerErrorContext.Provider value={{ onServerError }}>
       {children}
-      <LoginModal open={openLoginModal} onClose={() => setOpenLoginModal(false)}></LoginModal>
+      <LoginDialog
+        open={openLoginDialog}
+        onClose={() => {
+          console.log('login modal closed');
+          setOpenLoginDialog(false);
+        }}
+      ></LoginDialog>
     </ServerErrorContext.Provider>
   );
 };

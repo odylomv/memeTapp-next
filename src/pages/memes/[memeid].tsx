@@ -1,9 +1,9 @@
 import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
 import MemeCard from '@mtp/components/MemeCard/MemeCard';
 import { Navbar } from '@mtp/components/Navbar/Navbar';
+import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';
-import { api } from '@mtp/utils/api';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 
 import { type GetServerSideProps } from 'next';
