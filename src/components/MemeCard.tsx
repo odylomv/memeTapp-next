@@ -3,7 +3,6 @@ import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { useServerError } from './providers/ServerErrorContext';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/Avatar';
 import { Button } from './ui/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/Tooltip';
 
@@ -33,14 +32,17 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
   if (!meme) return <div>No meme</div>;
 
   return (
-    <div className="flex flex-col rounded-md bg-neutral-100 text-neutral-400 shadow-lg dark:bg-neutral-900">
+    <div className="flex flex-col rounded-md bg-neutral-100 text-neutral-600 shadow-lg dark:bg-neutral-900 dark:text-neutral-400">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 pl-2">
           <Button variant={'link'} size={'sm'} className="gap-2 p-0 text-sm">
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={meme.author.image} alt={meme.author.name} />
-              <AvatarFallback>{meme.author.name.charAt(0)}</AvatarFallback>
-            </Avatar>
+            <Image
+              src={meme.author.image}
+              width={50}
+              height={50}
+              className="h-6 w-6 rounded-full object-cover"
+              alt={meme.author.name}
+            />
             <p>{meme.author.name}</p>
           </Button>
           {/* Meme post elapsed time */}
