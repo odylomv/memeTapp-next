@@ -1,6 +1,7 @@
 import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
-import NavbarLayout from '@mtp/components/NavbarLayout';
-import NewMemeCard from '@mtp/components/NewMemeCard';
+import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
+import MemeCard from '@mtp/components/MemeCard';
+import UploadMemeButton from '@mtp/components/UploadMemeButton';
 import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';
@@ -19,13 +20,17 @@ export default function Explore() {
     <NavbarLayout currentLink="Explore">
       <div className="flex justify-center pt-4">
         <div className="flex max-w-7xl flex-col items-center gap-4 px-2">
-          {/* <ProtectedButton onClick={() => console.log('test')}>Test</ProtectedButton> */}
+          <div className="flex w-full items-center justify-between">
+            <span className="pl-4 font-semibold sm:text-xl">Latest Memes</span>
+            <UploadMemeButton />
+          </div>
+
           {data ? (
             data.pages.map(page => {
-              return page.memes.map((meme, index) => <NewMemeCard key={meme.id} meme={meme} priority={index < 2} />);
+              return page.memes.map((meme, index) => <MemeCard key={meme.id} meme={meme} priority={index < 2} />);
             })
           ) : (
-            <p>Loading..</p>
+            <p>Loading...</p>
           )}
 
           {/* Intersection Observer for Infinite Scroll */}

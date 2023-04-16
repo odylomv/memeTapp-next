@@ -1,6 +1,7 @@
-import RootLayout from '@mtp/components/RootLayout';
-import ServerErrorProvider from '@mtp/components/ServerErrorContext';
-import ThemedClerkProvider from '@mtp/components/ThemedClerkProvider';
+import RootLayout from '@mtp/components/layouts/RootLayout';
+import ServerErrorProvider from '@mtp/components/providers/ServerErrorContext';
+import ThemedClerkProvider from '@mtp/components/providers/ThemedClerkProvider';
+import { TooltipProvider } from '@mtp/components/ui/Tooltip';
 import { api } from '@mtp/lib/api';
 import '@mtp/styles/globals.css';
 import { ThemeProvider } from 'next-themes';
@@ -8,7 +9,10 @@ import { type AppType } from 'next/app';
 import { Commissioner } from 'next/font/google';
 import NextNProgress from 'nextjs-progressbar';
 
-const font = Commissioner({ subsets: ['latin'] });
+const font = Commissioner({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+});
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -22,10 +26,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <ThemeProvider attribute="class">
         <ThemedClerkProvider pageProps={pageProps}>
           <ServerErrorProvider>
-            <RootLayout>
-              <NextNProgress height={2} color="red" startPosition={0.5} stopDelayMs={100} />
-              <Component {...pageProps} />
-            </RootLayout>
+            <TooltipProvider>
+              <RootLayout>
+                <NextNProgress height={2} color="red" startPosition={0.5} stopDelayMs={100} />
+                <Component {...pageProps} />
+              </RootLayout>
+            </TooltipProvider>
           </ServerErrorProvider>
         </ThemedClerkProvider>
       </ThemeProvider>

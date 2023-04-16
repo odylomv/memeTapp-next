@@ -13,7 +13,7 @@ export default function ThemeSwitch() {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <div className="w-[120px]"></div>;
   }
 
   return (

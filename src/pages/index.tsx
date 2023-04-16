@@ -1,93 +1,35 @@
-import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
-import MemeCard from '@mtp/components/MemeCard/MemeCard';
-import { Navbar } from '@mtp/components/Navbar/Navbar';
-import { api } from '@mtp/lib/api';
-import { appRouter } from '@mtp/server/api/root';
-import { createInnerTRPCContext } from '@mtp/server/api/trpc';
-import { createServerSideHelpers } from '@trpc/react-query/server';
-import type { GetServerSideProps, NextPage } from 'next';
-import Head from 'next/head';
-import { InView } from 'react-intersection-observer';
-import SuperJSON from 'superjson';
+import banner from '@assets/memeTapp_banner.png';
+import banner_black from '@assets/memeTapp_banner_black.png';
+import ThemeSwitch from '@mtp/components/ThemeSwitch';
+import { Button } from '@mtp/components/ui/Button';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Link from 'next/link';
 
-const Home: NextPage = () => {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
-    { limit: 5 },
-    { getNextPageParam: lastPage => lastPage.nextCursor }
-  );
+export default function NewHome() {
+  const { resolvedTheme } = useTheme();
 
   return (
-    <>
-      <Head>
-        <title>memeTapp</title>
-        <meta name="description" content="memeTapp is a Meme social media platform" />
-        <link rel="icon" href="favicon.ico" />
-      </Head>
+    <div className="flex flex-1 flex-col items-center justify-center gap-4">
+      <div className="absolute right-4 top-4">
+        <ThemeSwitch />
+      </div>
 
-      <main className="absolute inset-0 flex flex-col items-center bg-neutral-900 text-gray-100">
-        <Navbar page="Browse" />
-
-        <div className="flex w-full justify-center overflow-y-scroll p-4">
-          <div className="flex max-w-7xl flex-col gap-4">
-            {data ? (
-              data.pages.map((page, index) => {
-                return page.memes.map(meme => (
-                  <MemeCard
-                    key={meme.id}
-                    meme={meme}
-                    content={
-                      <>
-                        <MemeCard.Header></MemeCard.Header>
-                        <MemeCard.Image priority={index < 2}></MemeCard.Image>
-                        <MemeCard.Footer></MemeCard.Footer>
-                      </>
-                    }
-                  />
-                ));
-              })
-            ) : (
-              <p>Loading..</p>
-            )}
-
-            {/* Intersection Observer for Infinite Scroll */}
-            <InView
-              as="div"
-              className="flex justify-center pb-4"
-              onChange={inView => {
-                if (inView) {
-                  console.log('more memes');
-                  void fetchNextPage();
-                }
-              }}
-            >
-              <span>
-                {isFetchingNextPage ? 'Loading more memes...' : hasNextPage ? 'Older memes' : 'Nothing more to load'}
-              </span>
-            </InView>
-          </div>
-        </div>
-      </main>
-    </>
+      <Image
+        className="block h-24 w-auto"
+        src={resolvedTheme === 'light' ? banner_black : banner}
+        alt="memeTapp"
+        sizes="350px"
+      />
+      <p>
+        A meme social media platform created by{' '}
+        <Link href="https://github.com/odylomv" className="underline-offset-4 hover:underline">
+          @odylomv
+        </Link>
+      </p>
+      <Link href="/explore">
+        <Button variant={'destructive'}>Explore memes</Button>
+      </Link>
+    </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const auth = getAuth(req);
-
-  const ssg = createServerSideHelpers({
-    router: appRouter,
-    ctx: createInnerTRPCContext({ auth }),
-    transformer: SuperJSON,
-  });
-
-  await ssg.meme.getPaginated.prefetchInfinite({ limit: 5 });
-
-  return {
-    props: {
-      trpcState: ssg.dehydrate(),
-      ...buildClerkProps(req),
-    },
-  };
-};
-
-export default Home;
+}

@@ -20,7 +20,7 @@ const config = {
       },
     },
   },
-  plugins: [require('@headlessui/tailwindcss'), require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate')],
 };
 
 module.exports = config;

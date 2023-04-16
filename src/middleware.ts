@@ -4,12 +4,12 @@ import { NextResponse } from 'next/server';
 export default withClerkMiddleware(request => {
   console.log('Middleware is running');
 
-  if (request.nextUrl.pathname !== '/new') return NextResponse.next();
+  if (request.nextUrl.pathname !== '/') return NextResponse.next();
 
   const { userId } = getAuth(request);
 
   if (userId) {
-    const exploreUrl = new URL('/new/explore', request.url);
+    const exploreUrl = new URL('/explore', request.url);
     return NextResponse.redirect(exploreUrl);
   }
 

@@ -1,11 +1,11 @@
 import banner from '@assets/memeTapp_banner.png';
 import banner_black from '@assets/memeTapp_banner_black.png';
-import { Menu, Moon, Sun, SunMoon } from 'lucide-react';
+import { Github, Menu, Moon, Sun, SunMoon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import ThemeSwitch from './ThemeSwitch';
-import { Button } from './ui/Button';
+import ThemeSwitch from '../ThemeSwitch';
+import { Button } from '../ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,18 +19,26 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from './ui/DropdownMenu';
-import { Separator } from './ui/Separator';
+} from '../ui/DropdownMenu';
+import { Separator } from '../ui/Separator';
 
 const navigation = [
-  { name: 'Explore', href: '/new/explore' },
-  { name: 'Upload', href: '/new/upload' },
+  { name: 'Explore', href: '/explore' },
+  { name: 'Profile', href: '/profile' },
   { name: 'Search', href: '#' },
 ] as const;
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '../ui/NavigationMenu';
 
 export default function NavbarLayout({
   children,
@@ -49,32 +57,47 @@ export default function NavbarLayout({
       </Head>
 
       <div className="flex flex-1 flex-col overflow-auto">
-        <div className="flex justify-center bg-neutral-100 dark:bg-neutral-900">
+        <div className="flex justify-center bg-neutral-100 transition-colors dark:bg-neutral-900">
           <div className="flex w-full max-w-7xl justify-between p-2">
             <div className="mr-4 md:hidden">
               <NavbarMenu />
             </div>
+            <div className="flex">
+              <Link href="/" className="flex items-center">
+                <Image
+                  className="block h-8 w-auto md:h-10"
+                  src={resolvedTheme === 'light' ? banner_black : banner}
+                  alt="memeTapp"
+                  sizes="150px"
+                  priority
+                />
+                {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
+              </Link>
 
-            <Link href="/new" className="flex items-center">
-              <Image
-                className="block h-8 w-auto md:h-10"
-                src={resolvedTheme === 'light' ? banner_black : banner}
-                alt="memeTapp"
-                sizes="150px"
-                priority
-              />
-              {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
-            </Link>
-
-            <div className="hidden gap-4 pl-8 md:flex">
-              {navigation.map(item => (
-                <Link key={item.name} href={item.href} passHref legacyBehavior>
-                  <Button variant={item.name === currentLink ? 'subtle' : 'ghost'}>{item.name}</Button>
-                </Link>
-              ))}
+              <NavigationMenu className="hidden pl-8 md:block">
+                <NavigationMenuList>
+                  {navigation.map(item => (
+                    <NavigationMenuItem key={item.name}>
+                      <Link href={item.href} legacyBehavior passHref>
+                        <NavigationMenuLink
+                          className={cn(
+                            navigationMenuTriggerStyle(),
+                            currentLink === item.name && 'bg-neutral-200 dark:bg-neutral-800'
+                          )}
+                        >
+                          {item.name}
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
             </div>
 
-            <div className="flex items-center gap-3 md:ml-auto">
+            <div className="flex items-center gap-3">
+              <Link href="https://github.com/odylomv">
+                <Github className="h-5 w-5 text-neutral-500 dark:text-neutral-400" fill="currentColor" />
+              </Link>
               <div className="hidden md:block">
                 <ThemeSwitch />
               </div>

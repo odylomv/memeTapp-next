@@ -26,7 +26,7 @@ const NavigationMenuList = forwardRef<
 >(({ className, ...props }, ref) => (
   <NavigationMenuPrimitive.List
     ref={ref}
-    className={cn('group flex flex-1 list-none items-center justify-center', className)}
+    className={cn('group flex flex-1 list-none items-center justify-center gap-2', className)}
     {...props}
   />
 ));
@@ -35,7 +35,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:bg-neutral-100 disabled:opacity-50 dark:focus:bg-neutral-800 disabled:pointer-events-none bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:text-neutral-100 dark:hover:text-neutral-100 data-[state=open]:bg-neutral-50 dark:data-[state=open]:bg-neutral-800 data-[active]:bg-neutral-50 dark:data-[active]:bg-neutral-800 h-10 py-2 px-4 group w-max'
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-100 dark:hover:text-neutral-100 data-[state=open]:bg-neutral-50 dark:data-[state=open]:bg-neutral-800 data-[active]:bg-neutral-50 dark:data-[active]:bg-neutral-800 h-10 py-2 px-4 group w-max'
 );
 
 const NavigationMenuTrigger = forwardRef<

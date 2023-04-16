@@ -2,11 +2,12 @@ import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
-import { useServerError } from './ServerErrorContext';
+import { useServerError } from './providers/ServerErrorContext';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/Avatar';
 import { Button } from './ui/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/Tooltip';
 
-export default function NewMemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
+export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
   const { onServerError } = useServerError();
   const mutateLikes = api.meme.likeMeme.useMutation();
 
@@ -62,22 +63,44 @@ export default function NewMemeCard({ meme, priority }: { meme: RouterOutputs['m
       />
       <div className="flex justify-between">
         <div className="flex gap-2">
-          <Button variant={'ghost'} size={'sm'} className="gap-2" onClick={onLike}>
-            <Heart
-              className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-neutral-500'}`}
-              fill={meme.isLiked ? 'currentColor' : 'none'}
-            />
-            <span>{meme._count.likes}</span>
-          </Button>
-          <Button variant={'ghost'} size={'sm'} className="gap-2">
-            <MessageCircle className="h-5 w-5 text-neutral-500" fill="currentColor" />
-            <span>{meme._count.comments}</span>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={'ghost'} size={'sm'} className="gap-2" onClick={onLike}>
+                <Heart
+                  className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-neutral-500'}`}
+                  fill={meme.isLiked ? 'currentColor' : 'none'}
+                />
+                <span>{meme._count.likes}</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{meme.isLiked ? 'Unlike meme' : 'Like meme'}</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={'ghost'} size={'sm'} className="gap-2">
+                <MessageCircle className="h-5 w-5 text-neutral-500" fill="currentColor" />
+                <span>{meme._count.comments}</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View comments</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div>
-          <Button variant={'ghost'} size={'sm'}>
-            <Bookmark className="h-5 w-5 text-neutral-500" fill="currentColor" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={'ghost'} size={'sm'}>
+                <Bookmark className="h-5 w-5 text-neutral-500" fill="currentColor" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Bookmark meme (coming soon)</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </div>
