@@ -47,8 +47,6 @@ export default function NavbarLayout({
   children: React.ReactNode;
   currentLink: (typeof navigation)[number]['name'];
 }) {
-  const { resolvedTheme } = useTheme();
-
   return (
     <>
       <Head>
@@ -63,16 +61,7 @@ export default function NavbarLayout({
               <NavbarMenu />
             </div>
             <div className="flex">
-              <Link href="/" className="flex items-center">
-                <Image
-                  className="block h-8 w-auto md:h-10"
-                  src={resolvedTheme === 'light' ? banner_black : banner}
-                  alt="memeTapp"
-                  sizes="150px"
-                  priority
-                />
-                {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
-              </Link>
+              <NavbarLogo />
 
               <NavigationMenu className="hidden pl-8 md:block">
                 <NavigationMenuList>
@@ -182,5 +171,29 @@ function AuthButton() {
         </SignInButton>
       </SignedOut>
     </>
+  );
+}
+
+function NavbarLogo() {
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <Link href="/" className="flex items-center">
+      <Image
+        className="block h-8 w-auto md:h-10"
+        src={resolvedTheme === 'light' ? banner_black : banner}
+        alt="memeTapp"
+        sizes="150px"
+        priority
+      />
+      {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
+    </Link>
   );
 }
