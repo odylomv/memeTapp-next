@@ -120,7 +120,7 @@ function NavbarMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'}>
+        <Button variant={'ghost'} aria-label="Navigation menu">
           <Menu className="text-neutral-400" />
         </Button>
       </DropdownMenuTrigger>
