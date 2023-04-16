@@ -95,7 +95,7 @@ export default function NavbarLayout({
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="https://github.com/odylomv">
+              <Link href="https://github.com/odylomv" aria-label="Developer GitHub profile">
                 <Github className="h-5 w-5 text-neutral-500 dark:text-neutral-400" fill="currentColor" />
               </Link>
               <div className="hidden md:block">

@@ -33,12 +33,12 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
   if (!meme) return <div>No meme</div>;
 
   return (
-    <div className="flex flex-col rounded-md bg-neutral-100 text-neutral-500 shadow-lg dark:bg-neutral-900">
+    <div className="flex flex-col rounded-md bg-neutral-100 text-neutral-400 shadow-lg dark:bg-neutral-900">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 pl-2">
           <Button variant={'link'} size={'sm'} className="gap-2 p-0 text-sm">
             <Avatar className="h-6 w-6">
-              <AvatarImage src={meme.author.image} />
+              <AvatarImage src={meme.author.image} alt={meme.author.name} />
               <AvatarFallback>{meme.author.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <p>{meme.author.name}</p>
@@ -48,7 +48,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           <span className="text-xs">{dateFromNow(meme.createdAt, false)}</span>
         </div>
 
-        <Button variant={'ghost'} size={'sm'}>
+        <Button variant={'ghost'} size={'sm'} aria-label="Options">
           <MoreVertical className="h-5 w-5 text-neutral-500" />
         </Button>
       </div>
@@ -93,7 +93,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant={'ghost'} size={'sm'}>
+              <Button variant={'ghost'} size={'sm'} aria-label="Bookmark">
                 <Bookmark className="h-5 w-5 text-neutral-500" fill="currentColor" />
               </Button>
             </TooltipTrigger>
