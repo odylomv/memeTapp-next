@@ -1,5 +1,7 @@
 import logo from '@assets/logo.png';
-import { SignUpButton } from '@clerk/nextjs';
+import { useClerk } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import {
   AlertDialog,
@@ -13,7 +15,10 @@ import {
 } from './ui/AlertDialog';
 import { Separator } from './ui/Separator';
 
-export default function LoginDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function SignUpDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const clerk = useClerk();
+  const { resolvedTheme } = useTheme();
+
   return (
     <AlertDialog
       open={open}
@@ -36,9 +41,12 @@ export default function LoginDialog({ open, onClose }: { open: boolean; onClose:
         <Separator />
         <AlertDialogFooter className="px-6 py-3 dark:bg-neutral-800 sm:rounded-b-md">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <SignUpButton mode="modal">
-            <AlertDialogAction>Sign Up</AlertDialogAction>
-          </SignUpButton>
+
+          <AlertDialogAction
+            onClick={() => clerk.openSignUp({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })}
+          >
+            Sign Up
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -13,7 +13,7 @@ export default function UploadMemeButton() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [file, setFile] = useState<File | undefined>(undefined);
-  const { onServerError, showLoginDialog } = useServerError();
+  const { onServerError, showSignUpDialog } = useServerError();
 
   const memeUploader = api.meme.uploadMeme.useMutation();
   const memeEnabler = api.meme.enableMeme.useMutation();
@@ -38,7 +38,7 @@ export default function UploadMemeButton() {
   };
   return (
     <>
-      <Button variant={'ghost'} onClick={() => void (user ? setDialogOpen(true) : showLoginDialog())}>
+      <Button variant={'ghost'} onClick={() => void (user ? setDialogOpen(true) : showSignUpDialog())}>
         <Plus className="mr-2 h-6 w-6 text-red-600" />
         <span className="text-lg font-semibold">New meme</span>
       </Button>

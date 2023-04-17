@@ -1,6 +1,6 @@
 import banner from '@assets/memeTapp_banner.png';
 import banner_black from '@assets/memeTapp_banner_black.png';
-import { Github, Menu, Moon, Sun, SunMoon } from 'lucide-react';
+import { Github, LogOut, Menu, Moon, Settings, Sun, SunMoon, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,16 +22,12 @@ import {
 } from '../ui/DropdownMenu';
 import { Separator } from '../ui/Separator';
 
-const navigation = [
-  { name: 'Explore', href: '/explore' },
-  { name: 'Profile', href: '/profile' },
-  { name: 'Search', href: '#' },
-] as const;
-
 import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import CustomSignInButton from '../CustomSignInButton';
+
+import { useAuth, useClerk, useUser } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -39,6 +35,12 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '../ui/NavigationMenu';
+
+const navigation = [
+  { name: 'Explore', href: '/explore' },
+  { name: 'Profile', href: '/profile' },
+  { name: 'Search', href: '#' },
+] as const;
 
 export default function NavbarLayout({
   children,
@@ -59,7 +61,12 @@ export default function NavbarLayout({
           <div className="flex w-full max-w-7xl justify-between p-2">
             <MobileNavbarMenu />
             <div className="flex">
-              <NavbarLogo />
+              {/* memeTapp logo */}
+              <Link href="/" className="flex items-center">
+                <Image className=" hidden h-auto w-[150px] dark:block" src={banner} alt="memeTapp" priority />
+                <Image className="block h-auto w-[150px] dark:hidden" src={banner_black} alt="memeTapp" priority />
+                {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
+              </Link>
 
               <NavigationMenu className="hidden pl-8 md:block">
                 <NavigationMenuList>
@@ -82,7 +89,6 @@ export default function NavbarLayout({
             </div>
 
             <div className="flex items-center gap-2">
-              {/* <AuthButton /> */}
               <CustomSignInButton />
               <Link
                 href="https://github.com/odylomv"
@@ -114,14 +120,14 @@ function MobileNavbarMenu() {
 
   if (!mounted) {
     return (
-      <Button variant={'ghost'}>
+      <Button variant={'ghost'} className="md:hidden">
         <Menu className="text-neutral-400" />
       </Button>
     );
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant={'ghost'} aria-label="Navigation menu" className="md:hidden">
           <Menu className="text-neutral-400" />
@@ -131,7 +137,7 @@ function MobileNavbarMenu() {
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {navigation.map(item => (
-          <DropdownMenuItem key={item.name}>
+          <DropdownMenuItem key={item.name} asChild>
             <Link href={item.href}>{item.name}</Link>
           </DropdownMenuItem>
         ))}
@@ -162,47 +168,66 @@ function MobileNavbarMenu() {
   );
 }
 
-// function AuthButton() {
-//   return (
-//     <>
-//       <SignedIn>
-//         <UserButton />
-//       </SignedIn>
-//       <SignedOut>
-//         <SignInButton mode="modal">
-//           <Button variant={'ghost'}>Login</Button>
-//         </SignInButton>
-//       </SignedOut>
-//     </>
-//   );
-// }
-
-function NavbarLogo() {
-  const [mounted, setMounted] = useState(false);
+export function CustomSignInButton() {
+  const clerk = useClerk();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const { resolvedTheme } = useTheme();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  if (isSignedIn) {
+    if (!user)
+      return (
+        <Button variant={'ghost'} size={'sm'} className="gap-2 rounded-full p-0">
+          <div className="h-8 w-8 animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-800" />
+        </Button>
+      );
 
-  if (!mounted)
     return (
-      <div className="flex items-center">
-        <div className="w-[150px]"></div>
-        {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
-      </div>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button variant={'ghost'} size={'sm'} className="gap-2 rounded-full p-0">
+            <Image
+              src={user.profileImageUrl}
+              width={50}
+              height={50}
+              className="h-8 w-8 rounded-full object-cover"
+              alt={user.username ?? 'user'}
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="">
+          <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            onClick={() =>
+              clerk.openUserProfile({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })
+            }
+          >
+            <User className="mr-2 h-4 w-4" />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled>
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-red-500" onClick={() => void clerk.signOut()}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
+  }
 
   return (
-    <Link href="/" className="flex items-center">
-      <Image
-        className="block h-auto w-[150px]"
-        src={resolvedTheme === 'light' ? banner_black : banner}
-        alt="memeTapp"
-        sizes="150px"
-        priority
-      />
-      {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
-    </Link>
+    <>
+      <Button
+        variant={'ghost'}
+        onClick={() => clerk.openSignIn({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })}
+      >
+        <span className="">Login</span>
+      </Button>
+    </>
   );
 }
