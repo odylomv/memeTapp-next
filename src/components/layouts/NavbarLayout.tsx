@@ -57,10 +57,8 @@ export default function NavbarLayout({
       <div className="flex flex-1 flex-col overflow-auto">
         <div className="flex justify-center bg-neutral-100 transition-colors dark:bg-neutral-900">
           <div className="flex w-full max-w-7xl justify-between p-2">
-            <div className="mr-4 md:hidden">
-              <NavbarMenu />
-            </div>
             <div className="flex">
+              <MobileNavbarMenu />
               <NavbarLogo />
 
               <NavigationMenu className="hidden pl-8 md:block">
@@ -83,14 +81,14 @@ export default function NavbarLayout({
               </NavigationMenu>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
+              <AuthButton />
               <Link href="https://github.com/odylomv" aria-label="Developer GitHub profile">
                 <Github className="h-5 w-5 text-neutral-500 dark:text-neutral-400" fill="currentColor" />
               </Link>
               <div className="hidden md:block">
                 <ThemeSwitch />
               </div>
-              <AuthButton />
             </div>
           </div>
         </div>
@@ -101,7 +99,7 @@ export default function NavbarLayout({
   );
 }
 
-function NavbarMenu() {
+function MobileNavbarMenu() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -120,7 +118,7 @@ function NavbarMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'} aria-label="Navigation menu">
+        <Button variant={'ghost'} aria-label="Navigation menu" className="md:hidden">
           <Menu className="text-neutral-400" />
         </Button>
       </DropdownMenuTrigger>
@@ -182,12 +180,18 @@ function NavbarLogo() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted)
+    return (
+      <div className="flex items-center">
+        <div className="w-[120px]"></div>
+        {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
+      </div>
+    );
 
   return (
     <Link href="/" className="flex items-center">
       <Image
-        className="block h-8 w-auto md:h-10"
+        className="block h-auto w-[120px] "
         src={resolvedTheme === 'light' ? banner_black : banner}
         alt="memeTapp"
         sizes="150px"
