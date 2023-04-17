@@ -11,7 +11,7 @@ import NextNProgress from 'nextjs-progressbar';
 
 const font = Commissioner({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  display: 'optional',
 });
 
 const MyApp: AppType = ({ Component, pageProps }) => {
