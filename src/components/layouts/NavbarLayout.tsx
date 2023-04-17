@@ -28,10 +28,10 @@ const navigation = [
   { name: 'Search', href: '#' },
 ] as const;
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import CustomSignInButton from '../CustomSignInButton';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -57,8 +57,8 @@ export default function NavbarLayout({
       <div className="flex flex-1 flex-col overflow-auto">
         <div className="flex justify-center bg-neutral-100 transition-colors dark:bg-neutral-900">
           <div className="flex w-full max-w-7xl justify-between p-2">
+            <MobileNavbarMenu />
             <div className="flex">
-              <MobileNavbarMenu />
               <NavbarLogo />
 
               <NavigationMenu className="hidden pl-8 md:block">
@@ -81,9 +81,14 @@ export default function NavbarLayout({
               </NavigationMenu>
             </div>
 
-            <div className="flex items-center gap-4">
-              <AuthButton />
-              <Link href="https://github.com/odylomv" aria-label="Developer GitHub profile">
+            <div className="flex items-center gap-2">
+              {/* <AuthButton /> */}
+              <CustomSignInButton />
+              <Link
+                href="https://github.com/odylomv"
+                aria-label="Developer GitHub profile"
+                className="rounded-md p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+              >
                 <Github className="h-5 w-5 text-neutral-500 dark:text-neutral-400" fill="currentColor" />
               </Link>
               <div className="hidden md:block">
@@ -157,20 +162,20 @@ function MobileNavbarMenu() {
   );
 }
 
-function AuthButton() {
-  return (
-    <>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button variant={'ghost'}>Login</Button>
-        </SignInButton>
-      </SignedOut>
-    </>
-  );
-}
+// function AuthButton() {
+//   return (
+//     <>
+//       <SignedIn>
+//         <UserButton />
+//       </SignedIn>
+//       <SignedOut>
+//         <SignInButton mode="modal">
+//           <Button variant={'ghost'}>Login</Button>
+//         </SignInButton>
+//       </SignedOut>
+//     </>
+//   );
+// }
 
 function NavbarLogo() {
   const [mounted, setMounted] = useState(false);
@@ -183,7 +188,7 @@ function NavbarLogo() {
   if (!mounted)
     return (
       <div className="flex items-center">
-        <div className="w-[120px]"></div>
+        <div className="w-[150px]"></div>
         {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
       </div>
     );
@@ -191,7 +196,7 @@ function NavbarLogo() {
   return (
     <Link href="/" className="flex items-center">
       <Image
-        className="block h-auto w-[120px] "
+        className="block h-auto w-[150px]"
         src={resolvedTheme === 'light' ? banner_black : banner}
         alt="memeTapp"
         sizes="150px"
