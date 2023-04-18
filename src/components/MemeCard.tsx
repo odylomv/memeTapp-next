@@ -3,8 +3,8 @@ import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { useServerError } from './providers/ServerErrorContext';
-import { Button } from './ui/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/Tooltip';
+import { Button } from './ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
   const { onServerError } = useServerError();
@@ -32,7 +32,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
   if (!meme) return <div>No meme</div>;
 
   return (
-    <div className="flex flex-col rounded-md bg-neutral-100 text-neutral-600 shadow-lg dark:bg-neutral-900 dark:text-neutral-400">
+    <div className="flex flex-col rounded-md bg-muted text-muted-foreground shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 pl-2">
           <Button variant={'link'} size={'sm'} className="gap-2 p-0 text-sm">
@@ -51,7 +51,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
         </div>
 
         <Button variant={'ghost'} size={'sm'} aria-label="Options">
-          <MoreVertical className="h-5 w-5 text-neutral-500" />
+          <MoreVertical className="h-5 w-5 text-muted-foreground" />
         </Button>
       </div>
       <Image
@@ -69,7 +69,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
             <TooltipTrigger asChild>
               <Button variant={'ghost'} size={'sm'} className="gap-2" onClick={onLike}>
                 <Heart
-                  className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-neutral-500'}`}
+                  className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-muted-foreground'}`}
                   fill={meme.isLiked ? 'currentColor' : 'none'}
                 />
                 <span>{meme._count.likes}</span>
@@ -83,7 +83,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant={'ghost'} size={'sm'} className="gap-2">
-                <MessageCircle className="h-5 w-5 text-neutral-500" fill="currentColor" />
+                <MessageCircle className="h-5 w-5 text-muted-foreground" fill="currentColor" />
                 <span>{meme._count.comments}</span>
               </Button>
             </TooltipTrigger>
@@ -96,7 +96,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant={'ghost'} size={'sm'} aria-label="Bookmark">
-                <Bookmark className="h-5 w-5 text-neutral-500" fill="currentColor" />
+                <Bookmark className="h-5 w-5 text-muted-foreground" fill="currentColor" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>

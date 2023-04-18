@@ -1,7 +1,7 @@
 import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
-import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
 import MemeCard from '@mtp/components/MemeCard';
 import UploadMemeButton from '@mtp/components/UploadMemeButton';
+import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
 import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';
@@ -18,12 +18,28 @@ export default function Explore() {
 
   return (
     <NavbarLayout currentLink="Explore">
-      <div className="flex justify-center pt-4">
+      <div className="flex justify-center py-4">
         <div className="flex max-w-7xl flex-col items-center gap-4 px-2">
           <div className="flex w-full items-center justify-between">
             <span className="pl-4 font-semibold sm:text-xl">Latest Memes</span>
             <UploadMemeButton />
           </div>
+
+          {/* <div>
+            <Button variant={'default'}>Text</Button>
+            <Button variant={'destructive'}>Text</Button>
+            <Button variant={'ghost'}>Text</Button>
+            <Button variant={'link'}>Text</Button>
+            <Button variant={'outline'}>Text</Button>
+            <Button variant={'secondary'}>Text</Button>
+            </div>
+            <div>
+            <OldButton variant={'default'}>Text</OldButton>
+            <OldButton variant={'destructive'}>Text</OldButton>
+            <OldButton variant={'ghost'}>Text</OldButton>
+            <OldButton variant={'link'}>Text</OldButton>
+            <OldButton variant={'outline'}>Text</OldButton>
+          </div> */}
 
           {data ? (
             data.pages.map(page => {

@@ -1,7 +1,7 @@
 import RootLayout from '@mtp/components/layouts/RootLayout';
 import ServerErrorProvider from '@mtp/components/providers/ServerErrorContext';
 import ThemedClerkProvider from '@mtp/components/providers/ThemedClerkProvider';
-import { TooltipProvider } from '@mtp/components/ui/Tooltip';
+import { TooltipProvider } from '@mtp/components/ui/tooltip';
 import { api } from '@mtp/lib/api';
 import '@mtp/styles/globals.css';
 import { ThemeProvider } from 'next-themes';
@@ -28,7 +28,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           <ServerErrorProvider>
             <TooltipProvider>
               <RootLayout>
-                <NextNProgress height={2} color="red" startPosition={0.5} stopDelayMs={100} />
+                <NextNProgress height={2} color="#dc2626" startPosition={0.5} stopDelayMs={100} />
                 <Component {...pageProps} />
               </RootLayout>
             </TooltipProvider>

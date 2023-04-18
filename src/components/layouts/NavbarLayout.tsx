@@ -1,11 +1,11 @@
 import banner from '@assets/memeTapp_banner.png';
 import banner_black from '@assets/memeTapp_banner_black.png';
-import { Github, LogOut, Menu, Moon, Settings, Sun, SunMoon, User } from 'lucide-react';
+import { Github, Laptop, LogOut, Menu, Moon, Settings, Sun, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import ThemeSwitch from '../ThemeSwitch';
-import { Button } from '../ui/Button';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,8 +19,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '../ui/DropdownMenu';
-import { Separator } from '../ui/Separator';
+} from '../ui/dropdown-menu';
+import { Separator } from '../ui/separator';
 
 import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';
@@ -34,7 +34,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from '../ui/NavigationMenu';
+} from '../ui/navigation-menu';
 
 const navigation = [
   { name: 'Explore', href: '/explore' },
@@ -56,56 +56,54 @@ export default function NavbarLayout({
         <meta name="description" content="memeTapp is a Meme social media platform" />
       </Head>
 
-      <div className="flex flex-1 flex-col overflow-auto">
-        <div className="flex justify-center bg-neutral-100 transition-colors dark:bg-neutral-900">
-          <div className="flex w-full max-w-7xl justify-between p-2">
+      {/* Header navbar */}
+      <div className="sticky top-0 bg-muted transition-colors">
+        {/* Header contents */}
+        <div className="container flex justify-between p-2">
+          <div className="md:hidden">
             <MobileNavbarMenu />
-            <div className="flex">
-              {/* memeTapp logo */}
-              <Link href="/" className="flex items-center">
-                <Image className=" hidden h-auto w-[150px] dark:block" src={banner} alt="memeTapp" priority />
-                <Image className="block h-auto w-[150px] dark:hidden" src={banner_black} alt="memeTapp" priority />
-                {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
-              </Link>
+          </div>
 
-              <NavigationMenu className="hidden pl-8 md:block">
-                <NavigationMenuList>
-                  {navigation.map(item => (
-                    <NavigationMenuItem key={item.name}>
-                      <Link href={item.href} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={cn(
-                            navigationMenuTriggerStyle(),
-                            currentLink === item.name && 'bg-neutral-200 dark:bg-neutral-800'
-                          )}
-                        >
-                          {item.name}
-                        </NavigationMenuLink>
-                      </Link>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+          <div className="flex gap-6">
+            {/* memeTapp logo */}
+            <Link href="/">
+              <Image className="hidden h-10 w-auto dark:inline-block" src={banner} alt="memeTapp" priority />
+              <Image className="inline-block h-10 w-auto dark:hidden" src={banner_black} alt="memeTapp" priority />
+              {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
+            </Link>
 
-            <div className="flex items-center gap-2">
-              <CustomSignInButton />
-              <Link
-                href="https://github.com/odylomv"
-                aria-label="Developer GitHub profile"
-                className="rounded-md p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-              >
-                <Github className="h-5 w-5 text-neutral-500 dark:text-neutral-400" fill="currentColor" />
-              </Link>
-              <div className="hidden md:block">
-                <ThemeSwitch />
-              </div>
+            <NavigationMenu className="hidden md:block">
+              <NavigationMenuList>
+                {navigation.map(item => (
+                  <NavigationMenuItem key={item.name}>
+                    <Link href={item.href} legacyBehavior passHref>
+                      <NavigationMenuLink
+                        className={cn(navigationMenuTriggerStyle(), currentLink === item.name && 'bg-secondary')}
+                      >
+                        {item.name}
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <CustomSignInButton />
+            <Link href="https://github.com/odylomv" aria-label="Developer GitHub profile" legacyBehavior passHref>
+              <Button variant={'ghost'} size={'sm'}>
+                <Github className="h-5 w-5 text-muted-foreground" fill="currentColor" />
+              </Button>
+            </Link>
+            <div className="hidden md:block">
+              <ThemeSwitch />
             </div>
           </div>
         </div>
         <Separator />
-        <div className="flex-1 overflow-x-hidden overflow-y-scroll">{children}</div>
       </div>
+      <div className="flex-1">{children}</div>
     </>
   );
 }
@@ -120,20 +118,20 @@ function MobileNavbarMenu() {
 
   if (!mounted) {
     return (
-      <Button variant={'ghost'} className="md:hidden">
-        <Menu className="text-neutral-400" />
+      <Button variant={'ghost'} aria-label="Navigation menu">
+        <Menu className="text-muted-foreground" />
       </Button>
     );
   }
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'} aria-label="Navigation menu" className="md:hidden">
-          <Menu className="text-neutral-400" />
+        <Button variant={'ghost'} aria-label="Navigation menu">
+          <Menu className="text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="ml-4 w-44 sm:w-72">
+      <DropdownMenuContent className="w-44 sm:w-72">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {navigation.map(item => (
@@ -148,15 +146,15 @@ function MobileNavbarMenu() {
             <DropdownMenuSubContent>
               <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
                 <DropdownMenuRadioItem value="light">
-                  <Sun className="mr-2 h-4 w-4" />
+                  <Sun className="h-4 w-4" />
                   Light
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="dark">
-                  <Moon className="mr-2 h-4 w-4" />
+                  <Moon className="h-4 w-4" />
                   Dark
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="system">
-                  <SunMoon className="mr-2 h-4 w-4" />
+                  <Laptop className="h-4 w-4" />
                   System
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
@@ -177,15 +175,15 @@ export function CustomSignInButton() {
   if (isSignedIn) {
     if (!user)
       return (
-        <Button variant={'ghost'} size={'sm'} className="gap-2 rounded-full p-0">
-          <div className="h-8 w-8 animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-800" />
+        <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
+          <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
         </Button>
       );
 
     return (
-      <DropdownMenu modal={false}>
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={'ghost'} size={'sm'} className="gap-2 rounded-full p-0">
+          <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
             <Image
               src={user.profileImageUrl}
               width={50}
@@ -204,15 +202,15 @@ export function CustomSignInButton() {
               clerk.openUserProfile({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })
             }
           >
-            <User className="mr-2 h-4 w-4" />
+            <User className="h-4 w-4" />
             Account
           </DropdownMenuItem>
           <DropdownMenuItem disabled>
-            <Settings className="mr-2 h-4 w-4" />
+            <Settings className="h-4 w-4" />
             Settings
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-red-500" onClick={() => void clerk.signOut()}>
-            <LogOut className="mr-2 h-4 w-4" />
+          <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void clerk.signOut()}>
+            <LogOut className="h-4 w-4" />
             Sign Out
           </DropdownMenuItem>
         </DropdownMenuContent>

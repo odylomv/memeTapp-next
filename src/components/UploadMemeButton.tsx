@@ -5,8 +5,8 @@ import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import MockMemeCard from './MockMemeCard';
 import { useServerError } from './providers/ServerErrorContext';
-import { Button } from './ui/Button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/Dialog';
+import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
 
 export default function UploadMemeButton() {
   const { user } = useUser();
@@ -39,7 +39,7 @@ export default function UploadMemeButton() {
   return (
     <>
       <Button variant={'ghost'} onClick={() => void (user ? setDialogOpen(true) : showSignUpDialog())}>
-        <Plus className="mr-2 h-6 w-6 text-red-600" />
+        <Plus className="mr-2 h-6 w-6 text-destructive" />
         <span className="text-lg font-semibold">New meme</span>
       </Button>
       <Dialog
@@ -60,7 +60,7 @@ export default function UploadMemeButton() {
           {file ? (
             <>
               <Button
-                variant={'subtle'}
+                variant={'secondary'}
                 onClick={() => {
                   setFile(undefined);
                 }}
@@ -83,14 +83,12 @@ export default function UploadMemeButton() {
               {({ getRootProps, getInputProps, isDragAccept, isDragReject, isDragActive }) => (
                 <div
                   {...getRootProps()}
-                  className="group flex h-64 w-full cursor-pointer flex-col items-center
-              justify-center rounded-md bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800
-              dark:hover:bg-neutral-700"
+                  className="group flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-md bg-secondary hover:bg-border"
                 >
-                  <div className="flex flex-col items-center justify-center text-neutral-800 dark:text-neutral-400">
+                  <div className="flex flex-col items-center justify-center text-muted-foreground">
                     <Upload className="h-8 w-8 group-hover:scale-110" />
                     {isDragAccept && <p className="mt-2 text-lg">Drop your meme here</p>}
-                    {isDragReject && <p className="mt-2 text-xl text-red-500">Invalid file type</p>}
+                    {isDragReject && <p className="mt-2 text-xl text-destructive">Invalid file type</p>}
                     {!isDragActive && (
                       <>
                         <p className="my-2 text-center text-lg">
@@ -109,9 +107,10 @@ export default function UploadMemeButton() {
           {file && (
             <DialogFooter>
               <Button
-                variant={'subtle'}
+                variant={'secondary'}
                 onClick={() => {
                   setDialogOpen(false);
+                  setFile(undefined);
                 }}
               >
                 Cancel

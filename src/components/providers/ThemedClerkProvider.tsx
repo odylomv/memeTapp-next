@@ -7,15 +7,15 @@ export default function ThemedClerkProvider({ children, pageProps }: { children:
       appearance={{
         layout: { socialButtonsPlacement: 'bottom', socialButtonsVariant: 'iconButton' },
         variables: {
-          colorPrimary: '#b91c1c',
+          colorPrimary: '#dc2626', // text-destructive
         },
         elements: {
-          formButtonPrimary: 'bg-red-600 hover:bg-red-700',
+          formButtonPrimary: 'bg-destructive hover:bg-destructive/80',
           logoBox: 'h-12 justify-center',
           modalBackdrop: 'flex justify-center pt-12 h-screen bg-black/50 backdrop-blur-sm',
-          card: 'dark:bg-neutral-900 dark:text-white',
-          formFieldLabel: 'pb-2',
-          footerActionLink: 'text-red-500 hover:text-red-600',
+          card: 'bg-muted text-muted-foreground',
+          formFieldLabel: 'pb-1',
+          footerActionLink: 'text-destructive hover:text-destructive/80',
         },
       }}
     >

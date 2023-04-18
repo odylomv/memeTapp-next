@@ -1,7 +1,7 @@
-import { Moon, Sun, SunMoon } from 'lucide-react';
+import { Laptop, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/Select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 export default function ThemeSwitch() {
   const [mounted, setMounted] = useState(false);
@@ -22,17 +22,23 @@ export default function ThemeSwitch() {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem className="flex items-center" value="light">
-          <Sun className="mb-1 ml-1 mr-2 inline h-4 w-4" />
-          Light
+        <SelectItem value="light">
+          <div className="flex items-center gap-2">
+            <Sun className="h-4 w-4" />
+            Light
+          </div>
         </SelectItem>
         <SelectItem value="dark">
-          <Moon className="mb-1 ml-1 mr-2 inline h-4 w-4" />
-          Dark
+          <div className="flex items-center gap-2">
+            <Moon className=" h-4 w-4" />
+            Dark
+          </div>
         </SelectItem>
         <SelectItem value="system">
-          <SunMoon className="mb-1 ml-1 mr-2 inline h-4 w-4" />
-          System
+          <div className="flex items-center gap-2">
+            <Laptop className="h-4 w-4" />
+            System
+          </div>
         </SelectItem>
       </SelectContent>
     </Select>

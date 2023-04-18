@@ -2,8 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* text-white */
+    --foreground: 0 0% 9%; /* text-neutral-900 */
+
+    --muted: 0 0% 96%; /* text-neutral-100 */
+    --muted-foreground: 0 0% 45%; /* text-neutral-500 */
+
+    --popover: 0 0% 100%; /* text-white */
+    --popover-foreground: 0 0% 9%; /* text-neutral-900 */
+
+    --card: 0 0% 100%; /* text-white */
+    --card-foreground: 0 0% 45%; /* text-neutral-500 */
+
+    --border: 0 0% 83%; /* text-neutral-300 */
+    --input: 0 0% 83%; /* text-neutral-300 */
+
+    --primary: 0 0% 4%; /* text-neutral-950 */
+    --primary-foreground: 0 0% 96%; /* text-neutral-100 */
+
+    --secondary: 0 0% 90%; /* text-neutral-200 */
+    --secondary-foreground: 0 0% 9%; /* text-neutral-900 */
+
+    --accent: 0 0% 96%; /* text-neutral-100 */
+    --accent-foreground: 0 0% 9%; /* text-neutral-900 */
+
+    --destructive: 0 72% 51%; /* text-red-600 */
+    --destructive-foreground: 0 0% 100%; /* text-white */
+
+    --ring: 0 0% 83%; /* text-neutral-300 */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 4%; /* text-neutral-950 */
+    --foreground: 0 0% 96%; /* text-neutral-100 */
+
+    --muted: 0 0% 9%; /* text-neutral-900 */
+    --muted-foreground: 0 0% 64%; /* text-neutral-400 */
+
+    --popover: 0 0% 4%; /* text-neutral-950 */
+    --popover-foreground: 0 0% 96%; /* text-neutral-100 */
+
+    --card: 0 0% 9%; /* text-neutral-900 */
+    --card-foreground: 0 0% 64%; /* text-neutral-400 */
+
+    --border: 0 0% 25%; /* text-neutral-700 */
+    --input: 0 0% 25%; /* text-neutral-700 */
+
+    --primary: 0 0% 100%; /* text-white */
+    --primary-foreground: 0 0% 9%; /* text-neutral-900 */
+
+    --secondary: 0 0% 15%; /* text-neutral-800 */
+    --secondary-foreground: 0 0% 96%; /* text-neutral-100 */
+
+    --accent: 0 0% 9%; /* text-neutral-900 */
+    --accent-foreground: 0 0% 96%; /* text-neutral-100 */
+
+    --destructive: 0 72% 51%; /* text-red-600 */
+    --destructive-foreground: 0 0% 100%; /* text-white */
+
+    --ring: 0 0% 25%; /* text-neutral-700 */
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 }
