@@ -25,7 +25,7 @@ export default function MockMemeCard({ imageUrl }: { imageUrl: string }) {
           </Button>
 
           <span className="text-xs">&bull;</span>
-          <span className="text-xs">{dateFromNow(new Date(), false)}</span>
+          <span className="text-xs">{dateFromNow(new Date())}</span>
         </div>
 
         <Button variant={'ghost'} size={'sm'} aria-label="Options">
