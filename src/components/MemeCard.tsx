@@ -1,10 +1,21 @@
+import { useUser } from '@clerk/nextjs';
 import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
-import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
+import { Bookmark, Heart, MessageCircle, MoreVertical, Trash2, Wrench } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
+import DeleteMemeDialog from './DeleteMemeDialog';
 import DesktopTooltip from './DesktopTooltip';
 import { useServerError } from './providers/ServerErrorContext';
 import { Button } from './ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
   const { onServerError } = useServerError();
@@ -47,14 +58,12 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           </Button>
           {/* Meme post elapsed time */}
           <span className="text-xs">&bull;</span>
-          <span className="text-xs">{dateFromNow(meme.createdAt, false)}</span>
+          <DesktopTooltip content={meme.createdAt.toLocaleString()}>
+            <span className="cursor-default text-xs">{dateFromNow(meme.createdAt, false)}</span>
+          </DesktopTooltip>
         </div>
 
-        <DesktopTooltip content="Options">
-          <Button variant={'ghost'} size={'sm'} aria-label="Options">
-            <MoreVertical className="h-5 w-5 text-muted-foreground" />
-          </Button>
-        </DesktopTooltip>
+        <OptionsButton meme={meme} />
       </div>
       <Image
         priority={priority}
@@ -93,5 +102,47 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
         </div>
       </div>
     </div>
+  );
+}
+
+function OptionsButton({ meme }: { meme: RouterOutputs['meme']['getMeme'] }) {
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const { user } = useUser();
+
+  return (
+    meme && (
+      <>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={'ghost'} size={'sm'} aria-label="Options">
+              <MoreVertical className="h-5 w-5 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end" alignOffset={2} className="">
+            <DropdownMenuLabel>Options</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem onClick={() => console.log(meme)}>
+              <Wrench className="h-4 w-4" />
+              Log debug info
+            </DropdownMenuItem>
+            {user?.id === meme.authorId && (
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={() => {
+                  setDeleteDialog(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete meme
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DeleteMemeDialog meme={meme} open={deleteDialog} onClose={() => setDeleteDialog(false)} />
+      </>
+    )
   );
 }
