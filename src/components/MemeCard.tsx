@@ -2,9 +2,9 @@ import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
+import DesktopTooltip from './DesktopTooltip';
 import { useServerError } from './providers/ServerErrorContext';
 import { Button } from './ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
   const { onServerError } = useServerError();
@@ -50,9 +50,11 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           <span className="text-xs">{dateFromNow(meme.createdAt, false)}</span>
         </div>
 
-        <Button variant={'ghost'} size={'sm'} aria-label="Options">
-          <MoreVertical className="h-5 w-5 text-muted-foreground" />
-        </Button>
+        <DesktopTooltip content="Options">
+          <Button variant={'ghost'} size={'sm'} aria-label="Options">
+            <MoreVertical className="h-5 w-5 text-muted-foreground" />
+          </Button>
+        </DesktopTooltip>
       </div>
       <Image
         priority={priority}
@@ -65,44 +67,29 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
       />
       <div className="flex justify-between">
         <div className="flex gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={'ghost'} size={'sm'} className="gap-2" onClick={onLike}>
-                <Heart
-                  className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-muted-foreground'}`}
-                  fill={meme.isLiked ? 'currentColor' : 'none'}
-                />
-                <span>{meme._count.likes}</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{meme.isLiked ? 'Unlike meme' : 'Like meme'}</p>
-            </TooltipContent>
-          </Tooltip>
+          <DesktopTooltip content={meme.isLiked ? 'Unlike meme' : 'Like meme'}>
+            <Button variant={'ghost'} size={'sm'} className="gap-2" onClick={onLike}>
+              <Heart
+                className={`h-5 w-5 ${meme.isLiked ? 'text-red-500' : 'text-muted-foreground'}`}
+                fill={meme.isLiked ? 'currentColor' : 'none'}
+              />
+              <span>{meme._count.likes}</span>
+            </Button>
+          </DesktopTooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={'ghost'} size={'sm'} className="gap-2">
-                <MessageCircle className="h-5 w-5 text-muted-foreground" fill="currentColor" />
-                <span>{meme._count.comments}</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>View comments</p>
-            </TooltipContent>
-          </Tooltip>
+          <DesktopTooltip content="View comments">
+            <Button variant={'ghost'} size={'sm'} className="gap-2">
+              <MessageCircle className="h-5 w-5 text-muted-foreground" fill="currentColor" />
+              <span>{meme._count.comments}</span>
+            </Button>
+          </DesktopTooltip>
         </div>
         <div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant={'ghost'} size={'sm'} aria-label="Bookmark">
-                <Bookmark className="h-5 w-5 text-muted-foreground" fill="currentColor" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Bookmark meme (coming soon)</p>
-            </TooltipContent>
-          </Tooltip>
+          <DesktopTooltip content="Bookmark meme (coming soon)">
+            <Button variant={'ghost'} size={'sm'} aria-label="Bookmark">
+              <Bookmark className="h-5 w-5 text-muted-foreground" fill="currentColor" />
+            </Button>
+          </DesktopTooltip>
         </div>
       </div>
     </div>
