@@ -67,8 +67,20 @@ export default function NavbarLayout({
           <div className="flex gap-6">
             {/* memeTapp logo */}
             <Link href="/">
-              <Image className="hidden h-10 w-auto dark:inline-block" src={banner} alt="memeTapp" priority />
-              <Image className="inline-block h-10 w-auto dark:hidden" src={banner_black} alt="memeTapp" priority />
+              <Image
+                priority
+                className="hidden h-10 w-auto dark:inline-block"
+                src={banner}
+                sizes="200px"
+                alt="memeTapp"
+              />
+              <Image
+                priority
+                className="inline-block h-10 w-auto dark:hidden"
+                src={banner_black}
+                sizes="200px"
+                alt="memeTapp"
+              />
               {process.env.NODE_ENV === 'development' && <span className="text-xs font-bold">DEV</span>}
             </Link>
 

@@ -12,8 +12,14 @@ export default function NewHome() {
         <ThemeSwitch />
       </div>
 
-      <Image className="hidden h-24 w-auto dark:inline-block" src={banner} alt="memeTapp" priority />
-      <Image className="inline-block h-24 w-auto dark:hidden" src={banner_black} alt="memeTapp" priority />
+      <Image priority className="hidden h-24 w-auto dark:inline-block" src={banner} sizes="200px" alt="memeTapp" />
+      <Image
+        priority
+        className="inline-block h-24 w-auto dark:hidden"
+        src={banner_black}
+        sizes="200px"
+        alt="memeTapp"
+      />
 
       <p>
         A meme social media platform created by{' '}
