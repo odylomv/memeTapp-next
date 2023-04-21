@@ -25,22 +25,6 @@ export default function Explore() {
             <UploadMemeButton />
           </div>
 
-          {/* <div>
-            <Button variant={'default'}>Text</Button>
-            <Button variant={'destructive'}>Text</Button>
-            <Button variant={'ghost'}>Text</Button>
-            <Button variant={'link'}>Text</Button>
-            <Button variant={'outline'}>Text</Button>
-            <Button variant={'secondary'}>Text</Button>
-            </div>
-            <div>
-            <OldButton variant={'default'}>Text</OldButton>
-            <OldButton variant={'destructive'}>Text</OldButton>
-            <OldButton variant={'ghost'}>Text</OldButton>
-            <OldButton variant={'link'}>Text</OldButton>
-            <OldButton variant={'outline'}>Text</OldButton>
-          </div> */}
-
           {data ? (
             data.pages.map(page => {
               return page.memes.map((meme, index) => <MemeCard key={meme.id} meme={meme} priority={index < 2} />);
