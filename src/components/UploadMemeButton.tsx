@@ -15,6 +15,7 @@ export default function UploadMemeButton() {
   const [file, setFile] = useState<File | undefined>(undefined);
   const { onServerError, showSignUpDialog } = useServerError();
 
+  const trpcContext = api.useContext();
   const memeUploader = api.meme.uploadMeme.useMutation();
   const memeEnabler = api.meme.enableMeme.useMutation();
 
@@ -29,7 +30,10 @@ export default function UploadMemeButton() {
           .then(resp => {
             if (!resp.ok) return console.log(resp);
 
-            memeEnabler.mutate({ memeId }, { onError: onServerError });
+            memeEnabler.mutate(
+              { memeId },
+              { onSuccess: () => void trpcContext.meme.getPaginated.invalidate(), onError: onServerError }
+            );
           })
           .catch(err => console.log(err));
       },
