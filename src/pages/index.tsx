@@ -12,7 +12,13 @@ export default function NewHome() {
         <ThemeSwitch />
       </div>
 
-      <Image priority className="hidden h-24 w-auto dark:inline-block" src={banner} sizes="200px" alt="memeTapp" />
+      <Image
+        priority
+        className="hidden h-24 w-auto object-contain dark:inline-block"
+        src={banner}
+        sizes="200px"
+        alt="memeTapp"
+      />
       <Image
         priority
         className="inline-block h-24 w-auto object-contain dark:hidden"
