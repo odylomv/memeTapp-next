@@ -21,7 +21,7 @@ export default function Explore() {
       <div className="flex justify-center py-4">
         <div className="flex max-w-7xl flex-col items-center gap-4 px-2">
           <div className="flex w-full items-center justify-between">
-            <span className="pl-4 font-semibold sm:text-xl">Latest Memes</span>
+            <span className="pl-4 text-xl font-semibold">Latest Memes</span>
             <UploadMemeButton />
           </div>
 

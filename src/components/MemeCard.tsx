@@ -57,7 +57,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
             <p>{meme.author.name}</p>
           </Button>
           {/* Meme post elapsed time */}
-          <span className="text-xs text-card-foreground">&bull;</span>
+          <span className="cursor-default text-xs text-card-foreground">&bull;</span>
           <DesktopTooltip content={meme.createdAt.toLocaleString()}>
             <div className="cursor-default text-xs text-card-foreground">{dateFromNow(meme.createdAt)}</div>
           </DesktopTooltip>
