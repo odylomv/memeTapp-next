@@ -69,14 +69,14 @@ export default function NavbarLayout({
             <Link href="/">
               <Image
                 priority
-                className="hidden h-10 w-auto dark:inline-block"
+                className="hidden h-10 w-auto object-contain dark:inline-block"
                 src={banner}
                 sizes="200px"
                 alt="memeTapp"
               />
               <Image
                 priority
-                className="inline-block h-10 w-auto dark:hidden"
+                className="inline-block h-10 w-auto object-contain dark:hidden"
                 src={banner_black}
                 sizes="200px"
                 alt="memeTapp"
