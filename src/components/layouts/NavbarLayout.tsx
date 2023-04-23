@@ -103,8 +103,8 @@ export default function NavbarLayout({
 
           <div className="flex items-center gap-2">
             <CustomSignInButton />
-            <Link href="https://github.com/odylomv" aria-label="Developer GitHub profile" legacyBehavior passHref>
-              <Button variant={'ghost'} size={'sm'}>
+            <Link href="https://github.com/odylomv" legacyBehavior passHref>
+              <Button variant={'ghost'} size={'sm'} aria-label="Developer GitHub profile">
                 <Github className="h-5 w-5 text-muted-foreground" fill="currentColor" />
               </Button>
             </Link>
