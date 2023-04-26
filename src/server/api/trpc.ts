@@ -6,9 +6,8 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { type SignedInAuthObject, type SignedOutAuthObject } from '@clerk/nextjs/dist/api';
 import { getAuth } from '@clerk/nextjs/server';
-import { initTRPC, TRPCError } from '@trpc/server';
+import { TRPCError, initTRPC } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import SuperJSON from 'superjson';
 
@@ -22,7 +21,7 @@ import { minio, prisma } from '../db';
  * These allow you to access things when processing a request, like the database, the auth status, etc.
  */
 type CreateContextOptions = {
-  auth: SignedInAuthObject | SignedOutAuthObject | null;
+  auth: ReturnType<typeof getAuth> | null;
 };
 
 /**
@@ -31,7 +30,7 @@ type CreateContextOptions = {
  *
  * Examples of things you may need it for:
  * - testing, so we don't have to mock Next.js' req/res
- * - tRPC's `createSSGHelpers`, where we don't have req/res
+ * - tRPC's `createServerSideHelpers`, where we don't have req/res
  *
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
@@ -45,10 +44,10 @@ export const createInnerTRPCContext = ({ auth }: CreateContextOptions) => {
 
 /**
  * This is the actual context you'll use in your router
- * @link https://trpc.io/docs/context
+ * @link https://trpc.io/docs/server/context
  **/
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({ auth: getAuth(opts.req) });
+export const createTRPCContext = ({ req }: CreateNextContextOptions) => {
+  return createInnerTRPCContext({ auth: getAuth(req) });
 };
 
 /**
@@ -73,7 +72,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 /**
  * This is how you create new routers and sub-routers in your tRPC API.
  *
- * @see https://trpc.io/docs/router
+ * @see https://trpc.io/docs/server/routers
  */
 export const createTRPCRouter = t.router;
 
@@ -105,6 +104,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
  * the session is valid and guarantees `ctx.auth` is not null.
  *
- * @see https://trpc.io/docs/procedures
+ * @see https://trpc.io/docs/server/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

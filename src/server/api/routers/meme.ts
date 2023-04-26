@@ -1,4 +1,5 @@
 import { env } from '@mtp/env.mjs';
+import { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
@@ -8,6 +9,16 @@ const getMemeImageURL = (memeId: string, authorId: string) => {
   return `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/memes/${authorId}-${memeId}`;
 };
 
+const memeInclude = Prisma.validator<Prisma.MemeInclude>()({
+  author: { select: { id: true, image: true, name: true } },
+  _count: {
+    select: {
+      likes: true,
+      comments: true,
+    },
+  },
+});
+
 export const memeRouter = createTRPCRouter({
   getMeme: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
     const meme = await ctx.prisma.meme.findFirst({
@@ -15,15 +26,7 @@ export const memeRouter = createTRPCRouter({
         id: input.id,
         hidden: false,
       },
-      include: {
-        author: { select: { id: true, image: true, name: true } },
-        _count: {
-          select: {
-            likes: true,
-            comments: true,
-          },
-        },
-      },
+      include: memeInclude,
     });
 
     if (!meme) return null;
@@ -105,26 +108,18 @@ export const memeRouter = createTRPCRouter({
     }),
 
   getPaginated: publicProcedure
-    .input(z.object({ limit: z.number().min(1), cursor: z.string().nullish() }))
+    .input(z.object({ limit: z.number().min(1), cursor: z.string().optional() }))
     .query(async ({ input, ctx }) => {
       const memes = await ctx.prisma.meme.findMany({
         take: input.limit + 1, // Take an extra meme to use as the next cursor
         cursor: input.cursor ? { id: input.cursor } : undefined,
         where: { hidden: false },
         orderBy: { createdAt: 'desc' },
-        include: {
-          author: { select: { id: true, image: true, name: true } },
-          _count: {
-            select: {
-              likes: true,
-              comments: true,
-            },
-          },
-        },
+        include: memeInclude,
       });
 
       // Calculate the next cursor
-      let nextCursor: typeof input.cursor | undefined = undefined;
+      let nextCursor: typeof input.cursor = undefined;
       if (memes.length > input.limit) {
         const nextItem = memes.pop();
         nextCursor = nextItem?.id;
