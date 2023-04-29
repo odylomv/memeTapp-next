@@ -1,16 +1,22 @@
+import { useUser } from '@clerk/nextjs';
 import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
 import MemeCard from '@mtp/components/MemeCard';
-import UploadMemeButton from '@mtp/components/UploadMemeButton';
 import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
+import { useDialog } from '@mtp/components/providers/ModalProvider';
+import { Button } from '@mtp/components/ui/button';
 import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';
 import { createServerSideHelpers } from '@trpc/react-query/server';
+import { Plus } from 'lucide-react';
 import { type GetServerSideProps } from 'next';
 import { InView } from 'react-intersection-observer';
 import SuperJSON from 'superjson';
 
 export default function Explore() {
+  const { user } = useUser();
+  const { uploadMeme, signUp } = useDialog();
+
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
@@ -22,7 +28,11 @@ export default function Explore() {
         <div className="flex max-w-7xl flex-col items-center gap-4 px-2">
           <div className="flex w-full items-center justify-between">
             <span className="pl-4 text-xl font-semibold">Latest Memes</span>
-            <UploadMemeButton />
+
+            <Button variant={'ghost'} onClick={() => void (user ? uploadMeme() : signUp())}>
+              <Plus className="mr-2 h-6 w-6 text-destructive" />
+              <span className="text-lg font-semibold">New meme</span>
+            </Button>
           </div>
 
           {data ? (

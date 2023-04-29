@@ -3,10 +3,8 @@ import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical, Trash2, Wrench } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
-import DeleteMemeDialog from './DeleteMemeDialog';
 import DesktopTooltip from './DesktopTooltip';
-import { useServerError } from './providers/ServerErrorContext';
+import { useDialog } from './providers/ModalProvider';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -18,7 +16,7 @@ import {
 } from './ui/dropdown-menu';
 
 export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
-  const { onServerError } = useServerError();
+  const { serverError } = useDialog();
   const mutateLikes = api.meme.likeMeme.useMutation();
 
   const onLike = () => {
@@ -35,7 +33,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
           meme._count.likes += meme.isLiked ? -1 : 1;
           meme.isLiked = !meme.isLiked;
         },
-        onError: error => onServerError(error),
+        onError: error => serverError(error),
       }
     );
   };
@@ -106,7 +104,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
 }
 
 function OptionsButton({ meme }: { meme: RouterOutputs['meme']['getMeme'] }) {
-  const [deleteDialog, setDeleteDialog] = useState(false);
+  const { deleteMeme } = useDialog();
   const { user } = useUser();
 
   return (
@@ -128,20 +126,13 @@ function OptionsButton({ meme }: { meme: RouterOutputs['meme']['getMeme'] }) {
               Log debug info
             </DropdownMenuItem>
             {user?.id === meme.authorId && (
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
-                onClick={() => {
-                  setDeleteDialog(true);
-                }}
-              >
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => deleteMeme(meme)}>
                 <Trash2 className="h-4 w-4" />
                 Delete meme
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <DeleteMemeDialog meme={meme} open={deleteDialog} onClose={() => setDeleteDialog(false)} />
       </>
     )
   );

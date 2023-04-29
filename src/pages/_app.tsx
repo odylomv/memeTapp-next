@@ -1,5 +1,5 @@
 import RootLayout from '@mtp/components/layouts/RootLayout';
-import ServerErrorProvider from '@mtp/components/providers/ServerErrorContext';
+import DialogProvider from '@mtp/components/providers/ModalProvider';
 import ThemedClerkProvider from '@mtp/components/providers/ThemedClerkProvider';
 import { TooltipProvider } from '@mtp/components/ui/tooltip';
 import { api } from '@mtp/lib/api';
@@ -25,14 +25,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
       <ThemeProvider attribute="class">
         <ThemedClerkProvider pageProps={pageProps}>
-          <ServerErrorProvider>
+          <DialogProvider>
             <TooltipProvider>
               <RootLayout>
                 <NextNProgress height={2} color="#dc2626" startPosition={0.5} stopDelayMs={100} />
                 <Component {...pageProps} />
               </RootLayout>
             </TooltipProvider>
-          </ServerErrorProvider>
+          </DialogProvider>
         </ThemedClerkProvider>
       </ThemeProvider>
     </>
