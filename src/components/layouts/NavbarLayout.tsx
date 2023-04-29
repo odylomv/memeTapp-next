@@ -27,7 +27,6 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 
 import { useAuth, useClerk, useUser } from '@clerk/nextjs';
-import { dark } from '@clerk/themes';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -211,7 +210,12 @@ export function CustomSignInButton() {
 
           <DropdownMenuItem
             onClick={() =>
-              clerk.openUserProfile({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })
+              void (async () =>
+                clerk.openUserProfile({
+                  appearance: {
+                    baseTheme: resolvedTheme === 'dark' ? (await import('@clerk/themes')).dark : undefined,
+                  },
+                }))()
             }
           >
             <User className="h-4 w-4" />
@@ -234,7 +238,14 @@ export function CustomSignInButton() {
     <>
       <Button
         variant={'ghost'}
-        onClick={() => clerk.openSignIn({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })}
+        onClick={() =>
+          void (async () =>
+            clerk.openSignIn({
+              appearance: {
+                baseTheme: resolvedTheme === 'dark' ? (await import('@clerk/themes')).dark : undefined,
+              },
+            }))()
+        }
       >
         <span className="">Login</span>
       </Button>

@@ -1,6 +1,5 @@
 import logo from '@assets/logo.png';
 import { useClerk } from '@clerk/nextjs';
-import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import {
@@ -43,7 +42,14 @@ export default function SignUpDialog({ open, onClose }: { open: boolean; onClose
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
           <AlertDialogAction
-            onClick={() => clerk.openSignUp({ appearance: { baseTheme: resolvedTheme === 'dark' ? dark : undefined } })}
+            onClick={() =>
+              void (async () =>
+                clerk.openSignUp({
+                  appearance: {
+                    baseTheme: resolvedTheme === 'dark' ? (await import('@clerk/themes')).dark : undefined,
+                  },
+                }))()
+            }
           >
             Sign Up
           </AlertDialogAction>
