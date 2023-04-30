@@ -1,32 +1,19 @@
 import banner from '@assets/memeTapp_banner.png';
 import banner_black from '@assets/memeTapp_banner_black.png';
-import { Github, Laptop, LogOut, Menu, Moon, Settings, Sun, User } from 'lucide-react';
+import { Github, Menu } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import ThemeSwitch from '../ThemeSwitch';
 import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 import { Separator } from '../ui/separator';
 
 import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useAuth, useClerk, useUser } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
+import ThemeSwitch from '../ThemeSwitch';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -34,6 +21,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '../ui/navigation-menu';
+import RootLayout from './RootLayout';
 
 const navigation = [
   { name: 'Explore', href: '/explore' },
@@ -49,7 +37,7 @@ export default function NavbarLayout({
   currentLink: (typeof navigation)[number]['name'];
 }) {
   return (
-    <>
+    <RootLayout>
       <Head>
         <title>{`${currentLink} | memeTapp`}</title>
         <meta name="description" content="memeTapp is a Meme social media platform" />
@@ -115,66 +103,22 @@ export default function NavbarLayout({
         <Separator />
       </div>
       <div className="flex-1">{children}</div>
-    </>
+    </RootLayout>
   );
 }
 
 function MobileNavbarMenu() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const [dropdown, setDropdown] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <Button variant={'ghost'} aria-label="Navigation menu">
-        <Menu className="text-muted-foreground" />
-      </Button>
-    );
-  }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'} aria-label="Navigation menu">
-          <Menu className="text-muted-foreground" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-44 sm:w-72">
-        <DropdownMenuLabel>Menu</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {navigation.map(item => (
-          <DropdownMenuItem key={item.name} asChild>
-            <Link href={item.href}>{item.name}</Link>
-          </DropdownMenuItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                <DropdownMenuRadioItem value="light">
-                  <Sun className="h-4 w-4" />
-                  Light
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="dark">
-                  <Moon className="h-4 w-4" />
-                  Dark
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="system">
-                  <Laptop className="h-4 w-4" />
-                  System
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
-      </DropdownMenuContent>
-    </DropdownMenu>
+  const MenuButton = () => (
+    <Button variant={'ghost'} aria-label="Navigation menu" onClick={() => setDropdown(true)}>
+      <Menu className="text-muted-foreground" />
+    </Button>
   );
+
+  const NavDropdown = dynamic(() => import('../dropdowns/NavDropdown'), { loading: MenuButton });
+
+  return dropdown ? <NavDropdown open={dropdown} onClose={() => setDropdown(false)} /> : <MenuButton />;
 }
 
 export function CustomSignInButton() {
@@ -183,55 +127,16 @@ export function CustomSignInButton() {
   const { user } = useUser();
   const { resolvedTheme } = useTheme();
 
+  const Skeleton = () => (
+    <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
+      <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
+    </Button>
+  );
+
+  const UserButton = dynamic(() => import('../dropdowns/UserButton'), { loading: () => <Skeleton /> });
+
   if (isSignedIn) {
-    if (!user)
-      return (
-        <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
-          <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
-        </Button>
-      );
-
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
-            <Image
-              src={user.profileImageUrl}
-              width={50}
-              height={50}
-              className="h-8 w-8 rounded-full object-cover"
-              alt={user.username ?? 'user'}
-            />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="">
-          <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            onClick={() =>
-              void (async () =>
-                clerk.openUserProfile({
-                  appearance: {
-                    baseTheme: resolvedTheme === 'dark' ? (await import('@clerk/themes')).dark : undefined,
-                  },
-                }))()
-            }
-          >
-            <User className="h-4 w-4" />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <Settings className="h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void clerk.signOut()}>
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
+    return user ? <UserButton loading={<Skeleton />} /> : <Skeleton />;
   }
 
   return (
@@ -247,7 +152,7 @@ export function CustomSignInButton() {
             }))()
         }
       >
-        <span className="">Login</span>
+        <span>Login</span>
       </Button>
     </>
   );

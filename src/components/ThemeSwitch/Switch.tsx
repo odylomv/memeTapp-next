@@ -1,20 +1,9 @@
 import { Laptop, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
-export default function ThemeSwitch() {
-  const [mounted, setMounted] = useState(false);
+export default function Switch() {
   const { theme, setTheme } = useTheme();
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div className="w-[120px]"></div>;
-  }
 
   return (
     <Select value={theme} onValueChange={newTheme => setTheme(newTheme)}>

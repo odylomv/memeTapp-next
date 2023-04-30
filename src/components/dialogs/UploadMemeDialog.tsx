@@ -3,7 +3,7 @@ import { Upload } from 'lucide-react';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import MockMemeCard from '../MockMemeCard';
-import { useDialog } from '../providers/ModalProvider';
+import { useDialog } from '../providers/DialogProvider';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 

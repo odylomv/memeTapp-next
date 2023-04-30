@@ -2,7 +2,7 @@ import { useUser } from '@clerk/nextjs';
 import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
 import MemeCard from '@mtp/components/MemeCard';
 import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
-import { useDialog } from '@mtp/components/providers/ModalProvider';
+import { useDialog } from '@mtp/components/providers/DialogProvider';
 import { Button } from '@mtp/components/ui/button';
 import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
@@ -14,9 +14,6 @@ import { InView } from 'react-intersection-observer';
 import SuperJSON from 'superjson';
 
 export default function Explore() {
-  const { user } = useUser();
-  const { uploadMeme, signUp } = useDialog();
-
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = api.meme.getPaginated.useInfiniteQuery(
     { limit: 5 },
     { getNextPageParam: lastPage => lastPage.nextCursor }
@@ -29,10 +26,7 @@ export default function Explore() {
           <div className="flex w-full items-center justify-between">
             <span className="pl-4 text-xl font-semibold">Latest Memes</span>
 
-            <Button variant={'ghost'} onClick={() => void (user ? uploadMeme() : signUp())}>
-              <Plus className="mr-2 h-6 w-6 text-destructive" />
-              <span className="text-lg font-semibold">New meme</span>
-            </Button>
+            <UploadMemeButton />
           </div>
 
           {data ? (
@@ -61,6 +55,18 @@ export default function Explore() {
         </div>
       </div>
     </NavbarLayout>
+  );
+}
+
+function UploadMemeButton() {
+  const { user } = useUser();
+  const { uploadMeme, signUp } = useDialog();
+
+  return (
+    <Button variant={'ghost'} onClick={() => void (user ? uploadMeme() : signUp())}>
+      <Plus className="mr-2 h-6 w-6 text-destructive" />
+      <span className="text-lg font-semibold">New meme</span>
+    </Button>
   );
 }
 

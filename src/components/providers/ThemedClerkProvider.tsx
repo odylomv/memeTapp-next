@@ -5,7 +5,7 @@ export default function ThemedClerkProvider({ children, pageProps }: { children:
     <ClerkProvider
       {...pageProps}
       appearance={{
-        layout: { socialButtonsPlacement: 'bottom', socialButtonsVariant: 'iconButton' },
+        layout: { socialButtonsPlacement: 'top', socialButtonsVariant: 'iconButton' },
         variables: {
           colorPrimary: '#dc2626', // text-destructive
         },

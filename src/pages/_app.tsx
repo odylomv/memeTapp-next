@@ -1,13 +1,10 @@
-import RootLayout from '@mtp/components/layouts/RootLayout';
-import DialogProvider from '@mtp/components/providers/ModalProvider';
 import ThemedClerkProvider from '@mtp/components/providers/ThemedClerkProvider';
-import { TooltipProvider } from '@mtp/components/ui/tooltip';
 import { api } from '@mtp/lib/api';
 import '@mtp/styles/globals.css';
 import { ThemeProvider } from 'next-themes';
 import { type AppType } from 'next/app';
 import { Commissioner } from 'next/font/google';
-import NextNProgress from 'nextjs-progressbar';
+import Head from 'next/head';
 
 const font = Commissioner({
   subsets: ['latin'],
@@ -23,16 +20,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         }
       `}</style>
 
+      <Head>
+        <title>memeTapp</title>
+        <meta name="description" content="memeTapp is a Meme social media platform" />
+      </Head>
+
       <ThemeProvider attribute="class">
         <ThemedClerkProvider pageProps={pageProps}>
-          <DialogProvider>
-            <TooltipProvider>
-              <RootLayout>
-                <NextNProgress height={2} color="#dc2626" startPosition={0.5} stopDelayMs={100} />
-                <Component {...pageProps} />
-              </RootLayout>
-            </TooltipProvider>
-          </DialogProvider>
+          <Component {...pageProps} />
         </ThemedClerkProvider>
       </ThemeProvider>
     </>

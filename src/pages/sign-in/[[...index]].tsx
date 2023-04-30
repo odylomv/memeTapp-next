@@ -1,18 +1,34 @@
 import { SignIn } from '@clerk/nextjs';
-import Link from 'next/dist/client/link';
+import { dark } from '@clerk/themes';
+import ThemeSwitch from '@mtp/components/ThemeSwitch';
+import RootLayout from '@mtp/components/layouts/RootLayout';
+import { Button } from '@mtp/components/ui/button';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
 
 const SignInPage = () => {
-  console.log('sign in!');
+  const { resolvedTheme } = useTheme();
 
   return (
-    <main className="absolute inset-0 flex flex-col items-center bg-neutral-800 text-gray-100">
-      <div className="flex h-full w-full flex-col items-center justify-center gap-4 overflow-y-scroll p-4">
-        <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <Link href={'/'}>
-          <span className="text-sm">Back to homepage</span>
-        </Link>
+    <RootLayout>
+      <div className="absolute right-4 top-4">
+        <ThemeSwitch />
       </div>
-    </main>
+
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-4">
+        <Link href={'/'}>
+          <Button variant={'secondary'}>
+            <span className="text-sm">Back to homepage</span>
+          </Button>
+        </Link>
+        <SignIn
+          path="/sign-in"
+          routing="path"
+          signUpUrl="/sign-up"
+          appearance={{ baseTheme: resolvedTheme === 'dark' ? dark : undefined }}
+        />
+      </div>
+    </RootLayout>
   );
 };
 
