@@ -56,15 +56,17 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
 
         <OptionsButton meme={meme} />
       </div>
+
       <Image
         priority={priority}
         src={meme.imageURL}
-        sizes="(max-width: 768px) 100vw, 600px"
+        sizes="(max-width: 600px) 100vw, 600px"
         alt="meme"
-        width={0}
-        height={0}
-        className="max-h-[700px] w-[600px] object-cover"
+        width={600}
+        height={700}
+        className="max-h-[700px] object-cover"
       />
+
       <div className="flex justify-between">
         <div className="flex gap-2">
           <DesktopTooltip content={meme.isLiked ? 'Unlike meme' : 'Like meme'}>
