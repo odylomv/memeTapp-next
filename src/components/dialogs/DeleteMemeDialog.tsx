@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
 } from '../ui/alert-dialog';
 import { Separator } from '../ui/separator';
+import { useToast } from '../ui/use-toast';
 
 export default function DeleteMemeDialog({
   meme,
@@ -22,12 +23,23 @@ export default function DeleteMemeDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const { toast } = useToast();
   const trpcContext = api.useContext();
   const memeDelete = api.meme.deleteMeme.useMutation();
 
   const deleteMeme = () => {
     if (meme) {
-      memeDelete.mutate({ id: meme.id }, { onSuccess: () => void trpcContext.meme.getPaginated.invalidate() });
+      memeDelete.mutate(
+        { id: meme.id },
+        {
+          onSuccess: () => {
+            void trpcContext.meme.getPaginated.invalidate();
+            toast({
+              description: 'Successfully deleted meme',
+            });
+          },
+        }
+      );
     }
   };
 

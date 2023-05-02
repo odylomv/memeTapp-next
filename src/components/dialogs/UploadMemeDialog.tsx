@@ -6,8 +6,10 @@ import MockMemeCard from '../MockMemeCard';
 import { useDialog } from '../providers/DialogProvider';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { useToast } from '../ui/use-toast';
 
 export default function UploadMemeDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { toast } = useToast();
   const { serverError } = useDialog();
 
   const trpcContext = api.useContext();
@@ -27,7 +29,13 @@ export default function UploadMemeDialog({ open, onClose }: { open: boolean; onC
 
             memeEnabler.mutate(
               { memeId },
-              { onSuccess: () => void trpcContext.meme.getPaginated.invalidate(), onError: serverError }
+              {
+                onSuccess: () => {
+                  void trpcContext.meme.getPaginated.invalidate();
+                  toast({ description: 'Meme uploaded successfully' });
+                },
+                onError: serverError,
+              }
             );
           })
           .catch(err => console.log(err));
