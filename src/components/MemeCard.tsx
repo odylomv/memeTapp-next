@@ -43,7 +43,7 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
               width={50}
               height={50}
               className="h-6 w-6 rounded-full object-cover"
-              alt={meme.author.name}
+              alt="Profile picture"
             />
             <p>{meme.author.name}</p>
           </Button>

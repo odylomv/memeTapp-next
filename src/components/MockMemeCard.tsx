@@ -19,7 +19,7 @@ export default function MockMemeCard({ imageUrl }: { imageUrl: string }) {
               width={50}
               height={50}
               className="h-6 w-6 rounded-full object-cover"
-              alt={user?.username ?? 'author'}
+              alt="Profile picture"
             />
             <p>{user?.username}</p>
           </Button>
