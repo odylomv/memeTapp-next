@@ -1,8 +1,10 @@
 import { type RouterOutputs } from '@mtp/lib/api';
 import { type AppRouter } from '@mtp/server/api/root';
 import { type TRPCClientErrorLike } from '@trpc/client';
-import dynamic from 'next/dynamic';
 import { createContext, useContext, useState } from 'react';
+import DeleteMemeDialog from '../dialogs/DeleteMemeDialog';
+import SignUpDialog from '../dialogs/SignUpDialog';
+import UploadMemeDialog from '../dialogs/UploadMemeDialog';
 
 interface DialogContextOptions {
   signUp: () => void;
@@ -10,10 +12,6 @@ interface DialogContextOptions {
   uploadMeme: () => void;
   serverError: (error: TRPCClientErrorLike<AppRouter>) => void;
 }
-
-const SignUpDialog = dynamic(() => import('../dialogs/SignUpDialog'));
-const DeleteMemeDialog = dynamic(() => import('../dialogs/DeleteMemeDialog'));
-const UploadMemeDialog = dynamic(() => import('../dialogs/UploadMemeDialog'));
 
 const DialogContext = createContext<DialogContextOptions | undefined>(undefined);
 

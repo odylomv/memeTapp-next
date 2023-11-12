@@ -1,12 +1,19 @@
+import { useUser } from '@clerk/nextjs';
 import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
-import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { Bookmark, Heart, MessageCircle, MoreVertical, Trash2, Wrench } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
 import DesktopTooltip from './DesktopTooltip';
 import { useDialog } from './providers/DialogProvider';
 import { Button } from './ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme']['getMeme']; priority: boolean }) {
   const { serverError } = useDialog();
@@ -99,14 +106,36 @@ export default function MemeCard({ meme, priority }: { meme: RouterOutputs['meme
 }
 
 function OptionsButton({ meme }: { meme: RouterOutputs['meme']['getMeme'] }) {
-  const [dropdown, setDropdown] = useState(false);
-  const Dropdown = dynamic(() => import('./dropdowns/OptionsDropdown'));
+  const { deleteMeme } = useDialog();
+  const { user } = useUser();
 
-  return dropdown ? (
-    <Dropdown meme={meme} open={dropdown} onClose={() => setDropdown(false)} />
-  ) : (
-    <Button variant={'ghost'} size={'sm'} aria-label="Options" onClick={() => setDropdown(true)}>
-      <MoreVertical className="h-5 w-5 text-muted-foreground" />
-    </Button>
+  return (
+    meme && (
+      <>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={'ghost'} size={'sm'} aria-label="Options">
+              <MoreVertical className="h-5 w-5 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end" alignOffset={2} className="">
+            <DropdownMenuLabel>Options</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem onClick={() => console.log(meme)}>
+              <Wrench className="h-4 w-4" />
+              Log debug info
+            </DropdownMenuItem>
+            {user?.id === meme.authorId && (
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => deleteMeme(meme)}>
+                <Trash2 className="h-4 w-4" />
+                Delete meme
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </>
+    )
   );
 }

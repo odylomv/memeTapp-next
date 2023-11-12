@@ -1,9 +1,7 @@
-import dynamic from 'next/dynamic';
+import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from '../Toaster';
 import DialogProvider from '../providers/DialogProvider';
-
-const TooltipProvider = dynamic(() => import('../ui/tooltip').then(m => m.TooltipProvider));
-const NextTopLoader = dynamic(() => import('nextjs-toploader'));
+import { TooltipProvider } from '../ui/tooltip';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

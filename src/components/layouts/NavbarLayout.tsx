@@ -12,8 +12,9 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 
 import { useAuth, useClerk, useUser } from '@clerk/nextjs';
-import dynamic from 'next/dynamic';
 import ThemeSwitch from '../ThemeSwitch';
+import NavDropdown from '../dropdowns/NavDropdown';
+import UserButton from '../dropdowns/UserButton';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -116,8 +117,6 @@ function MobileNavbarMenu() {
     </Button>
   );
 
-  const NavDropdown = dynamic(() => import('../dropdowns/NavDropdown'), { loading: MenuButton });
-
   return dropdown ? <NavDropdown open={dropdown} onClose={() => setDropdown(false)} /> : <MenuButton />;
 }
 
@@ -132,8 +131,6 @@ export function CustomSignInButton() {
       <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
     </Button>
   );
-
-  const UserButton = dynamic(() => import('../dropdowns/UserButton'), { loading: () => <Skeleton /> });
 
   if (isSignedIn) {
     return user ? <UserButton loading={<Skeleton />} /> : <Skeleton />;

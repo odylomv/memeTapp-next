@@ -1,7 +1,5 @@
-import dynamic from 'next/dynamic';
 import { type ReactNode } from 'react';
-
-const MyTooltip = dynamic(() => import('./MyTooltip'));
+import MyTooltip from './MyTooltip';
 
 export default function DesktopTooltip({ children, content }: { children: ReactNode; content: string }) {
   return (
