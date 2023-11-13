@@ -15,13 +15,13 @@ export default function MockMemeCard({ imageUrl }: { imageUrl: string }) {
         <div className="flex items-center gap-2 pl-2">
           <Button variant={'link'} size={'sm'} className="gap-2 p-0 text-sm">
             <Image
-              src={user?.profileImageUrl}
+              src={user.imageUrl}
               width={50}
               height={50}
               className="h-6 w-6 rounded-full object-cover"
               alt="Profile picture"
             />
-            <p>{user?.username}</p>
+            <p>{user.username}</p>
           </Button>
 
           <span className="text-xs">&bull;</span>

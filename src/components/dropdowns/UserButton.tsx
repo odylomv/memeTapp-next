@@ -24,7 +24,7 @@ export default function UserButton({ loading }: { loading: JSX.Element }) {
       <DropdownMenuTrigger asChild>
         <Button variant={'ghost'} size={'sm'} className="rounded-full p-0">
           <Image
-            src={user.profileImageUrl}
+            src={user.imageUrl}
             width={50}
             height={50}
             className="h-8 w-8 rounded-full object-cover"

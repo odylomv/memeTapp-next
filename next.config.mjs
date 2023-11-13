@@ -27,12 +27,31 @@ export default defineNextConfig({
     defaultLocale: 'en',
   },
   images: {
-    domains: [
-      'cdn.discordapp.com',
-      'lh3.googleusercontent.com',
-      'images.clerk.dev',
-      'www.gravatar.com',
-      env.MINIO_ENDPOINT,
-    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.clerk.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.clerk.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: env.MINIO_ENDPOINT,
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.gravatar.com',
+      },
+    ]
   },
 });
