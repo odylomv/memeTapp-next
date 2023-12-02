@@ -32,7 +32,7 @@ export const memeRouter = createTRPCRouter({
     if (!meme) return null;
 
     let like = null;
-    if (ctx.auth && ctx.auth.userId)
+    if (ctx.auth?.userId)
       like = await ctx.prisma.memeLike.findUnique({
         where: { userId_memeId: { memeId: meme.id, userId: ctx.auth.userId } },
       });
@@ -128,7 +128,7 @@ export const memeRouter = createTRPCRouter({
       // Asynchronously get the image URLs and like status for every meme
       const promises = memes.map(async meme => {
         let like = null;
-        if (ctx.auth && ctx.auth.userId)
+        if (ctx.auth?.userId)
           like = await ctx.prisma.memeLike.findUnique({
             where: { userId_memeId: { memeId: meme.id, userId: ctx.auth.userId } },
           });

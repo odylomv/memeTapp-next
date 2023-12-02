@@ -4,8 +4,8 @@ import { Github, Menu } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '../ui/button';
-import { Separator } from '../ui/separator';
+import { Button } from '../ui/Button';
+import { Separator } from '../ui/Separator';
 
 import { cn } from '@mtp/lib/utils';
 import Head from 'next/head';

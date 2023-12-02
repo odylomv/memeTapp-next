@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import MockMemeCard from '../MockMemeCard';
 import { useDialog } from '../providers/DialogProvider';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Button } from '../ui/Button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/Dialog';
 import { useToast } from '../ui/use-toast';
 
 export default function UploadMemeDialog({ open, onClose }: { open: boolean; onClose: () => void }) {

@@ -5,7 +5,7 @@ import { Bookmark, Heart, MessageCircle, MoreVertical, Trash2, Wrench } from 'lu
 import Image from 'next/image';
 import DesktopTooltip from './DesktopTooltip';
 import { useDialog } from './providers/DialogProvider';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,

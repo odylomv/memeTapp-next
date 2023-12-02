@@ -2,6 +2,7 @@ import logo from '@assets/logo.png';
 import { useClerk } from '@clerk/nextjs';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import { Separator } from '../ui/Separator';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +13,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/alert-dialog';
-import { Separator } from '../ui/separator';
 
 export default function SignUpDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const clerk = useClerk();

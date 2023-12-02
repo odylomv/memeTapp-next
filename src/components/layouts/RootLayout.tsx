@@ -1,7 +1,7 @@
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from '../Toaster';
 import DialogProvider from '../providers/DialogProvider';
-import { TooltipProvider } from '../ui/tooltip';
+import { TooltipProvider } from '../ui/Tooltip';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

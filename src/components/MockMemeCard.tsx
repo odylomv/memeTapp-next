@@ -2,7 +2,7 @@ import { useUser } from '@clerk/nextjs';
 import { dateFromNow } from '@mtp/lib/utils';
 import { Bookmark, Heart, MessageCircle, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 
 export default function MockMemeCard({ imageUrl }: { imageUrl: string }) {
   const { user } = useUser();

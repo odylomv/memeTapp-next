@@ -2,7 +2,7 @@ import { useUser } from '@clerk/nextjs';
 import { type RouterOutputs } from '@mtp/lib/api';
 import { MoreVertical, Trash2, Wrench } from 'lucide-react';
 import { useDialog } from '../providers/DialogProvider';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,

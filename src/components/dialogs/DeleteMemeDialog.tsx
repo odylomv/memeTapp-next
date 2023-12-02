@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/alert-dialog';
-import { Separator } from '../ui/separator';
+import { Separator } from '../ui/Separator';
 import { useToast } from '../ui/use-toast';
 
 export default function DeleteMemeDialog({

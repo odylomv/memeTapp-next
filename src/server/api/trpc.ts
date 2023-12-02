@@ -6,11 +6,10 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { getAuth } from '@clerk/nextjs/server';
-import { TRPCError, initTRPC } from '@trpc/server';
+import { getAuth, type SignedInAuthObject, type SignedOutAuthObject } from '@clerk/nextjs/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import SuperJSON from 'superjson';
-
 import { minio, prisma } from '../db';
 
 /**
@@ -21,7 +20,7 @@ import { minio, prisma } from '../db';
  * These allow you to access things when processing a request, like the database, the auth status, etc.
  */
 type CreateContextOptions = {
-  auth: ReturnType<typeof getAuth> | null;
+  auth: SignedInAuthObject | SignedOutAuthObject | null;
 };
 
 /**
@@ -87,7 +86,7 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.auth || !ctx.auth.userId) {
+  if (!ctx.auth?.userId) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 

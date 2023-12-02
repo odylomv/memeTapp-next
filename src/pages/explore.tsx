@@ -3,7 +3,7 @@ import { buildClerkProps, getAuth } from '@clerk/nextjs/server';
 import MemeCard from '@mtp/components/MemeCard';
 import NavbarLayout from '@mtp/components/layouts/NavbarLayout';
 import { useDialog } from '@mtp/components/providers/DialogProvider';
-import { Button } from '@mtp/components/ui/button';
+import { Button } from '@mtp/components/ui/Button';
 import { api } from '@mtp/lib/api';
 import { appRouter } from '@mtp/server/api/root';
 import { createInnerTRPCContext } from '@mtp/server/api/trpc';

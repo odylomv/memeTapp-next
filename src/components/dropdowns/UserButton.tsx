@@ -2,7 +2,7 @@ import { useClerk, useUser } from '@clerk/nextjs';
 import { LogOut, Settings, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -2,7 +2,7 @@ import banner from '@assets/memeTapp_banner.png';
 import banner_black from '@assets/memeTapp_banner_black.png';
 import ThemeSwitch from '@mtp/components/ThemeSwitch';
 import RootLayout from '@mtp/components/layouts/RootLayout';
-import { Button } from '@mtp/components/ui/button';
+import { Button } from '@mtp/components/ui/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 

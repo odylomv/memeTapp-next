@@ -2,7 +2,7 @@ import { SignUp } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import ThemeSwitch from '@mtp/components/ThemeSwitch';
 import RootLayout from '@mtp/components/layouts/RootLayout';
-import { Button } from '@mtp/components/ui/button';
+import { Button } from '@mtp/components/ui/Button';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 
