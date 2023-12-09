@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-const config = {
+import { type Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
+export default {
   darkMode: ['class'],
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -11,6 +13,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -68,6 +73,4 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-};
-
-module.exports = config;
+} satisfies Config;

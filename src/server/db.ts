@@ -1,4 +1,4 @@
-import { env } from '@mtp/env.mjs';
+import { env } from '@mtp/env.js';
 import { PrismaClient } from '@prisma/client';
 import { Client as MinioClient } from 'minio';
 

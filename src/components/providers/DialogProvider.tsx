@@ -1,5 +1,7 @@
-import { type RouterOutputs } from '@mtp/lib/api';
+'use client';
+
 import { type AppRouter } from '@mtp/server/api/root';
+import { type RouterOutputs } from '@mtp/trpc/shared';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import { createContext, useContext, useState } from 'react';
 import DeleteMemeDialog from '../dialogs/DeleteMemeDialog';

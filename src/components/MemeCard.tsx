@@ -1,6 +1,9 @@
+'use client';
+
 import { useUser } from '@clerk/nextjs';
-import { api, type RouterOutputs } from '@mtp/lib/api';
 import { dateFromNow } from '@mtp/lib/utils';
+import { api } from '@mtp/trpc/react';
+import { type RouterOutputs } from '@mtp/trpc/shared';
 import { Bookmark, Heart, MessageCircle, MoreVertical, Trash2, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import DesktopTooltip from './DesktopTooltip';

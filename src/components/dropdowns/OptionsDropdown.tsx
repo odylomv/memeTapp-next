@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/nextjs';
-import { type RouterOutputs } from '@mtp/lib/api';
+import { type RouterOutputs } from '@mtp/trpc/shared';
 import { MoreVertical, Trash2, Wrench } from 'lucide-react';
 import { useDialog } from '../providers/DialogProvider';
 import { Button } from '../ui/Button';

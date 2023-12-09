@@ -6,10 +6,10 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { getAuth, type SignedInAuthObject, type SignedOutAuthObject } from '@clerk/nextjs/server';
-import { initTRPC, TRPCError } from '@trpc/server';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { type SignedInAuthObject, type SignedOutAuthObject } from '@clerk/nextjs/server';
+import { TRPCError, initTRPC } from '@trpc/server';
 import SuperJSON from 'superjson';
+import { ZodError } from 'zod';
 import { minio, prisma } from '../db';
 
 /**
@@ -17,36 +17,25 @@ import { minio, prisma } from '../db';
  *
  * This section defines the "contexts" that are available in the backend API.
  *
- * These allow you to access things when processing a request, like the database, the auth status, etc.
+ * These allow you to access things when processing a request, like the database, the session, etc.
+ *
+ * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
+ * wrap this and provides the required context.
+ *
+ * @see https://trpc.io/docs/server/context
  */
 type CreateContextOptions = {
-  auth: SignedInAuthObject | SignedOutAuthObject | null;
+  headers: Headers;
+  auth: SignedInAuthObject | SignedOutAuthObject;
 };
 
-/**
- * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
- * it from here.
- *
- * Examples of things you may need it for:
- * - testing, so we don't have to mock Next.js' req/res
- * - tRPC's `createServerSideHelpers`, where we don't have req/res
- *
- * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
- */
-export const createInnerTRPCContext = ({ auth }: CreateContextOptions) => {
+export const createTRPCContext = async ({ headers, auth }: CreateContextOptions) => {
   return {
+    headers,
     auth,
     prisma,
     minio,
   };
-};
-
-/**
- * This is the actual context you'll use in your router
- * @link https://trpc.io/docs/server/context
- **/
-export const createTRPCContext = ({ req }: CreateNextContextOptions) => {
-  return createInnerTRPCContext({ auth: getAuth(req) });
 };
 
 /**
@@ -56,8 +45,14 @@ export const createTRPCContext = ({ req }: CreateNextContextOptions) => {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
-  errorFormatter({ shape }) {
-    return shape;
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
   },
 });
 

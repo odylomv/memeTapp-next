@@ -1,6 +1,8 @@
 import logo from '@assets/logo.png';
-import { api, type RouterOutputs } from '@mtp/lib/api';
+import { api } from '@mtp/trpc/react';
+import { type RouterOutputs } from '@mtp/trpc/shared';
 import Image from 'next/image';
+import { Separator } from '../ui/Separator';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +13,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/alert-dialog';
-import { Separator } from '../ui/Separator';
 import { useToast } from '../ui/use-toast';
 
 export default function DeleteMemeDialog({
@@ -24,7 +25,7 @@ export default function DeleteMemeDialog({
   onClose: () => void;
 }) {
   const { toast } = useToast();
-  const trpcContext = api.useContext();
+  const trpcContext = api.useUtils();
   const memeDelete = api.meme.deleteMeme.useMutation();
 
   const deleteMeme = () => {

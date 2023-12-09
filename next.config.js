@@ -1,5 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
-import { env } from './src/env.mjs';
+import { env } from './src/env.js';
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -52,6 +52,6 @@ export default defineNextConfig({
         protocol: 'https',
         hostname: 'www.gravatar.com',
       },
-    ]
+    ],
   },
 });

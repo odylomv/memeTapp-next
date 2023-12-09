@@ -2,6 +2,7 @@
   "name": "memetapp-next",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
@@ -28,6 +29,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^4.10.0",
     "@trpc/client": "^10.12.0",
     "@trpc/next": "^10.12.0",
@@ -46,6 +48,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.2",
     "react-intersection-observer": "^9.4.0",
+    "server-only": "^0.0.1",
     "sharp": "^0.33.0",
     "superjson": "^2.2.1",
     "svix": "^0.81.0",

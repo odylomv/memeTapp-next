@@ -1,4 +1,4 @@
-import { env } from '@mtp/env.mjs';
+import { env } from '@mtp/env.js';
 import { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';

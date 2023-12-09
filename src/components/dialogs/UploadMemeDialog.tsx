@@ -1,4 +1,4 @@
-import { api } from '@mtp/lib/api';
+import { api } from '@mtp/trpc/react';
 import { Upload } from 'lucide-react';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
@@ -12,7 +12,7 @@ export default function UploadMemeDialog({ open, onClose }: { open: boolean; onC
   const { toast } = useToast();
   const { serverError } = useDialog();
 
-  const trpcContext = api.useContext();
+  const trpcContext = api.useUtils();
   const memeUploader = api.meme.uploadMeme.useMutation();
   const memeEnabler = api.meme.enableMeme.useMutation();
 

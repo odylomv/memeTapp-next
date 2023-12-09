@@ -1,9 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs';
 
-export default function ThemedClerkProvider({ children, pageProps }: { children: React.ReactNode; pageProps: object }) {
+export default function ThemedClerkProvider({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider
-      {...pageProps}
       appearance={{
         layout: { socialButtonsPlacement: 'top', socialButtonsVariant: 'iconButton' },
         variables: {
